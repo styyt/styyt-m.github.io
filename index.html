@@ -13,9 +13,9 @@
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="author" content="John Doe">
+    <meta name="author" content="styytNOTstop">
     <meta name="renderer" content="webkit">
-    <meta name="copyright" content="John Doe">
+    <meta name="copyright" content="styytNOTstop">
     
     <meta name="keywords" content="learn,grow up">
     
@@ -359,6 +359,41 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/07/13/ORA-01722 invalid number/" >
+            
+                <span>ORA-01722 invalid number</span>
+        </a>
+        <div class="abstract-content">
+            ​         ORA-01722: invalid number最常见的原因就是因为我们在条件筛选时写了文本格式的（varchar2）字段与数字进行对比，Oracle的字段类型隐式转换调用了to_number函数，当字段内有非数字的值时，就会报这个错误。比如下面两个sql:
+​        
+1select * from TM_hrmis_USER U WHERE  U.EMP_CODE=592876
+
+1select * from TM_hrmis_USER U WHERE  U.EMP_CODE=592876 and u.emp_name='592876'
+
+​       ...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/13</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "ORACLE">ORACLE</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/07/12/hello-world/" >
             
                 <span>Hello World</span>
@@ -515,9 +550,16 @@ Mo...
     
     
     
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 1
+        Total : 2
         </div>
         <!-- search  -->
         
@@ -533,6 +575,11 @@ Mo...
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">07/13</span><a class="archive-post-title" href= "/2019/07/13/ORA-01722 invalid number/" >ORA-01722 invalid number</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">07/12</span><a class="archive-post-title" href= "/2019/07/12/hello-world/" >Hello World</a>
         </li>
     
@@ -540,6 +587,8 @@ Mo...
   </div>
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -574,6 +623,8 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
+        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
+    
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
     <div class="sidebar-categories-list"></div>
@@ -583,7 +634,7 @@ jsonContent:
     <script>
     var siteMeta = {
         root: "/",
-        author: "John Doe"
+        author: "styytNOTstop"
     }
 </script>
     <!-- CDN failover -->
