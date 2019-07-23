@@ -359,18 +359,51 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/07/22/mybatis-placeholder/" >
+            
+                <span>mybatis占位符的区别</span>
+        </a>
+        <div class="abstract-content">
+            ​        mybatis占位符分为#{}和${}
+​        #{}是利用jdbc的预编译（PreparedStatement），一个#{}会被解析为一个占位符？。它可以指定变量的类型，比如：#{empCode,jdbcType=VARCHAR}或#{year,jdbcType=DECIMAL}，
+​        ${}是一个纯粹的String替换，把变量的值直接替换在当前位置
+​        比如：    select emp_id from user where code=#{code,jdbcType=VARCHAR}在log内打印出来为sql为：Preparin...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/22</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis">mybatis</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "sql注入">sql注入</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/07/13/ORA-01722 invalid number/" >
             
                 <span>ORA-01722 invalid number</span>
         </a>
         <div class="abstract-content">
-            ​         ORA-01722: invalid number最常见的原因就是因为我们在条件筛选时写了文本格式的（varchar2）字段与数字进行对比，Oracle的字段类型隐式转换调用了to_number函数，当字段内有非数字的值时，就会报这个错误。比如下面两个sql:
-​        
+             ORA-01722: invalid number最常见的原因就是因为我们在条件筛选时写了文本格式的（varchar2）字段与数字进行对比，Oracle的字段类型隐式转换调用了to_number函数，当字段内有非数字的值时，就会报这个错误。比如下面两个sql:    
 1select * from TM_hrmis_USER U WHERE  U.EMP_CODE=592876
 
 1select * from TM_hrmis_USER U WHERE  U.EMP_CODE=592876 and u.emp_name='592876'
 
-​       ...
+​        首先emp_code这个字段...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -557,9 +590,18 @@ Mo...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 2
+        Total : 3
         </div>
         <!-- search  -->
         
@@ -572,6 +614,11 @@ Mo...
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/22</span><a class="archive-post-title" href= "/2019/07/22/mybatis-placeholder/" >mybatis占位符的区别</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -589,6 +636,10 @@ Mo...
     <div class="sidebar-tags-name">
     
         <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
+    
+        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
+    
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -624,6 +675,8 @@ jsonContent:
     <div class="sidebar-categories-name">
     
         <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
+    
+        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
