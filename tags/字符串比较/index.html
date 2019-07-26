@@ -346,20 +346,25 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/07/22/mybatis-placeholder/" >
+        <a class="abstract-title" href = "/2019/07/24/mybatis字符串比较/" >
             
-                <span>mybatis占位符的区别</span>
+                <span>mybatis字符串比较</span>
         </a>
         <div class="abstract-content">
-            ​        mybatis占位符分为#{}和${}
-​        #{}是利用jdbc的预编译（PreparedStatement），一个#{}会被解析为一个占位符？。它可以指定变量的类型，比如：#{empCode,jdbcType=VARCHAR}或#{year,jdbcType=DECIMAL}，
-​        ${}是一个纯粹的String替换，把变量的值直接替换在当前位置
-​        比如：    select emp_id from user where code=#{code,jdbcType=VARCHAR}在log内打印出来为sql为：Preparin...
+            在mybatis的mapping内进行字符串比较应该使用以下方法:
+&lt;if test=&#39;type==&quot;y&quot;&#39;&gt;  
+    and status = 1   
+&lt;/if&gt;
+或者
+&lt;if test=&quot;type == &#39;y&#39;.toString()&quot;&gt;  
+    and status = 1   
+&lt;/if&gt;
+不能使用这种写法&lt;if test=&quot;type == &#39;y&#39;&quot;&gt;，因为tset内是ognl表达式，’Y’在java内被认...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/22</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/24</span>
             </div>
             <!-- tags  -->
             
@@ -367,7 +372,7 @@
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis">mybatis</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "sql注入">sql注入</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "字符串比较">字符串比较</a>
     
 </div>
             
