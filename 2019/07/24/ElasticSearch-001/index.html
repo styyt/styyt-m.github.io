@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>learn and grow up</title>
+    <title>ElasticSearch笔记 · learn and grow up</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -203,12 +203,23 @@
 </head>
 
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >learn and grow up</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">ElasticSearch笔记</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>learn and grow up</a>
 </header>
@@ -220,24 +231,76 @@
 
 
 
+
+height:50vh;
 ">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+            ElasticSearch笔记
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "ElasticSearch">ElasticSearch</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Oracle">Oracle</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">507</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/07/24</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -338,44 +401,85 @@
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/07/22/mybatis-placeholder/" >
-            
-                <span>mybatis占位符的区别</span>
-        </a>
-        <div class="abstract-content">
-            ​        mybatis占位符分为#{}和${}
-​        #{}是利用jdbc的预编译（PreparedStatement），一个#{}会被解析为一个占位符？。它可以指定变量的类型，比如：#{empCode,jdbcType=VARCHAR}或#{year,jdbcType=DECIMAL}，
-​        ${}是一个纯粹的String替换，把变量的值直接替换在当前位置
-​        比如：    select emp_id from user where code=#{code,jdbcType=VARCHAR}在log内打印出来为sql为：Preparin...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/22</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis">mybatis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "sql注入">sql注入</a>
-    
-</div>
-            
-        </div>
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>最近开发的人员搜索功能使用到了ElasticSearch(ES)，所以把自己学到的东西记录下来</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>ES是一个分布式可扩展的实时搜索和分析引擎,一个建立在全文搜索引擎 Apache Lucene(TM) 基础上的搜索引擎.当然 ES并不仅仅是 Lucene 那么简单，它不仅包括了全文搜索功能，还可以进行以下工作:</p>
+<ul>
+<li><p>分布式实时文件存储，并将每一个字段都编入索引，使其可以被搜索。</p>
+</li>
+<li><p>实时分析的分布式搜索引擎。</p>
+</li>
+<li><p>可以扩展到上百台服务器，处理PB级别的结构化或非结构化数据。</p>
+<p>经过两三天时间的琢磨，大概明白了ES的表面运作流程，ES除了上述特征之外，他提供服务的方式是RESTful web接口，开发人员通过RESTful标准的json请求对大数据进行操作和检索。</p>
+<p>简单来说就是可以提供RESTful web接口的非关系型数据库。他与传统关系型数据库比如oracle的对比大致如下：</p>
+<p>orecle：DB -&gt; Databases -&gt; Tables -&gt; Rows -&gt; Columns </p>
+<p>ES： ES -&gt; Indices -&gt; Types -&gt; Documents -&gt; Fields</p>
+</li>
+</ul>
+<h2 id="ES搭配ETL、oracle、hive实现大数据全文检索"><a href="#ES搭配ETL、oracle、hive实现大数据全文检索" class="headerlink" title="ES搭配ETL、oracle、hive实现大数据全文检索"></a>ES搭配ETL、oracle、hive实现大数据全文检索</h2><p>所需工具：hive，etl，oracle/mysql等</p>
+<ul>
+<li>配置好etl的hive数据源和oracle数据源</li>
+<li>创建hive中间表，比如：</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">EXISTS</span> dm_hrmis.tm_hrmis_external_rel(emp_code <span class="keyword">string</span>,rel_txt <span class="keyword">string</span>,create_by <span class="keyword">string</span>,create_time <span class="built_in">date</span>,update_by <span class="keyword">string</span>,update_time <span class="built_in">date</span>)</span><br><span class="line"><span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span></span><br><span class="line"><span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">','</span></span><br><span class="line">collection items <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">'-'</span></span><br><span class="line"><span class="keyword">map</span> <span class="keyword">keys</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">':'</span></span><br><span class="line">;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>通过etl工具配置好抽数规则，定时从oracle/mysql抽取到hive，可以选择按照更新时间来分区，既方便又能做到数据备份</p>
+<p><img src="/intro/0002.png" alt="2"></p>
+</li>
+<li><p>通过etl将hive表的相关字段同步至ES的索引内</p>
+</li>
+</ul>
+<p>以上流程配置好后，就可以对ES的索引进行查询了。</p>
+<p>简单查询示例如下：</p>
+<p><code>curl -XGET http://localhost:9200/index01/_search -d {&#39;query&#39;:{&#39;term&#39;:{&#39;title&#39;:&#39;你好&#39;}}}</code></p>
+<p>更详细使用方法可以参考网上的API</p>
+
     </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://styyt.github.io">styytNOTstop</a>
+            <p>原文链接：<a href="https://styyt.github.io/2019/07/24/ElasticSearch-001/">https://styyt.github.io/2019/07/24/ElasticSearch-001/</a>
+            <p>发表日期：<a href="https://styyt.github.io/2019/07/24/ElasticSearch-001/">July 24th 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="https://styyt.github.io/2019/07/24/ElasticSearch-001/">July 26th 2019, 9:23:07 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
     
     <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2019/07/24/mybatis字符串比较/" title= "mybatis字符串比较">
+                    <div class="nextTitle">mybatis字符串比较</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/07/22/mybatis-placeholder/" title= "mybatis占位符的区别">
+                    <div class="prevTitle">mybatis占位符的区别</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -428,6 +532,24 @@
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ES搭配ETL、oracle、hive实现大数据全文检索"><span class="toc-number">2.</span> <span class="toc-text">ES搭配ETL、oracle、hive实现大数据全文检索</span></a></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -639,6 +761,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>
