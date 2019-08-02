@@ -346,33 +346,26 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/07/24/ElasticSearch-001/" >
+        <a class="abstract-title" href = "/2019/07/25/content-type01/" >
             
-                <span>ElasticSearch笔记</span>
+                <span>springMVC获取content-type为form-data类型的参数和值解析</span>
         </a>
         <div class="abstract-content">
-            最近开发的人员搜索功能使用到了ElasticSearch(ES)，所以把自己学到的东西记录下来
-介绍ES是一个分布式可扩展的实时搜索和分析引擎,一个建立在全文搜索引擎 Apache Lucene(TM) 基础上的搜索引擎.当然 ES并不仅仅是 Lucene 那么简单，它不仅包括了全文搜索功能，还可以进行以下工作:
-
-分布式实时文件存储，并将每一个字段都编入索引，使其可以被搜索。
-
-实时分析的分布式搜索引擎。
-
-可以扩展到上百台服务器，处理PB级别的结构化或非结构化数据。
-经过两三天时间的琢磨，大概明白了ES的表面运作流程，ES除了上述特征之外，他提供服务的方式是RESTful web接口...
+            写在前面传统的servlet处理request请求是，会自动帮我们封装get请求、post且Content-Type为application/x-www-form-urlencoded请求参数至request parameter map。但是当Content-Type为其他类型时，需要基于servlet的框架比如struts、spring来帮我们封装，不按的话得我们自己获取请求流来处理。
+之所以会这样，是因为：Content-Type不是application/x-www-form-urlencoded时数据格式不固定，不一定是key=value对的方式，所以服务器无法知道具体的处理方式...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/24</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/25</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "ElasticSearch">ElasticSearch</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "springMVC">springMVC</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Oracle">Oracle</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "form_data">form_data</a>
     
 </div>
             
