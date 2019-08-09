@@ -346,6 +346,43 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/08/hibernate4监听器的实现简单解析/" >
+            
+                <span>hibernate4监听器的实现简单解析</span>
+        </a>
+        <div class="abstract-content">
+            这几天旧项目运维时发现曾经写的hibernate监听器很有意思，混合利用了工厂模式和观察者模式。所以特意记录一下
+hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册的方式，而是新增了一个监听器注册类：org.hibernate.event.service.spi.EventListenerRegistry，注册方式为：
+1234567891011121314151617@Componentpublic class HandleEnvetListener &#123;	//注册监听器		@Autowired      private SessionFa...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/08</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "hibernate4">hibernate4</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "设计模式">设计模式</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码解读">源码解读</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/02/tomcat-jetty-jboss跨域配置/" >
             
                 <span>tomcat,jetty,jboss跨域配置</span>
@@ -530,9 +567,43 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 7
+        Total : 9
         </div>
         <!-- search  -->
         
@@ -545,6 +616,16 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/08</span><a class="archive-post-title" href= "/2019/08/08/hibernate4监听器的实现简单解析/" >hibernate4监听器的实现简单解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/hive存储换行符等特殊字符/" >hive存储换行符等特殊字符</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -586,11 +667,19 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
-    
         <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
     
         <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
+    
+        <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
+    
+        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
+    
+        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
+    
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
     
         <span class="sidebar-tag-name" data-tags="jetty"><span class="iconfont-archer">&#xe606;</span>jetty</span>
     
@@ -604,11 +693,11 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
         <span class="sidebar-tag-name" data-tags="sringboot"><span class="iconfont-archer">&#xe606;</span>sringboot</span>
     
-        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
+        <span class="sidebar-tag-name" data-tags="hibernate4"><span class="iconfont-archer">&#xe606;</span>hibernate4</span>
     
-        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
+        <span class="sidebar-tag-name" data-tags="设计模式"><span class="iconfont-archer">&#xe606;</span>设计模式</span>
     
-        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
+        <span class="sidebar-tag-name" data-tags="源码解读"><span class="iconfont-archer">&#xe606;</span>源码解读</span>
     
         <span class="sidebar-tag-name" data-tags="springMVC"><span class="iconfont-archer">&#xe606;</span>springMVC</span>
     
@@ -647,15 +736,17 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
-    
         <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
     
-        <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
+        <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
+    
+        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
     
         <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
     
-        <span class="sidebar-category-name" data-categories="springMVC"><span class="iconfont-archer">&#xe60a;</span>springMVC</span>
+        <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
+    
+        <span class="sidebar-category-name" data-categories="springMVC源码解读"><span class="iconfont-archer">&#xe60a;</span>springMVC源码解读</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

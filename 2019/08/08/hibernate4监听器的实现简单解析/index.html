@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="styytNOTstop">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="styytNOTstop">
+    
+    <meta name="keywords" content="learn,grow up">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>hibernate4监听器的实现简单解析 · learn and grow up</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >learn and grow up</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">hibernate4监听器的实现简单解析</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>learn and grow up</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            hibernate4监听器的实现简单解析
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "hibernate4">hibernate4</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "设计模式">设计模式</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码解读">源码解读</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2k</span>阅读时长: <span class="post-count reading-time">9 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/08/08</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>这几天旧项目运维时发现曾经写的hibernate监听器很有意思，混合利用了工厂模式和观察者模式。所以特意记录一下</p>
+<p>hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册的方式，而是新增了一个监听器注册类：org.hibernate.event.service.spi.EventListenerRegistry，注册方式为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HandleEnvetListener</span> </span>&#123;</span><br><span class="line">	<span class="comment">//注册监听器</span></span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Autowired</span>  </span><br><span class="line">    <span class="keyword">private</span> SessionFactory sessionFactory;</span><br><span class="line">	<span class="meta">@Autowired</span>  </span><br><span class="line">	<span class="keyword">private</span> TestListener testListener;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@PostConstruct</span>  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerListeners</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        EventListenerRegistry registry = ((SessionFactoryImpl) sessionFactory).getServiceRegistry().getService(  </span><br><span class="line">                EventListenerRegistry.class);  </span><br><span class="line">  registry.getEventListenerGroup(EventType.POST_COMMIT_UPDATE).appendListener(testListener);  </span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>关于@PostConstruct，我们可以看下这个注解的官方解释：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Target(value=&#123;METHOD&#125;)</span><br><span class="line">@Retention(value=RUNTIME)</span><br><span class="line">@Documented</span><br><span class="line"></span><br><span class="line">The PostConstruct annotation is used on a method that needs to be executed after dependency injection is done to perform any initialization. This method MUST be invoked before the class is put into service. This annotation MUST be supported on all classes that support dependency injection. The method annotated with PostConstruct MUST be invoked even if the class does not request any resources to be injected.</span><br></pre></td></tr></table></figure>
+
+<p>这个注解是用来修饰方法，在jvm运行时保持有效的一个注解。该注解被用于bean初始化完和依赖注入完毕后、被其他bean使用之前必须被执行的方法，就算这个bean不被其他bean依赖，也会执行此方法。简单来说就是：<strong>这个注解修饰的方法会在bean内其他依赖注入完毕后执行。</strong>私以为类似于jquery的:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	init();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>接下来看看hibernate SessionFactory的核心：SessionFactory的实现类org.hibernate.internal.SessionFactoryImpl：</p>
+<p>看这段代码前，我们先把关注点放到ServiceRegistry</p>
+<p>ServiceRegistry 是 Service 的注册表, 它为Service提供了一个统一的加载 / 初始化 / 存放 / 获取机制.</p>
+<p>把SessionFactoryImpl的构造器贴出来：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">SessionFactoryImpl</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">			<span class="keyword">final</span> Configuration cfg,</span></span></span><br><span class="line"><span class="function"><span class="params">			Mapping mapping,</span></span></span><br><span class="line"><span class="function"><span class="params">			<span class="keyword">final</span> ServiceRegistry serviceRegistry,</span></span></span><br><span class="line"><span class="function"><span class="params">			Settings settings,</span></span></span><br><span class="line"><span class="function"><span class="params">			SessionFactoryObserver observer)</span> <span class="keyword">throws</span> HibernateException </span>&#123;</span><br><span class="line">			LOG.debug( <span class="string">"Building session factory"</span> );</span><br><span class="line"></span><br><span class="line">		sessionFactoryOptions = <span class="keyword">new</span> SessionFactoryOptions() &#123;</span><br><span class="line">			<span class="keyword">private</span> EntityNotFoundDelegate entityNotFoundDelegate;</span><br><span class="line"></span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> StandardServiceRegistry <span class="title">getServiceRegistry</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="keyword">return</span> (StandardServiceRegistry) serviceRegistry;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> Interceptor <span class="title">getInterceptor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="keyword">return</span> cfg.getInterceptor();</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> EntityNotFoundDelegate <span class="title">getEntityNotFoundDelegate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="keyword">if</span> ( entityNotFoundDelegate == <span class="keyword">null</span> ) &#123;</span><br><span class="line">					<span class="keyword">if</span> ( cfg.getEntityNotFoundDelegate() != <span class="keyword">null</span> ) &#123;</span><br><span class="line">						entityNotFoundDelegate = cfg.getEntityNotFoundDelegate();</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">else</span> &#123;</span><br><span class="line">						entityNotFoundDelegate = <span class="keyword">new</span> EntityNotFoundDelegate() &#123;</span><br><span class="line">							<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleEntityNotFound</span><span class="params">(String entityName, Serializable id)</span> </span>&#123;</span><br><span class="line">								<span class="keyword">throw</span> <span class="keyword">new</span> ObjectNotFoundException( id, entityName );</span><br><span class="line">							&#125;</span><br><span class="line">						&#125;;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">return</span> entityNotFoundDelegate;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">this</span>.settings = settings;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">this</span>.properties = <span class="keyword">new</span> Properties();</span><br><span class="line">		<span class="keyword">this</span>.properties.putAll( cfg.getProperties() );</span><br><span class="line"></span><br><span class="line">    	<span class="comment">//获取总注册服务表，内部包含了各种默认的子服务注册</span></span><br><span class="line">		<span class="keyword">this</span>.serviceRegistry = serviceRegistry.getService( SessionFactoryServiceRegistryFactory.class ).buildServiceRegistry(</span><br><span class="line">				<span class="keyword">this</span>,</span><br><span class="line">				cfg</span><br><span class="line">		);</span><br><span class="line">        <span class="keyword">this</span>.jdbcServices = <span class="keyword">this</span>.serviceRegistry.getService( JdbcServices.class );</span><br><span class="line">        <span class="keyword">this</span>.dialect = <span class="keyword">this</span>.jdbcServices.getDialect();</span><br><span class="line">		<span class="keyword">this</span>.cacheAccess = <span class="keyword">this</span>.serviceRegistry.getService( CacheImplementor.class );</span><br><span class="line">		<span class="keyword">this</span>.sqlFunctionRegistry = <span class="keyword">new</span> SQLFunctionRegistry( getDialect(), cfg.getSqlFunctions() );</span><br><span class="line">		<span class="keyword">if</span> ( observer != <span class="keyword">null</span> ) &#123;</span><br><span class="line">			<span class="keyword">this</span>.observer.addObserver( observer );</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">this</span>.typeResolver = cfg.getTypeResolver().scope( <span class="keyword">this</span> );</span><br><span class="line">		<span class="keyword">this</span>.typeHelper = <span class="keyword">new</span> TypeLocatorImpl( typeResolver );</span><br><span class="line"></span><br><span class="line">		<span class="keyword">this</span>.filters = <span class="keyword">new</span> HashMap&lt;String, FilterDefinition&gt;();</span><br><span class="line">		<span class="keyword">this</span>.filters.putAll( cfg.getFilterDefinitions() );</span><br><span class="line"></span><br><span class="line">		LOG.debugf( <span class="string">"Session factory constructed with filter configurations : %s"</span>, filters );</span><br><span class="line">		LOG.debugf( <span class="string">"Instantiating session factory with properties: %s"</span>, properties );</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="keyword">this</span>.queryPlanCache = <span class="keyword">new</span> QueryPlanCache( <span class="keyword">this</span> );</span><br><span class="line"></span><br><span class="line">		<span class="comment">// todo : everything above here consider implementing as standard SF service.  specifically: stats, caches, types, function-reg</span></span><br><span class="line"></span><br><span class="line">		<span class="class"><span class="keyword">class</span> <span class="title">IntegratorObserver</span> <span class="keyword">implements</span> <span class="title">SessionFactoryObserver</span> </span>&#123;</span><br><span class="line">			<span class="keyword">private</span> ArrayList&lt;Integrator&gt; integrators = <span class="keyword">new</span> ArrayList&lt;Integrator&gt;();</span><br><span class="line"></span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionFactoryCreated</span><span class="params">(SessionFactory factory)</span> </span>&#123;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionFactoryClosed</span><span class="params">(SessionFactory factory)</span> </span>&#123;</span><br><span class="line">				<span class="keyword">for</span> ( Integrator integrator : integrators ) &#123;</span><br><span class="line">					integrator.disintegrate( SessionFactoryImpl.<span class="keyword">this</span>, SessionFactoryImpl.<span class="keyword">this</span>.serviceRegistry );</span><br><span class="line">				&#125;</span><br><span class="line">                integrators.clear();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">final</span> IntegratorObserver integratorObserver = <span class="keyword">new</span> IntegratorObserver();</span><br><span class="line">		<span class="keyword">this</span>.observer.addObserver( integratorObserver );</span><br><span class="line">		<span class="keyword">for</span> ( Integrator integrator : serviceRegistry.getService( IntegratorService.class ).getIntegrators() ) &#123;</span><br><span class="line">			integrator.integrate( cfg, <span class="keyword">this</span>, <span class="keyword">this</span>.serviceRegistry );</span><br><span class="line">			integratorObserver.integrators.add( integrator );</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//Generators:</span></span><br><span class="line"></span><br><span class="line">		........</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们重点看这段代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.serviceRegistry = serviceRegistry.getService( SessionFactoryServiceRegistryFactory.class ).buildServiceRegistry(</span><br><span class="line">				<span class="keyword">this</span>,</span><br><span class="line">				cfg</span><br><span class="line">		);</span><br><span class="line">		</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line"><span class="comment">//也就是先从参数serviceRegistry获取了SessionFactoryServiceRegistryFactory工厂，再利用工厂模式进行创建属于SessionFactoryImpl自己的ServiceRegistry，工厂具体创建方法如下：</span></span><br><span class="line"><span class="comment">//org.hibernate.service.internal.SessionFactoryServiceRegistryImpl.SessionFactoryServiceRegistryImpl(ServiceRegistryImplementor, SessionFactoryImplementor, Configuration)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">SessionFactoryServiceRegistryImpl</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">			ServiceRegistryImplementor parent,</span></span></span><br><span class="line"><span class="function"><span class="params">			SessionFactoryImplementor sessionFactory,</span></span></span><br><span class="line"><span class="function"><span class="params">			Configuration configuration)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>( parent );</span><br><span class="line"></span><br><span class="line">		<span class="keyword">this</span>.sessionFactory = sessionFactory;</span><br><span class="line">		<span class="keyword">this</span>.configuration = configuration;</span><br><span class="line">		<span class="keyword">this</span>.metadata = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// for now, just use the standard initiator list</span></span><br><span class="line">    <span class="comment">//可以看到这里就是对EventListenerRegistry初始化并注册</span></span><br><span class="line">		<span class="keyword">for</span> ( SessionFactoryServiceInitiator initiator : StandardSessionFactoryServiceInitiators.LIST ) &#123;</span><br><span class="line">			<span class="comment">// create the bindings up front to help identify to which registry services belong</span></span><br><span class="line">			createServiceBinding( initiator );</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//org.hibernate.service.internal.AbstractServiceRegistryImpl.createServiceBinding(ServiceInitiator&lt;R&gt;)</span></span><br><span class="line"><span class="meta">@SuppressWarnings</span>(&#123; <span class="string">"unchecked"</span> &#125;)</span><br><span class="line">	<span class="keyword">protected</span> &lt;R extends Service&gt; <span class="function"><span class="keyword">void</span> <span class="title">createServiceBinding</span><span class="params">(ServiceInitiator&lt;R&gt; initiator)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> ServiceBinding serviceBinding = <span class="keyword">new</span> ServiceBinding( <span class="keyword">this</span>, initiator );</span><br><span class="line">        serviceBindingMap.put( initiator.getServiceInitiated(), serviceBinding );</span><br><span class="line">    &#125;</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">    <span class="comment">//StandardSessionFactoryServiceInitiators.LIST   </span></span><br><span class="line">    <span class="comment">//集合内包含了EventListenerServiceInitiator的注册启动器</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StandardSessionFactoryServiceInitiators</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> List&lt;SessionFactoryServiceInitiator&gt; LIST = buildStandardServiceInitiatorList();</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> List&lt;SessionFactoryServiceInitiator&gt; <span class="title">buildStandardServiceInitiatorList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">final</span> List&lt;SessionFactoryServiceInitiator&gt; serviceInitiators = <span class="keyword">new</span> ArrayList&lt;SessionFactoryServiceInitiator&gt;();</span><br><span class="line"></span><br><span class="line">		serviceInitiators.add( EventListenerServiceInitiator.INSTANCE );</span><br><span class="line">		serviceInitiators.add( StatisticsInitiator.INSTANCE );</span><br><span class="line">		serviceInitiators.add( CacheInitiator.INSTANCE );</span><br><span class="line"></span><br><span class="line">		serviceInitiators.add( NativeQueryInterpreterInitiator.INSTANCE );</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> Collections.unmodifiableList( serviceInitiators );</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">StandardSessionFactoryServiceInitiators</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//org.hibernate.event.service.internal.EventListenerServiceInitiator</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EventListenerServiceInitiator</span> <span class="keyword">implements</span> <span class="title">SessionFactoryServiceInitiator</span>&lt;<span class="title">EventListenerRegistry</span>&gt; </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> EventListenerServiceInitiator INSTANCE = <span class="keyword">new</span> EventListenerServiceInitiator();</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Class&lt;EventListenerRegistry&gt; <span class="title">getServiceInitiated</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//也就是这里返回了EventListenerRegistry</span></span><br><span class="line">		<span class="keyword">return</span> EventListenerRegistry.class;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> EventListenerRegistry <span class="title">initiateService</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">			SessionFactoryImplementor sessionFactory,</span></span></span><br><span class="line"><span class="function"><span class="params">			Configuration configuration,</span></span></span><br><span class="line"><span class="function"><span class="params">			ServiceRegistryImplementor registry)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> EventListenerRegistryImpl();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> EventListenerRegistry <span class="title">initiateService</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">			SessionFactoryImplementor sessionFactory,</span></span></span><br><span class="line"><span class="function"><span class="params">			MetadataImplementor metadata,</span></span></span><br><span class="line"><span class="function"><span class="params">			ServiceRegistryImplementor registry)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> EventListenerRegistryImpl();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//EventListenerRegistryImpl</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EventListenerRegistryImpl</span> <span class="keyword">implements</span> <span class="title">EventListenerRegistry</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Map&lt;Class,Object&gt; listenerClassToInstanceMap = <span class="keyword">new</span> HashMap&lt;Class, Object&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放监听服务及其实现集合</span></span><br><span class="line">	<span class="keyword">private</span> Map&lt;EventType,EventListenerGroupImpl&gt; registeredEventListenersMap = prepareListenerMap();</span><br><span class="line"> ......</span><br><span class="line">     <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Map&lt;EventType,EventListenerGroupImpl&gt; <span class="title">prepareListenerMap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">final</span> Map&lt;EventType,EventListenerGroupImpl&gt; workMap = <span class="keyword">new</span> HashMap&lt;EventType, EventListenerGroupImpl&gt;();</span><br><span class="line"></span><br><span class="line">     	<span class="comment">//初始化</span></span><br><span class="line">		<span class="comment">// auto-flush listeners</span></span><br><span class="line">		prepareListeners(</span><br><span class="line">				AUTO_FLUSH,</span><br><span class="line">				<span class="keyword">new</span> DefaultAutoFlushEventListener(),</span><br><span class="line">				workMap</span><br><span class="line">		);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// create listeners</span></span><br><span class="line">		prepareListeners(</span><br><span class="line">				PERSIST,</span><br><span class="line">				<span class="keyword">new</span> DefaultPersistEventListener(),</span><br><span class="line">				workMap</span><br><span class="line">		);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// create-onflush listeners</span></span><br><span class="line">		prepareListeners(</span><br><span class="line">				.........</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> Collections.unmodifiableMap( workMap );</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">prepareListeners</span><span class="params">(EventType&lt;T&gt; type, Map&lt;EventType,EventListenerGroupImpl&gt; map)</span> </span>&#123;</span><br><span class="line">		prepareListeners( type, <span class="keyword">null</span>, map );</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">prepareListeners</span><span class="params">(EventType&lt;T&gt; type, T defaultListener, Map&lt;EventType,EventListenerGroupImpl&gt; map)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">final</span> EventListenerGroupImpl&lt;T&gt; listenerGroup;</span><br><span class="line">		<span class="keyword">if</span> ( type == EventType.POST_COMMIT_DELETE</span><br><span class="line">				|| type == EventType.POST_COMMIT_INSERT</span><br><span class="line">				|| type == EventType.POST_COMMIT_UPDATE ) &#123;</span><br><span class="line">			listenerGroup = <span class="keyword">new</span> PostCommitEventListenerGroupImpl&lt;T&gt;( type );</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			listenerGroup = <span class="keyword">new</span> EventListenerGroupImpl&lt;T&gt;( type );</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> ( defaultListener != <span class="keyword">null</span> ) &#123;</span><br><span class="line">			listenerGroup.appendListener( defaultListener );</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="comment">//put</span></span><br><span class="line">		map.put( type, listenerGroup  );</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们在上处获取了刚刚SessionFactory的EventListenerRegistry并将自己新建的监听类append进去，也就是append入：org.hibernate.event.service.internal.EventListenerRegistryImpl.registeredEventListenersMap内的某一个key.listeners内</p>
+<p>众所周知，hibernate简单更新操作如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">session = HibernateUtils.getSession();</span><br><span class="line">session.beginTransaction();</span><br><span class="line">Student student = <span class="keyword">new</span> Student();</span><br><span class="line">student.setName(<span class="string">"张三"</span>);</span><br><span class="line">student.setAge(<span class="string">"21"</span>);</span><br><span class="line">student.setId(<span class="string">"23"</span>);</span><br><span class="line">Serializable id_s = session.save(student);</span><br><span class="line">System.out.println(id_s);</span><br><span class="line">session.getTransaction().commit();</span><br><span class="line"><span class="comment">//spring事务拦截也是利用拦截器进行事务控制并通知监听器，见下图	 	</span></span><br><span class="line"><span class="comment">//org.springframework.transaction.interceptor.TransactionInterceptor.invoke(MethodInvocation)----&gt;org.springframework.orm.hibernate4.HibernateTransactionManager.doCommit(DefaultTransactionStatus)-----&gt;org.hibernate.engine.transaction.spi.AbstractTransactionImpl.commit()</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/intro/0010.png" alt="spring对hibernate事务的支持"></p>
+<p>我们就以session.save(student)为例子来看看监听器如何运行：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//调用栈如下：</span></span><br><span class="line"><span class="comment">//org.hibernate.internal.SessionImpl.update(Object)----&gt;org.hibernate.internal.SessionImpl.update(String, Object)--&gt;org.hibernate.internal.SessionImpl.fireUpdate(SaveOrUpdateEvent)</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">fireUpdate</span><span class="params">(SaveOrUpdateEvent event)</span> </span>&#123;</span><br><span class="line">		errorIfClosed();</span><br><span class="line">		checkTransactionSynchStatus();</span><br><span class="line">		checkNoUnresolvedActionsBeforeOperation();</span><br><span class="line">    <span class="comment">//获取当前有哪些监听器</span></span><br><span class="line">		<span class="keyword">for</span> ( SaveOrUpdateEventListener listener : listeners( EventType.UPDATE ) ) &#123;</span><br><span class="line">            <span class="comment">//执行监听器的监听方法</span></span><br><span class="line">			listener.onSaveOrUpdate( event );</span><br><span class="line">		&#125;</span><br><span class="line">		checkNoUnresolvedActionsAfterOperation();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//org.hibernate.internal.SessionImpl.listeners(EventType&lt;T&gt;)</span></span><br><span class="line"><span class="keyword">private</span> &lt;T&gt; <span class="function">Iterable&lt;T&gt; <span class="title">listeners</span><span class="params">(EventType&lt;T&gt; type)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> eventListenerGroup( type ).listeners();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//重点！org.hibernate.internal.SessionImpl.eventListenerGroup(EventType&lt;T&gt;)</span></span><br><span class="line">	<span class="keyword">private</span> &lt;T&gt; <span class="function">EventListenerGroup&lt;T&gt; <span class="title">eventListenerGroup</span><span class="params">(EventType&lt;T&gt; type)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> factory.getServiceRegistry().getService( EventListenerRegistry.class ).getEventListenerGroup( type );</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//可以清楚看到这里是获取了我们当时用到的ServiceRegistry，并读取到了监听注册类，再根据EventType读取我们当时append进去的监听类</span></span><br><span class="line"><span class="comment">//并执行监听器的接口实现方法</span></span><br><span class="line"><span class="comment">//hibernate4支持的监听方法实现方式都是如此~</span></span><br><span class="line"><span class="comment">//在这里可以看到有这么多事件：org.hibernate.event.spi.EventType&lt;T&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>总结下重要的类：</p>
+<ul>
+<li><p>hibernate SessionFactory—-提供总服务注册表</p>
+<p>org.hibernate.SessionFactory：接口：session工厂</p>
+<p>org.hibernate.internal.SessionFactoryImpl：实现：session工厂</p>
+</li>
+<li><p>总服务注册表serviceRegistry—为子服务注册提供注册到总session注册服务表上</p>
+<p>org.hibernate.internal.SessionFactoryImpl.serviceRegistry：接口：核心工厂内的服务注册表内部包含了N多种类的服务注册集合</p>
+<p>org.hibernate.service.internal.SessionFactoryServiceRegistryImpl：服务注册表实现类</p>
+<p>org.hibernate.service.internal.AbstractServiceRegistryImpl.serviceBindingMap：注册表内注册绑定的的map集合</p>
+<p>org.hibernate.service.internal.StandardSessionFactoryServiceInitiators：hibernate启动默认的service注册类集合</p>
+</li>
+<li><p>子服务注册接口定义</p>
+<p>org.hibernate.service.spi.SessionFactoryServiceInitiator：接口：子服务注册接口统一定义类</p>
+</li>
+<li><p>子服务注册：监听器注册类—为指定的监听服务提供注册</p>
+<p>org.hibernate.event.service.internal.EventListenerServiceInitiator：监听器service注册类构建类</p>
+<p>org.hibernate.event.service.spi.EventListenerRegistry：接口：监听器service注册服务类</p>
+<p>org.hibernate.event.service.internal.EventListenerRegistryImpl：实现：监听器service注册服务类</p>
+<p><strong>org.hibernate.event.service.internal.EventListenerRegistryImpl.registeredEventListenersMap：监听器service注册提供实现类中的存放监听器种类-监听器实现类的集合对应关系的变量</strong></p>
+<p><strong>org.hibernate.event.service.internal.EventListenerGroupImpl<t>：registeredEventListenersMap的value对象：监听器实现类的集合，包含了我们操作最终影响、后续业务调用的list：org.hibernate.event.service.internal.EventListenerGroupImpl.listeners</t></strong></p>
+</li>
+<li><p>监听器—最终注册进EventListenerRegistry</p>
+<p>org.hibernate.event.spi.EventType<t>：规定了监听器种类和对应的监听器interface</t></p>
+<p>org.hibernate.event.spi.SaveOrUpdateEventListener：update的监听器接口。监听器需继承这个接口</p>
+</li>
+</ul>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://styyt.github.io">styytNOTstop</a>
+            <p>原文链接：<a href="https://styyt.github.io/2019/08/08/hibernate4监听器的实现简单解析/">https://styyt.github.io/2019/08/08/hibernate4监听器的实现简单解析/</a>
+            <p>发表日期：<a href="https://styyt.github.io/2019/08/08/hibernate4监听器的实现简单解析/">August 8th 2019, 5:24:29 pm</a>
+            <p>更新日期：<a href="https://styyt.github.io/2019/08/08/hibernate4监听器的实现简单解析/">August 9th 2019, 3:38:14 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/08/06/hive存储换行符等特殊字符/" title= "hive存储换行符等特殊字符">
+                    <div class="prevTitle">hive存储换行符等特殊字符</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:543441649@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/styyt" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/intro/wechat.jpg" />
+                </span>
+            
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 9
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/08</span><a class="archive-post-title" href= "/2019/08/08/hibernate4监听器的实现简单解析/" >hibernate4监听器的实现简单解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/hive存储换行符等特殊字符/" >hive存储换行符等特殊字符</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span><a class="archive-post-title" href= "/2019/08/02/tomcat-jetty-jboss跨域配置/" >tomcat,jetty,jboss跨域配置</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/25</span><a class="archive-post-title" href= "/2019/07/25/content-type01/" >springMVC获取content-type为form-data类型的参数和值解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/24</span><a class="archive-post-title" href= "/2019/07/24/mybatis字符串比较/" >mybatis字符串比较</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/24</span><a class="archive-post-title" href= "/2019/07/24/ElasticSearch-001/" >ElasticSearch笔记</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/22</span><a class="archive-post-title" href= "/2019/07/22/mybatis-placeholder/" >mybatis占位符的区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/13</span><a class="archive-post-title" href= "/2019/07/13/ORA-01722 invalid number/" >ORA-01722 invalid number</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/12</span><a class="archive-post-title" href= "/2019/07/12/hello-world/" >Hello World</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
+    
+        <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
+    
+        <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
+    
+        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
+    
+        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
+    
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
+    
+        <span class="sidebar-tag-name" data-tags="jetty"><span class="iconfont-archer">&#xe606;</span>jetty</span>
+    
+        <span class="sidebar-tag-name" data-tags="jboss"><span class="iconfont-archer">&#xe606;</span>jboss</span>
+    
+        <span class="sidebar-tag-name" data-tags="tomcat"><span class="iconfont-archer">&#xe606;</span>tomcat</span>
+    
+        <span class="sidebar-tag-name" data-tags="CORS"><span class="iconfont-archer">&#xe606;</span>CORS</span>
+    
+        <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
+    
+        <span class="sidebar-tag-name" data-tags="sringboot"><span class="iconfont-archer">&#xe606;</span>sringboot</span>
+    
+        <span class="sidebar-tag-name" data-tags="hibernate4"><span class="iconfont-archer">&#xe606;</span>hibernate4</span>
+    
+        <span class="sidebar-tag-name" data-tags="设计模式"><span class="iconfont-archer">&#xe606;</span>设计模式</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码解读"><span class="iconfont-archer">&#xe606;</span>源码解读</span>
+    
+        <span class="sidebar-tag-name" data-tags="springMVC"><span class="iconfont-archer">&#xe606;</span>springMVC</span>
+    
+        <span class="sidebar-tag-name" data-tags="form_data"><span class="iconfont-archer">&#xe606;</span>form_data</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
+    
+        <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
+    
+        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
+    
+        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
+    
+        <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
+    
+        <span class="sidebar-category-name" data-categories="springMVC源码解读"><span class="iconfont-archer">&#xe60a;</span>springMVC源码解读</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "styytNOTstop"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

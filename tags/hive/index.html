@@ -78,6 +78,8 @@
     <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
     
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -201,10 +203,8 @@
 </head>
 
     
-        <body class="home-body">
     
-    
-<header class="header index-header">
+<header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
@@ -220,34 +220,21 @@
 
 
 
-
-height:50vh;
 ">
     
     <!-- 主页  -->
-    
-    
-    <!-- 文章页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/intro/index-bg.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(/)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            learn and grow up
-            <!-- 文章页  -->
-            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
-            
-            
-                书山有路勤为径 学海无涯苦作舟
-            
-            <!-- 文章页  -->
             
         </p>
         <!-- 文章页meta -->
@@ -359,43 +346,6 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/08/hibernate4监听器的实现简单解析/" >
-            
-                <span>hibernate4监听器的实现简单解析</span>
-        </a>
-        <div class="abstract-content">
-            这几天旧项目运维时发现曾经写的hibernate监听器很有意思，混合利用了工厂模式和观察者模式。所以特意记录一下
-hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册的方式，而是新增了一个监听器注册类：org.hibernate.event.service.spi.EventListenerRegistry，注册方式为：
-1234567891011121314151617@Componentpublic class HandleEnvetListener &#123;	//注册监听器		@Autowired      private SessionFa...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/08</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "hibernate4">hibernate4</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "设计模式">设计模式</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码解读">源码解读</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/06/hive存储换行符等特殊字符/" >
             
                 <span>hive存储换行符等特殊字符</span>
@@ -425,320 +375,10 @@ hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册�
         </div>
     </article>
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/02/tomcat-jetty-jboss跨域配置/" >
-            
-                <span>tomcat,jetty,jboss跨域配置</span>
-        </a>
-        <div class="abstract-content">
-            目前前后端分离的开发方式都是需要前端应用跨域访问后端服务器。这里记录下平时开发中用到的三种服务器支持跨域的方式。浏览器支持跨域的方式后面再讲。
-先来了解下跨域的主流方式：
-CORS：全称”跨域资源共享”（Cross-origin resource sharing）。
-CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目前几乎所有浏览器都支持CORS，IE则不能低于IE10。
-一：springMVC版本低于4.2的war包部署至jboss、jetty、tomcat在web.xml内加入处理跨域的过滤器（需要先引入jar包）：
-12345678910111213141516171819...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/02</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "jetty">jetty</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "jboss">jboss</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "tomcat">tomcat</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "CORS">CORS</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "sringboot">sringboot</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/07/25/content-type01/" >
-            
-                <span>springMVC获取content-type为form-data类型的参数和值解析</span>
-        </a>
-        <div class="abstract-content">
-            写在前面传统的servlet处理request请求是，会自动帮我们封装get请求、post且Content-Type为application/x-www-form-urlencoded请求参数至request parameter map。但是当Content-Type为其他类型时，需要基于servlet的框架比如struts、spring来帮我们封装，不按的话得我们自己获取请求流来处理。
-之所以会这样，是因为：Content-Type不是application/x-www-form-urlencoded时数据格式不固定，不一定是key=value对的方式，所以服务器无法知道具体的处理方式...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/25</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码解读">源码解读</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "springMVC">springMVC</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "form_data">form_data</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/07/24/mybatis字符串比较/" >
-            
-                <span>mybatis字符串比较</span>
-        </a>
-        <div class="abstract-content">
-            在mybatis的mapping内进行字符串比较应该使用以下方法:
-&lt;if test=&#39;type==&quot;y&quot;&#39;&gt;  
-    and status = 1   
-&lt;/if&gt;
-或者
-&lt;if test=&quot;type == &#39;y&#39;.toString()&quot;&gt;  
-    and status = 1   
-&lt;/if&gt;
-不能使用这种写法&lt;if test=&quot;type == &#39;y&#39;&quot;&gt;，因为tset内是ognl表达式，’Y’在java内被认...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis">mybatis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "字符串比较">字符串比较</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/07/24/ElasticSearch-001/" >
-            
-                <span>ElasticSearch笔记</span>
-        </a>
-        <div class="abstract-content">
-            最近开发的人员搜索功能使用到了ElasticSearch(ES)，所以把自己学到的东西记录下来
-介绍ES是一个分布式可扩展的实时搜索和分析引擎,一个建立在全文搜索引擎 Apache Lucene(TM) 基础上的搜索引擎.当然 ES并不仅仅是 Lucene 那么简单，它不仅包括了全文搜索功能，还可以进行以下工作:
-
-分布式实时文件存储，并将每一个字段都编入索引，使其可以被搜索。
-
-实时分析的分布式搜索引擎。
-
-可以扩展到上百台服务器，处理PB级别的结构化或非结构化数据。
-经过两三天时间的琢磨，大概明白了ES的表面运作流程，ES除了上述特征之外，他提供服务的方式是RESTful web接口...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "ElasticSearch">ElasticSearch</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Oracle">Oracle</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/07/22/mybatis-placeholder/" >
-            
-                <span>mybatis占位符的区别</span>
-        </a>
-        <div class="abstract-content">
-            ​        mybatis占位符分为#{}和${}
-​        #{}是利用jdbc的预编译（PreparedStatement），一个#{}会被解析为一个占位符？。它可以指定变量的类型，比如：#{empCode,jdbcType=VARCHAR}或#{year,jdbcType=DECIMAL}，
-​        ${}是一个纯粹的String替换，把变量的值直接替换在当前位置
-​        比如：    select emp_id from user where code=#{code,jdbcType=VARCHAR}在log内打印出来为sql为：Preparin...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/22</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis">mybatis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "sql注入">sql注入</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/07/13/ORA-01722 invalid number/" >
-            
-                <span>ORA-01722 invalid number</span>
-        </a>
-        <div class="abstract-content">
-             ORA-01722: invalid number最常见的原因就是因为我们在条件筛选时写了文本格式的（varchar2）字段与数字进行对比，Oracle的字段类型隐式转换调用了to_number函数，当字段内有非数字的值时，就会报这个错误。比如下面两个sql:    
-1select * from TM_hrmis_USER U WHERE  U.EMP_CODE=592876
-
-1select * from TM_hrmis_USER U WHERE  U.EMP_CODE=592876 and u.emp_name='592876'
-
-​        首先emp_code这个字段...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/13</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "ORACLE">ORACLE</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/07/12/hello-world/" >
-            
-                <span>Hello World</span>
-        </a>
-        <div class="abstract-content">
-            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick StartCreate a new post1$ hexo new "My New Post"
-
-More info: Writing
-Run server1$ hexo server
-
-Mo...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/12</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
     <!-- paginator  -->
     
 </main>
             <!-- profile -->
-            
-            <div class="profile">
-    <img class="profile-avatar" alt="avatar" src= /intro/head2.jpg >
-    <div class="profile-name">styytNOTstop</div>
-    
-    <div class="profile-signature">
-        Knowledge has no limit.
-    </div>
-    
-    
-    <div class="profile-social">
-        
-    
-        
-            
-                <a href="mailto:543441649@qq.com" class="iconfont-archer email" title=email ></a>
-            
-        
-    
-        
-            
-                <a href="//github.com/styyt" class="iconfont-archer github" target="_blank" title=github></a>
-            
-        
-    
-        
-            
-                <span class="iconfont-archer wechat" title=wechat>
-                  
-                  <img class="profile-qr" src="/intro/wechat.jpg" />
-                </span>
-            
-        
-    
-        
-    
-
-    </div>
-    
-    
-        <div class="friends">
-            <div>FRIENDS</div>
-            
-                
-                    <span>
-                        <a href= //www.liwei.red target="_black">liwei</a>
-                    </span>
-                
-            
-        </div>
-    
-    
-        <div class="about-me">
-            <a href = "/about" >ABOUT ME</a>
-        </div>
-    
-</div>
             
         </div>
         <footer class="footer footer-unloaded">
