@@ -346,6 +346,43 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/27/hive对表的增删查改/" >
+            
+                <span>hive对表的增删改</span>
+        </a>
+        <div class="abstract-content">
+            Hive 是针对数据仓库应用设计的，而数据仓库的内容是读多写少的。因此，Hive大部分情况下是不支持对数据的改写和添加，日常开发中如果需要真的对数据进行增删改，都可以通过模仿以下方式简单实现
+
+增
+
+1、文件方式增加：
+12#OVERWRITE 表示覆盖，不写则是appendLOAD DATA INPATH '/user/upload/3.csv' [OVERWRITE] INTO TABLE ods_sap_hr.bic_a100 PARTITION (inc_month=201907);
+
+2、insert into 方式
+12#OVERWRITE 表示覆盖，不写则是appendin...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/27</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "hive">hive</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/15/hive从csv导入数据/" >
             
                 <span>hive从csv导入数据</span>
@@ -614,9 +651,48 @@ a...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 11
+        Total : 14
         </div>
         <!-- search  -->
         
@@ -629,6 +705,21 @@ a...
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hibernate持久化自动更新的坑/" >hibernate自动更新的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/28</span><a class="archive-post-title" href= "/2019/08/28/springBoot自定义Controller的路径/" >springBoot自定义Controller的路径</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/hive对表的增删查改/" >hive对表的增删改</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -699,25 +790,17 @@ a...
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
+        <span class="sidebar-tag-name" data-tags="hibernate"><span class="iconfont-archer">&#xe606;</span>hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
+    
         <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
     
         <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
     
         <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
     
-        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
-    
-        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
-    
         <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
-    
-        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
-    
-        <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
-    
-        <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
-    
-        <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
     
         <span class="sidebar-tag-name" data-tags="jetty"><span class="iconfont-archer">&#xe606;</span>jetty</span>
     
@@ -731,15 +814,29 @@ a...
     
         <span class="sidebar-tag-name" data-tags="sringboot"><span class="iconfont-archer">&#xe606;</span>sringboot</span>
     
-        <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
+        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
     
-        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
+    
+        <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
+    
+        <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
+    
+        <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
+    
+        <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
     
         <span class="sidebar-tag-name" data-tags="hibernate4"><span class="iconfont-archer">&#xe606;</span>hibernate4</span>
     
         <span class="sidebar-tag-name" data-tags="设计模式"><span class="iconfont-archer">&#xe606;</span>设计模式</span>
     
         <span class="sidebar-tag-name" data-tags="源码解读"><span class="iconfont-archer">&#xe606;</span>源码解读</span>
+    
+        <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
+    
+        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
     
         <span class="sidebar-tag-name" data-tags="springMVC"><span class="iconfont-archer">&#xe606;</span>springMVC</span>
     
@@ -778,17 +875,21 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
+        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
+    
         <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
     
         <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
     
-        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
-    
         <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
     
-        <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
-    
         <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
+    
+        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
+    
+        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
+    
+        <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
     
         <span class="sidebar-category-name" data-categories="threadLocal"><span class="iconfont-archer">&#xe60a;</span>threadLocal</span>
     
