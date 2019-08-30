@@ -402,7 +402,7 @@ height:50vh;
             <main class="main post-page">
     <article class="article-entry">
         <p>今天手工重新搭建springboot的时候发现一个以前遗漏的知识点：</p>
-<p><strong>Spring Boot 官方默认扫描的包需要和启动类同级</strong>，这里就体现了springboot约定大于配置的做法，如果我们需要自定义springboot的扫描路径，需要在启动类上加入如下注解：</p>
+<p><strong>Spring Boot 官方默认扫描的包需要和启动类同级</strong>，这里就侧面体现了springboot约定大于配置的做法，如果我们需要自定义springboot的扫描路径，需要在启动类上加入如下注解：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ComponentScan</span>(basePackages = &#123;<span class="string">"项目路径"</span>&#125;)</span><br></pre></td></tr></table></figure>
 
 <p>和spring很像哦~</p>
