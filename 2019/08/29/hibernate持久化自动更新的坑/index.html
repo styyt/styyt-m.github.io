@@ -403,7 +403,7 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>昨天一个生产的系统出现了一个神奇的问题：</p>
+        <p>昨天自己负责的一个系统的生产环境出现了一个神奇的BUG：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">2019</span>-<span class="number">08</span>-<span class="number">29</span> <span class="number">19</span>:<span class="number">54</span>:<span class="number">27.819</span>] [ERROR] [org.hibernate.engine.jdbc.batch.internal.BatchingBatch.performExecution(BatchingBatch.java:<span class="number">137</span>)] [qtp1165897474-<span class="number">48619</span>] : HHH000315: Exception executing batch [Batch update returned unexpected row count from update [<span class="number">1</span>]; actual row count: <span class="number">2</span>; expected: <span class="number">1</span>]</span><br><span class="line">[<span class="number">2019</span>-<span class="number">08</span>-<span class="number">29</span> <span class="number">19</span>:<span class="number">54</span>:<span class="number">27.824</span>] [ERROR] [com.sf.hos.itv.biz.impl.CandidatePushBiz.SendEmails(CandidatePushBiz.java:<span class="number">569</span>)] [qtp1165897474-<span class="number">48619</span>] : com.sf.hos.itv.biz.impl.CandidatePushBiz.SendEmails error</span><br><span class="line">org.hibernate.jdbc.BatchedTooManyRowsAffectedException: Batch update returned unexpected row count from update [<span class="number">1</span>]; actual row count: <span class="number">2</span>; expected: <span class="number">1</span></span><br><span class="line">	at org.hibernate.jdbc.Expectations$BasicExpectation.checkBatched(Expectations.java:<span class="number">89</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at org.hibernate.jdbc.Expectations$BasicExpectation.verifyOutcome(Expectations.java:<span class="number">73</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at org.hibernate.engine.jdbc.batch.internal.BatchingBatch.checkRowCounts(BatchingBatch.java:<span class="number">151</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at org.hibernate.engine.jdbc.batch.internal.BatchingBatch.performExecution(BatchingBatch.java:<span class="number">128</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at org.hibernate.engine.jdbc.batch.internal.BatchingBatch.doExecuteBatch(BatchingBatch.java:<span class="number">111</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at org.hibernate.engine.jdbc.batch.internal.AbstractBatchImpl.execute(AbstractBatchImpl.java:<span class="number">163</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.executeBatch(JdbcCoordinatorImpl.java:<span class="number">226</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:<span class="number">482</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:<span class="number">349</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:<span class="number">350</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at org.hibernate.event.internal.DefaultAutoFlushEventListener.onAutoFlush(DefaultAutoFlushEventListener.java:<span class="number">67</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at org.hibernate.internal.SessionImpl.autoFlushIfRequired(SessionImpl.java:<span class="number">1191</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at org.hibernate.internal.SessionImpl.list(SessionImpl.java:<span class="number">1675</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at org.hibernate.internal.CriteriaImpl.list(CriteriaImpl.java:<span class="number">380</span>) ~[hibernate-core-<span class="number">4.3</span>.7.Final.jar:<span class="number">4.3</span>.7.Final]</span><br><span class="line">	at com.sf.novatar.base.dao.CommonDao.findFirstByAny(CommonDao.java:<span class="number">812</span>) ~[sf-novatar-frame-<span class="number">1.14</span>.20171110.jar:<span class="number">1.14</span>]</span><br><span class="line">	at com.sf.novatar.base.dao.BaseBeanDao.findFirstBy(BaseBeanDao.java:<span class="number">181</span>) ~[sf-novatar-frame-<span class="number">1.14</span>.20171110.jar:<span class="number">1.14</span>]</span><br><span class="line">	at com.sf.hos.core.dao.impl.HosSapPersonDao.getSapPersonByEmpNum(HosSapPersonDao.java:<span class="number">60</span>) ~[sf-hos-core-<span class="number">1.0</span>.20190719.jar:<span class="number">1.0</span>]</span><br><span class="line">	.............</span><br></pre></td></tr></table></figure>
 
 <p>第一次看到日志惊了。第一：以前为什么没出现这个问题，偏偏这条数据出现了问题。第二：这明明是个select语句getSapPersonByEmpNum，为啥会报Batch update ERROR。</p>
@@ -420,8 +420,8 @@ height:50vh;
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * detect in-memory changes, determine if the changes are to tables</span></span><br><span class="line"><span class="comment">	 * named in the query and, if so, complete execution the flush</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">autoFlushIfRequired</span><span class="params">(Set querySpaces)</span> <span class="keyword">throws</span> HibernateException </span>&#123;</span><br><span class="line">		errorIfClosed();</span><br><span class="line">		<span class="keyword">if</span> ( ! isTransactionInProgress() ) &#123;</span><br><span class="line">			<span class="comment">// do not auto-flush while outside a transaction</span></span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		AutoFlushEvent event = <span class="keyword">new</span> AutoFlushEvent( querySpaces, <span class="keyword">this</span> );</span><br><span class="line">		<span class="keyword">for</span> ( AutoFlushEventListener listener : listeners( EventType.AUTO_FLUSH ) ) &#123;</span><br><span class="line">			listener.onAutoFlush( event );</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> event.isFlushRequired();</span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">//大致意思和流程为：获取当前查询涉及到的querySpaces也就是tables，然后去和session缓存内的需要updte的querySpaces进行比较。如果存在则刷新flush至数据库。</span></span><br></pre></td></tr></table></figure>
 
 <p>原来如此，所以才会导致select的时候出发update的操作。</p>
-<p>所以我们还是需要注意：</p>
-<p>谨慎调用hibernate加载的实体对象的set方法！。如果不需要hibernate帮我们自动更新持久化对象，一定要：getCurrentSession().evict(entity)，通过调用evict(entity)的方法，把缓存持久化对象变成托管状态。变成托管状态后，Hibernate就不会再去自动更新该实体。</p>
+<p>所以我们还是注意：</p>
+<p><strong>需要谨慎调用hibernate加载的实体对象的set方法！</strong>。如果不需要hibernate帮我们自动更新持久化对象，一定要：getCurrentSession().evict(entity)，通过调用evict(entity)的方法，把缓存持久化对象变成托管状态。变成托管状态后，Hibernate就不会再去自动更新该实体。</p>
 
     </article>
     <!-- license  -->
@@ -430,7 +430,7 @@ height:50vh;
             <p>原文作者：<a href="https://styyt.github.io">styytNOTstop</a>
             <p>原文链接：<a href="https://styyt.github.io/2019/08/29/hibernate持久化自动更新的坑/">https://styyt.github.io/2019/08/29/hibernate持久化自动更新的坑/</a>
             <p>发表日期：<a href="https://styyt.github.io/2019/08/29/hibernate持久化自动更新的坑/">August 29th 2019, 9:29:58 pm</a>
-            <p>更新日期：<a href="https://styyt.github.io/2019/08/29/hibernate持久化自动更新的坑/">August 30th 2019, 7:07:10 pm</a>
+            <p>更新日期：<a href="https://styyt.github.io/2019/08/29/hibernate持久化自动更新的坑/">August 30th 2019, 9:06:57 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -703,9 +703,40 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 14
+        Total : 17
         </div>
         <!-- search  -->
         
@@ -766,22 +797,41 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">07/24</span><a class="archive-post-title" href= "/2019/07/24/mybatis字符串比较/" >mybatis字符串比较</a>
+            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/ElasticSearch-001/" >ElasticSearch笔记</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">07/24</span><a class="archive-post-title" href= "/2019/07/24/ElasticSearch-001/" >ElasticSearch笔记</a>
+            <span class="archive-post-date">06/24</span><a class="archive-post-title" href= "/2019/06/24/mybatis字符串比较/" >mybatis字符串比较</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">07/22</span><a class="archive-post-title" href= "/2019/07/22/mybatis-placeholder/" >mybatis占位符的区别</a>
+            <span class="archive-post-date">05/22</span><a class="archive-post-title" href= "/2019/05/22/mybatis-placeholder/" >mybatis占位符的区别</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">07/13</span><a class="archive-post-title" href= "/2019/07/13/ORA-01722 invalid number/" >ORA-01722 invalid number</a>
+            <span class="archive-post-date">05/13</span><a class="archive-post-title" href= "/2019/05/13/ORA-01722 invalid number/" >ORA-01722 invalid number</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/15</span><a class="archive-post-title" href= "/2017/06/15/ja、java、mysql字符串那长度判断的不同/" >js、java、mysql字符串那长度判断的不同</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/28</span><a class="archive-post-title" href= "/2017/01/28/sql排序-分页的小问题/" >sql排序+分页的小问题</a>
         </li>
     
     
@@ -795,6 +845,11 @@ top:50vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">09/26</span><a class="archive-post-title" href= "/2016/09/26/ajax的traditional作用/" >ajax的traditional作用</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">09/09</span><a class="archive-post-title" href= "/2016/09/09/自己写一个mysql动态查询树形结构的存储过程/" >自己写一个mysql动态查询树形结构的存储过程</a>
         </li>
     
@@ -803,17 +858,39 @@ top:50vh;
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="hibernate"><span class="iconfont-archer">&#xe606;</span>hibernate</span>
-    
-        <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
-    
-        <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
+        <span class="sidebar-tag-name" data-tags="ajax"><span class="iconfont-archer">&#xe606;</span>ajax</span>
     
         <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
     
         <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
     
+        <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
+    
+        <span class="sidebar-tag-name" data-tags="hibernate"><span class="iconfont-archer">&#xe606;</span>hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
+    
+        <span class="sidebar-tag-name" data-tags="js"><span class="iconfont-archer">&#xe606;</span>js</span>
+    
+        <span class="sidebar-tag-name" data-tags="java"><span class="iconfont-archer">&#xe606;</span>java</span>
+    
+        <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
+    
         <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
+    
+        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
+    
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
+    
+        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
+    
+        <span class="sidebar-tag-name" data-tags="oracle"><span class="iconfont-archer">&#xe606;</span>oracle</span>
+    
+        <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
+    
+        <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
     
         <span class="sidebar-tag-name" data-tags="jetty"><span class="iconfont-archer">&#xe606;</span>jetty</span>
     
@@ -827,29 +904,15 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="sringboot"><span class="iconfont-archer">&#xe606;</span>sringboot</span>
     
-        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
+        <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
     
-        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
-    
-        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
-    
-        <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
-    
-        <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
-    
-        <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
-    
-        <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
+        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
     
         <span class="sidebar-tag-name" data-tags="hibernate4"><span class="iconfont-archer">&#xe606;</span>hibernate4</span>
     
         <span class="sidebar-tag-name" data-tags="设计模式"><span class="iconfont-archer">&#xe606;</span>设计模式</span>
     
         <span class="sidebar-tag-name" data-tags="源码解读"><span class="iconfont-archer">&#xe606;</span>源码解读</span>
-    
-        <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
-    
-        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
     
         <span class="sidebar-tag-name" data-tags="springMVC"><span class="iconfont-archer">&#xe606;</span>springMVC</span>
     
@@ -888,21 +951,23 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
-    
-        <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
+        <span class="sidebar-category-name" data-categories="ajax"><span class="iconfont-archer">&#xe60a;</span>ajax</span>
     
         <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
     
-        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
+        <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
     
-        <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
+        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
+    
+        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
     
         <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
     
         <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
     
         <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
+    
+        <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
     
         <span class="sidebar-category-name" data-categories="threadLocal"><span class="iconfont-archer">&#xe60a;</span>threadLocal</span>
     
