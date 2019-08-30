@@ -359,6 +359,113 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/07/24/ElasticSearch-001/" >
+            
+                <span>ElasticSearch笔记</span>
+        </a>
+        <div class="abstract-content">
+            最近开发的人员搜索功能使用到了ElasticSearch(ES)，所以把自己学到的东西记录下来
+介绍ES是一个分布式可扩展的实时搜索和分析引擎,一个建立在全文搜索引擎 Apache Lucene(TM) 基础上的搜索引擎.当然 ES并不仅仅是 Lucene 那么简单，它不仅包括了全文搜索功能，还可以进行以下工作:
+
+分布式实时文件存储，并将每一个字段都编入索引，使其可以被搜索。
+
+实时分析的分布式搜索引擎。
+
+可以扩展到上百台服务器，处理PB级别的结构化或非结构化数据。
+经过两三天时间的琢磨，大概明白了ES的表面运作流程，ES除了上述特征之外，他提供服务的方式是RESTful web接口...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/24</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "ElasticSearch">ElasticSearch</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Oracle">Oracle</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/07/22/mybatis-placeholder/" >
+            
+                <span>mybatis占位符的区别</span>
+        </a>
+        <div class="abstract-content">
+            ​        mybatis占位符分为#{}和${}
+​        #{}是利用jdbc的预编译（PreparedStatement），一个#{}会被解析为一个占位符？。它可以指定变量的类型，比如：#{empCode,jdbcType=VARCHAR}或#{year,jdbcType=DECIMAL}，
+​        ${}是一个纯粹的String替换，把变量的值直接替换在当前位置
+​        比如：    select emp_id from user where code=#{code,jdbcType=VARCHAR}在log内打印出来为sql为：Preparin...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/22</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis">mybatis</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "sql注入">sql注入</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/07/13/ORA-01722 invalid number/" >
+            
+                <span>ORA-01722 invalid number</span>
+        </a>
+        <div class="abstract-content">
+             ORA-01722: invalid number最常见的原因就是因为我们在条件筛选时写了文本格式的（varchar2）字段与数字进行对比，Oracle的字段类型隐式转换调用了to_number函数，当字段内有非数字的值时，就会报这个错误。比如下面两个sql:    
+1select * from TM_hrmis_USER U WHERE  U.EMP_CODE=592876
+
+1select * from TM_hrmis_USER U WHERE  U.EMP_CODE=592876 and u.emp_name='592876'
+
+​        首先emp_code这个字段...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/13</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "ORACLE">ORACLE</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2016/09/09/自己写一个mysql动态查询树形结构的存储过程/" >
             
                 <span>自己写一个mysql动态查询树形结构的存储过程</span>
@@ -646,9 +753,48 @@ rt_value：返回值，...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 11
+        Total : 14
         </div>
         <!-- search  -->
         
@@ -661,6 +807,21 @@ rt_value：返回值，...
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hibernate持久化自动更新的坑/" >hibernate自动更新的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/28</span><a class="archive-post-title" href= "/2019/08/28/springBoot自定义Controller的路径/" >springBoot自定义Controller的路径</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/hive对表的增删查改/" >hive对表的增删改</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -731,25 +892,17 @@ rt_value：返回值，...
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
+        <span class="sidebar-tag-name" data-tags="hibernate"><span class="iconfont-archer">&#xe606;</span>hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
+    
         <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
     
         <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
     
         <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
     
-        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
-    
-        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
-    
         <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
-    
-        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
-    
-        <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
-    
-        <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
-    
-        <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
     
         <span class="sidebar-tag-name" data-tags="jetty"><span class="iconfont-archer">&#xe606;</span>jetty</span>
     
@@ -763,15 +916,29 @@ rt_value：返回值，...
     
         <span class="sidebar-tag-name" data-tags="sringboot"><span class="iconfont-archer">&#xe606;</span>sringboot</span>
     
-        <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
+        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
     
-        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
+    
+        <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
+    
+        <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
+    
+        <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
+    
+        <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
     
         <span class="sidebar-tag-name" data-tags="hibernate4"><span class="iconfont-archer">&#xe606;</span>hibernate4</span>
     
         <span class="sidebar-tag-name" data-tags="设计模式"><span class="iconfont-archer">&#xe606;</span>设计模式</span>
     
         <span class="sidebar-tag-name" data-tags="源码解读"><span class="iconfont-archer">&#xe606;</span>源码解读</span>
+    
+        <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
+    
+        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
     
         <span class="sidebar-tag-name" data-tags="springMVC"><span class="iconfont-archer">&#xe606;</span>springMVC</span>
     
@@ -810,17 +977,21 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
+        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
+    
         <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
     
         <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
     
-        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
-    
         <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
     
-        <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
-    
         <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
+    
+        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
+    
+        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
+    
+        <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
     
         <span class="sidebar-category-name" data-categories="threadLocal"><span class="iconfont-archer">&#xe60a;</span>threadLocal</span>
     
