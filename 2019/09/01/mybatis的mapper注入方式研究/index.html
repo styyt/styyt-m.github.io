@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="styytNOTstop">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="styytNOTstop">
+    
+    <meta name="keywords" content="learn,grow up">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>mybatis的spring-mapper注入方式研究 · learn and grow up</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >learn and grow up</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">mybatis的spring-mapper注入方式研究</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>learn and grow up</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            mybatis的spring-mapper注入方式研究
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis">mybatis</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">1.9k</span>阅读时长: <span class="post-count reading-time">9 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/09/01</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>众所周知，Spring注入bean时都是将可实例化对象注入。但是我们在写myabtis时却从来没有写过它的mapper实现类，紧紧是写了一个接口就可以在service层使用这个bean，这是为什么呢？我们可以先看下spring最终给我们注入到mapperBean的是什么类呢？</p>
+<p><img src="/intro/0019.png" alt="mybatis的mapper"></p>
+<p><img src="/intro/0020.png" alt="普通的bean"></p>
+<p>果然，它注入的是mybatis代理类：MapperProxy，那么这个实例是什么时候注入进入bean工厂的呢？我们继续往下看：</p>
+<p>找问题从源头找，首先mybatis是怎么知道哪些mapper并且知道去哪里扫描呢？没错就是通过以下三种方式：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一种注解方式，如</span></span><br><span class="line"><span class="meta">@MapperScan</span>(<span class="string">"com.demo.*.mapper"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//第二种方式，传统的xml方式，如：</span></span><br><span class="line">&lt;bean <span class="class"><span class="keyword">class</span></span>=<span class="string">"org.mybatis.spring.mapper.MapperScannerConfigurer"</span>&gt;</span><br><span class="line">    &lt;property name=<span class="string">"basePackage"</span> value=<span class="string">"**.mapper"</span> /&gt;</span><br><span class="line">    &lt;property name=<span class="string">"sqlSessionFactoryBeanName"</span> value=<span class="string">"sqlSessionFactory"</span> /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+
+<p>我们先从传统的方式说起</p>
+<p>MapperScannerConfigurer就是入口，它是怎么实现的呢？我们可以看他的内部结构：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MapperScannerConfigurer</span> <span class="keyword">implements</span> <span class="title">BeanDefinitionRegistryPostProcessor</span>, <span class="title">InitializingBean</span>, <span class="title">ApplicationContextAware</span>, <span class="title">BeanNameAware</span> </span>&#123;</span><br><span class="line">......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/intro/0021.png" alt="MapperScannerConfigurer"></p>
+<p>可以看到主要实现的全是支持spring关于自定义设置bean各项值的相关接口类。主要看这个BeanDefinitionRegistryPostProcessor接口，这个接口作用是让我们可以自己制定bean并放入bean工厂，原来就是因为它，我们跟踪项目启动调用栈看看：</p>
+<p>简略步骤为：ContextLoaderListener初始化—&gt;XmlWebApplicationContext刷新(初始化)servletContext：</p>
+<p>刷新（初始化）beanfactory—-&gt;获取BeanDefinitionRegistryPostProcessor的实现bean—-&gt;调用接口实现类的方法：</p>
+<p>org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory, List<beanfactorypostprocessor>)——&gt;org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(Collection&lt;? extends BeanDefinitionRegistryPostProcessor&gt;, BeanDefinitionRegistry)</beanfactorypostprocessor></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">invokeBeanFactoryPostProcessors</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">			ConfigurableListableBeanFactory beanFactory, List&lt;BeanFactoryPostProcessor&gt; beanFactoryPostProcessors)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Invoke BeanDefinitionRegistryPostProcessors first, if any.</span></span><br><span class="line">		Set&lt;String&gt; processedBeans = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (beanFactory <span class="keyword">instanceof</span> BeanDefinitionRegistry) &#123;</span><br><span class="line">			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;</span><br><span class="line">			List&lt;BeanFactoryPostProcessor&gt; regularPostProcessors = <span class="keyword">new</span> LinkedList&lt;BeanFactoryPostProcessor&gt;();</span><br><span class="line">			List&lt;BeanDefinitionRegistryPostProcessor&gt; registryProcessors = <span class="keyword">new</span> LinkedList&lt;BeanDefinitionRegistryPostProcessor&gt;();</span><br><span class="line"></span><br><span class="line">			<span class="keyword">for</span> (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) &#123;</span><br><span class="line">				<span class="keyword">if</span> (postProcessor <span class="keyword">instanceof</span> BeanDefinitionRegistryPostProcessor) &#123;</span><br><span class="line">					BeanDefinitionRegistryPostProcessor registryProcessor =</span><br><span class="line">							(BeanDefinitionRegistryPostProcessor) postProcessor;</span><br><span class="line">					registryProcessor.postProcessBeanDefinitionRegistry(registry);</span><br><span class="line">					registryProcessors.add(registryProcessor);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span> &#123;</span><br><span class="line">					regularPostProcessors.add(postProcessor);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// Do not initialize FactoryBeans here: We need to leave all regular beans</span></span><br><span class="line">			<span class="comment">// uninitialized to let the bean factory post-processors apply to them!</span></span><br><span class="line">			<span class="comment">// Separate between BeanDefinitionRegistryPostProcessors that implement</span></span><br><span class="line">			<span class="comment">// PriorityOrdered, Ordered, and the rest.</span></span><br><span class="line">			List&lt;BeanDefinitionRegistryPostProcessor&gt; currentRegistryProcessors = <span class="keyword">new</span> ArrayList&lt;BeanDefinitionRegistryPostProcessor&gt;();</span><br><span class="line"></span><br><span class="line">			<span class="comment">// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.</span></span><br><span class="line">			String[] postProcessorNames =</span><br><span class="line">					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, <span class="keyword">true</span>, <span class="keyword">false</span>);</span><br><span class="line">			<span class="keyword">for</span> (String ppName : postProcessorNames) &#123;</span><br><span class="line">				<span class="keyword">if</span> (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) &#123;</span><br><span class="line">					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));</span><br><span class="line">					processedBeans.add(ppName);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			sortPostProcessors(currentRegistryProcessors, beanFactory);</span><br><span class="line">			registryProcessors.addAll(currentRegistryProcessors);</span><br><span class="line">			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);</span><br><span class="line">			currentRegistryProcessors.clear();</span><br><span class="line"></span><br><span class="line">			..............................</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">---------------------------------------------------------------------</span><br><span class="line"><span class="comment">//调用接口实现类的postProcessBeanDefinitionRegistry</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">invokeBeanDefinitionRegistryPostProcessors</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">			Collection&lt;? extends BeanDefinitionRegistryPostProcessor&gt; postProcessors, BeanDefinitionRegistry registry)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (BeanDefinitionRegistryPostProcessor postProcessor : postProcessors) &#123;</span><br><span class="line">			postProcessor.postProcessBeanDefinitionRegistry(registry);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>到了正题：spring帮我们调用了自定义的bean注入方法：</p>
+<p>org.mybatis.spring.mapper.MapperScannerConfigurer.postProcessBeanDefinitionRegistry(BeanDefinitionRegistry)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postProcessBeanDefinitionRegistry</span><span class="params">(BeanDefinitionRegistry registry)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.processPropertyPlaceHolders) &#123;</span><br><span class="line">      processPropertyPlaceHolders();</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//扫描我们配置的pkg内的接口的方法类ClassPathMapperScanner</span></span><br><span class="line">    ClassPathMapperScanner scanner = <span class="keyword">new</span> ClassPathMapperScanner(registry);</span><br><span class="line">    <span class="comment">//设置我们配置的各种属性：sqlSessionFactory，applicationContext等等</span></span><br><span class="line">    scanner.setAddToConfig(<span class="keyword">this</span>.addToConfig);</span><br><span class="line">    scanner.setAnnotationClass(<span class="keyword">this</span>.annotationClass);</span><br><span class="line">    scanner.setMarkerInterface(<span class="keyword">this</span>.markerInterface);</span><br><span class="line">    scanner.setSqlSessionFactory(<span class="keyword">this</span>.sqlSessionFactory);</span><br><span class="line">    scanner.setSqlSessionTemplate(<span class="keyword">this</span>.sqlSessionTemplate);</span><br><span class="line">    scanner.setSqlSessionFactoryBeanName(<span class="keyword">this</span>.sqlSessionFactoryBeanName);</span><br><span class="line">    scanner.setSqlSessionTemplateBeanName(<span class="keyword">this</span>.sqlSessionTemplateBeanName);</span><br><span class="line">    scanner.setResourceLoader(<span class="keyword">this</span>.applicationContext);</span><br><span class="line">    scanner.setBeanNameGenerator(<span class="keyword">this</span>.nameGenerator);</span><br><span class="line">     <span class="comment">//根据我们的配置设置各种过滤器</span></span><br><span class="line">    scanner.registerFilters();</span><br><span class="line">     <span class="comment">//重点 开始扫描basePackage下的接口类  调用spring的扫描方法</span></span><br><span class="line">    scanner.scan(StringUtils.tokenizeToStringArray(<span class="keyword">this</span>.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//org.mybatis.spring.mapper.ClassPathMapperScanner.registerFilters()</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerFilters</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//默认接受所有接口类</span></span><br><span class="line">    <span class="keyword">boolean</span> acceptAllInterfaces = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// if specified, use the given annotation and / or marker interface</span></span><br><span class="line">    <span class="comment">//只接受制定的annotation接口类</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.annotationClass != <span class="keyword">null</span>) &#123;</span><br><span class="line">      addIncludeFilter(<span class="keyword">new</span> AnnotationTypeFilter(<span class="keyword">this</span>.annotationClass));</span><br><span class="line">      acceptAllInterfaces = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// override AssignableTypeFilter to ignore matches on the actual marker interface</span></span><br><span class="line">    <span class="comment">//只接受指定类</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.markerInterface != <span class="keyword">null</span>) &#123;</span><br><span class="line">      addIncludeFilter(<span class="keyword">new</span> AssignableTypeFilter(<span class="keyword">this</span>.markerInterface) &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">          <span class="comment">//重写判断方法</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">matchClassName</span><span class="params">(String className)</span> </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">      acceptAllInterfaces = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (acceptAllInterfaces) &#123;</span><br><span class="line">      <span class="comment">// default include filter that accepts all classes</span></span><br><span class="line">      addIncludeFilter(<span class="keyword">new</span> TypeFilter() &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">match</span><span class="params">(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// exclude package-info.java</span></span><br><span class="line">    addExcludeFilter(<span class="keyword">new</span> TypeFilter() &#123;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">match</span><span class="params">(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        String className = metadataReader.getClassMetadata().getClassName();</span><br><span class="line">        <span class="keyword">return</span> className.endsWith(<span class="string">"package-info"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//org.springframework.context.annotation.ClassPathBeanDefinitionScanner.scan(String...)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">scan</span><span class="params">(String... basePackages)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> beanCountAtScanStart = <span class="keyword">this</span>.registry.getBeanDefinitionCount();</span><br><span class="line"></span><br><span class="line">    	</span><br><span class="line">		doScan(basePackages);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Register annotation config processors, if necessary.</span></span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.includeAnnotationConfig) &#123;</span><br><span class="line">			AnnotationConfigUtils.registerAnnotationConfigProcessors(<span class="keyword">this</span>.registry);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> (<span class="keyword">this</span>.registry.getBeanDefinitionCount() - beanCountAtScanStart);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>org.mybatis.spring.mapper.ClassPathMapperScanner.doScan(String…)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//mybatis重写了spring的扫描方法，就是这里将spring默认的jdk代理或者cg代理改写为自己的mapperproxy</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Set&lt;BeanDefinitionHolder&gt; <span class="title">doScan</span><span class="params">(String... basePackages)</span> </span>&#123;、</span><br><span class="line">      <span class="comment">//先调用父类的扫描，配合前面的Filter获取包下面所有的BeanDefinitionHolder</span></span><br><span class="line">    Set&lt;BeanDefinitionHolder&gt; beanDefinitions = <span class="keyword">super</span>.doScan(basePackages);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (beanDefinitions.isEmpty()) &#123;</span><br><span class="line">      logger.warn(<span class="string">"No MyBatis mapper was found in '"</span> + Arrays.toString(basePackages) + <span class="string">"' package. Please check your configuration."</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">for</span> (BeanDefinitionHolder holder : beanDefinitions) &#123;</span><br><span class="line">          <span class="comment">//循环完善BeanDefinitionHolder的各类信息</span></span><br><span class="line">        GenericBeanDefinition definition = (GenericBeanDefinition) holder.getBeanDefinition();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">          logger.debug(<span class="string">"Creating MapperFactoryBean with name '"</span> + holder.getBeanName() </span><br><span class="line">              + <span class="string">"' and '"</span> + definition.getBeanClassName() + <span class="string">"' mapperInterface"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// the mapper interface is the original class of the bean</span></span><br><span class="line">        <span class="comment">// but, the actual class of the bean is MapperFactoryBean</span></span><br><span class="line">         <span class="comment">//补充信息：mapperInterface=getBeanClassName，也就是mapper的接口类名</span></span><br><span class="line">        definition.getPropertyValues().add(<span class="string">"mapperInterface"</span>, definition.getBeanClassName());</span><br><span class="line">           <span class="comment">//重点，英文解释很清楚了，MapperFactoryBean作为实际bean的提供方，</span></span><br><span class="line">          <span class="comment">//MapperFactoryBean实现了FactoryBean</span></span><br><span class="line">        definition.setBeanClass(MapperFactoryBean作为实际bean的提供方，.class);</span><br><span class="line"></span><br><span class="line">        definition.getPropertyValues().add(<span class="string">"addToConfig"</span>, <span class="keyword">this</span>.addToConfig);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span> explicitFactoryUsed = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.hasText(<span class="keyword">this</span>.sqlSessionFactoryBeanName)) &#123;</span><br><span class="line">          definition.getPropertyValues().add(<span class="string">"sqlSessionFactory"</span>, <span class="keyword">new</span> RuntimeBeanReference(<span class="keyword">this</span>.sqlSessionFactoryBeanName));</span><br><span class="line">          explicitFactoryUsed = <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">this</span>.sqlSessionFactory != <span class="keyword">null</span>) &#123;</span><br><span class="line">          definition.getPropertyValues().add(<span class="string">"sqlSessionFactory"</span>, <span class="keyword">this</span>.sqlSessionFactory);</span><br><span class="line">          explicitFactoryUsed = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.hasText(<span class="keyword">this</span>.sqlSessionTemplateBeanName)) &#123;</span><br><span class="line">          <span class="keyword">if</span> (explicitFactoryUsed) &#123;</span><br><span class="line">            logger.warn(<span class="string">"Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored."</span>);</span><br><span class="line">          &#125;</span><br><span class="line">          definition.getPropertyValues().add(<span class="string">"sqlSessionTemplate"</span>, <span class="keyword">new</span> RuntimeBeanReference(<span class="keyword">this</span>.sqlSessionTemplateBeanName));</span><br><span class="line">          explicitFactoryUsed = <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">this</span>.sqlSessionTemplate != <span class="keyword">null</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (explicitFactoryUsed) &#123;</span><br><span class="line">            logger.warn(<span class="string">"Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored."</span>);</span><br><span class="line">          &#125;</span><br><span class="line">          definition.getPropertyValues().add(<span class="string">"sqlSessionTemplate"</span>, <span class="keyword">this</span>.sqlSessionTemplate);</span><br><span class="line">          explicitFactoryUsed = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!explicitFactoryUsed) &#123;</span><br><span class="line">          <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">            logger.debug(<span class="string">"Enabling autowire by type for MapperFactoryBean with name '"</span> + holder.getBeanName() + <span class="string">"'."</span>);</span><br><span class="line">          &#125;</span><br><span class="line">          definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> beanDefinitions;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>FactoryBean最大作用就是：可以让我们自定义Bean的创建过程，创建过程就是调用接口的实现类：getObject，如下图：</p>
+<p><img src="/intro/0023.png" alt="FactoryBean"></p>
+<p>看到这里就明了了。先把MapperFactoryBean源码贴出来</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//org.mybatis.spring.mapper.MapperFactoryBean&lt;T&gt;</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MapperFactoryBean</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">SqlSessionDaoSupport</span> <span class="keyword">implements</span> <span class="title">FactoryBean</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> Class&lt;T&gt; mapperInterface;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">boolean</span> addToConfig = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Sets the mapper interface of the MyBatis mapper</span></span><br><span class="line"><span class="comment">   *</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> mapperInterface class of the interface</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMapperInterface</span><span class="params">(Class&lt;T&gt; mapperInterface)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.mapperInterface = mapperInterface;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * If addToConfig is false the mapper will not be added to MyBatis. This means</span></span><br><span class="line"><span class="comment">   * it must have been included in mybatis-config.xml.</span></span><br><span class="line"><span class="comment">   * &lt;p&gt;</span></span><br><span class="line"><span class="comment">   * If it is true, the mapper will be added to MyBatis in the case it is not already</span></span><br><span class="line"><span class="comment">   * registered.</span></span><br><span class="line"><span class="comment">   * &lt;p&gt;</span></span><br><span class="line"><span class="comment">   * By default addToCofig is true.</span></span><br><span class="line"><span class="comment">   *</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> addToConfig</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAddToConfig</span><span class="params">(<span class="keyword">boolean</span> addToConfig)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.addToConfig = addToConfig;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * &#123;<span class="doctag">@inheritDoc</span>&#125;</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">checkDaoConfig</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.checkDaoConfig();</span><br><span class="line"></span><br><span class="line">    notNull(<span class="keyword">this</span>.mapperInterface, <span class="string">"Property 'mapperInterface' is required"</span>);</span><br><span class="line"></span><br><span class="line">    Configuration configuration = getSqlSession().getConfiguration();</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.addToConfig &amp;&amp; !configuration.hasMapper(<span class="keyword">this</span>.mapperInterface)) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        configuration.addMapper(<span class="keyword">this</span>.mapperInterface);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">        logger.error(<span class="string">"Error while adding the mapper '"</span> + <span class="keyword">this</span>.mapperInterface + <span class="string">"' to configuration."</span>, t);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(t);</span><br><span class="line">      &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        ErrorContext.instance().reset();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * &#123;<span class="doctag">@inheritDoc</span>&#125;</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> T <span class="title">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">     <span class="comment">//返回了之前在doScan设置的接口类的代理类</span></span><br><span class="line">    <span class="keyword">return</span> getSqlSession().getMapper(<span class="keyword">this</span>.mapperInterface);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * &#123;<span class="doctag">@inheritDoc</span>&#125;</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Class&lt;T&gt; <span class="title">getObjectType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.mapperInterface;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * &#123;<span class="doctag">@inheritDoc</span>&#125;</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSingleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>getObject逻辑如下：org.mybatis.spring.SqlSessionTemplate.getMapper(Class<t>)–》org.apache.ibatis.session.Configuration.getMapper(Class<t>, SqlSession)—–》org.apache.ibatis.binding.MapperRegistry.getMapper(Class<t>, SqlSession)—–》org.apache.ibatis.binding.MapperProxyFactory.newInstance(SqlSession)—–&gt;    org.apache.ibatis.binding.MapperProxyFactory.newInstance(MapperProxy<t>)</t></t></t></t></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxyFactory&lt;T&gt; mapperProxyFactory = (MapperProxyFactory&lt;T&gt;) knownMappers.get(type);</span><br><span class="line">    <span class="keyword">if</span> (mapperProxyFactory == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">"Type "</span> + type + <span class="string">" is not known to the MapperRegistry."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> mapperProxyFactory.newInstance(sqlSession);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">"Error getting mapper instance. Cause: "</span> + e, e);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-----------------------------</span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">newInstance</span><span class="params">(SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxy&lt;T&gt; mapperProxy = <span class="keyword">new</span> MapperProxy&lt;T&gt;(sqlSession, mapperInterface, methodCache);</span><br><span class="line">    <span class="keyword">return</span> newInstance(mapperProxy);</span><br><span class="line">  &#125;</span><br><span class="line">-------------</span><br><span class="line">    <span class="comment">//org.apache.ibatis.binding.MapperProxyFactory.newInstance(MapperProxy&lt;T&gt;)</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> T <span class="title">newInstance</span><span class="params">(MapperProxy&lt;T&gt; mapperProxy)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), <span class="keyword">new</span> Class[] &#123; mapperInterface &#125;, mapperProxy);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>到此整个mapperbean的代理MapperProxy构建完成并返回给beanfactory进行管理和注入其他bean。</p>
+<p>里面还有很多没有仔细研究到的地方，只是了解了个大概，真的太复杂了。后续继续研究~</p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://styyt.github.io">styytNOTstop</a>
+            <p>原文链接：<a href="https://styyt.github.io/2019/09/01/mybatis的mapper注入方式研究/">https://styyt.github.io/2019/09/01/mybatis的mapper注入方式研究/</a>
+            <p>发表日期：<a href="https://styyt.github.io/2019/09/01/mybatis的mapper注入方式研究/">September 1st 2019, 11:32:36 am</a>
+            <p>更新日期：<a href="https://styyt.github.io/2019/09/01/mybatis的mapper注入方式研究/">September 1st 2019, 9:56:39 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/08/29/hibernate持久化自动更新的坑/" title= "hibernate自动更新的坑">
+                    <div class="prevTitle">hibernate自动更新的坑</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:543441649@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/styyt" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/intro/wechat.jpg" />
+                </span>
+            
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 18
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span><a class="archive-post-title" href= "/2019/09/01/mybatis的mapper注入方式研究/" >mybatis的spring-mapper注入方式研究</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hibernate持久化自动更新的坑/" >hibernate自动更新的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/28</span><a class="archive-post-title" href= "/2019/08/28/springBoot自定义Controller的路径/" >springBoot自定义Controller的路径</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/hive对表的增删查改/" >hive对表的增删改</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/23</span><a class="archive-post-title" href= "/2019/08/23/ThreadLocal内的小秘密-巧妙降低内存泄露风险/" >ThreadLocal内的小秘密-巧妙降低内存泄露风险</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/hive从csv导入数据/" >hive从csv导入数据</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/08</span><a class="archive-post-title" href= "/2019/08/08/hibernate4监听器的实现简单解析/" >hibernate4监听器的实现简单解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/hive存储换行符等特殊字符/" >hive存储换行符等特殊字符</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span><a class="archive-post-title" href= "/2019/08/02/tomcat-jetty-jboss跨域配置/" >tomcat,jetty,jboss跨域配置</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/25</span><a class="archive-post-title" href= "/2019/07/25/content-type01/" >springMVC获取content-type为form-data类型的参数和值解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/ElasticSearch-001/" >ElasticSearch笔记</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/24</span><a class="archive-post-title" href= "/2019/06/24/mybatis字符串比较/" >mybatis字符串比较</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/22</span><a class="archive-post-title" href= "/2019/05/22/mybatis-placeholder/" >mybatis占位符的区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/13</span><a class="archive-post-title" href= "/2019/05/13/ORA-01722 invalid number/" >ORA-01722 invalid number</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/15</span><a class="archive-post-title" href= "/2017/06/15/ja、java、mysql字符串那长度判断的不同/" >js、java、mysql字符串那长度判断的不同</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/28</span><a class="archive-post-title" href= "/2017/01/28/sql排序-分页的小问题/" >sql排序+分页的小问题</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2016 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/26</span><a class="archive-post-title" href= "/2016/09/26/ajax的traditional作用/" >ajax的traditional作用</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/09</span><a class="archive-post-title" href= "/2016/09/09/自己写一个mysql动态查询树形结构的存储过程/" >自己写一个mysql动态查询树形结构的存储过程</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
+    
+        <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
+    
+        <span class="sidebar-tag-name" data-tags="ajax"><span class="iconfont-archer">&#xe606;</span>ajax</span>
+    
+        <span class="sidebar-tag-name" data-tags="hibernate"><span class="iconfont-archer">&#xe606;</span>hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
+    
+        <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
+    
+        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
+    
+        <span class="sidebar-tag-name" data-tags="js"><span class="iconfont-archer">&#xe606;</span>js</span>
+    
+        <span class="sidebar-tag-name" data-tags="java"><span class="iconfont-archer">&#xe606;</span>java</span>
+    
+        <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
+    
+        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
+    
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="oracle"><span class="iconfont-archer">&#xe606;</span>oracle</span>
+    
+        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
+    
+        <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
+    
+        <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
+    
+        <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
+    
+        <span class="sidebar-tag-name" data-tags="jetty"><span class="iconfont-archer">&#xe606;</span>jetty</span>
+    
+        <span class="sidebar-tag-name" data-tags="jboss"><span class="iconfont-archer">&#xe606;</span>jboss</span>
+    
+        <span class="sidebar-tag-name" data-tags="tomcat"><span class="iconfont-archer">&#xe606;</span>tomcat</span>
+    
+        <span class="sidebar-tag-name" data-tags="CORS"><span class="iconfont-archer">&#xe606;</span>CORS</span>
+    
+        <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
+    
+        <span class="sidebar-tag-name" data-tags="sringboot"><span class="iconfont-archer">&#xe606;</span>sringboot</span>
+    
+        <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
+    
+        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
+    
+        <span class="sidebar-tag-name" data-tags="hibernate4"><span class="iconfont-archer">&#xe606;</span>hibernate4</span>
+    
+        <span class="sidebar-tag-name" data-tags="设计模式"><span class="iconfont-archer">&#xe606;</span>设计模式</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码解读"><span class="iconfont-archer">&#xe606;</span>源码解读</span>
+    
+        <span class="sidebar-tag-name" data-tags="springMVC"><span class="iconfont-archer">&#xe606;</span>springMVC</span>
+    
+        <span class="sidebar-tag-name" data-tags="form_data"><span class="iconfont-archer">&#xe606;</span>form_data</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
+    
+        <span class="sidebar-category-name" data-categories="ajax"><span class="iconfont-archer">&#xe60a;</span>ajax</span>
+    
+        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
+    
+        <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
+    
+        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
+    
+        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
+    
+        <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
+    
+        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
+    
+        <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
+    
+        <span class="sidebar-category-name" data-categories="threadLocal"><span class="iconfont-archer">&#xe60a;</span>threadLocal</span>
+    
+        <span class="sidebar-category-name" data-categories="springMVC源码解读"><span class="iconfont-archer">&#xe60a;</span>springMVC源码解读</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "styytNOTstop"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
