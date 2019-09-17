@@ -1,5 +1,5 @@
 ---
-title: Thread.join会释放锁吗?释放的是什么锁?
+title: Thread.join会释放锁吗?释放的是什么锁?会死锁吗?
 date: 2019-09-16 21:04:50
 tags:
 - 多线程
@@ -43,7 +43,9 @@ public final synchronized void join(long millis)
     }
 ```
 
-所以通过上述源码，我们可以得知：t1线程内调用t2.join，是**不断获取和释放T2锁的一个过程**，并不是我之前理解的释放最开始的对象锁的，如下样例代码就会出现死锁，因为t1并不会释放demo锁，t2就会无限等待demo锁
+所以通过上述源码，我们可以得知：t1线程内调用t2.join，是**不断获取和释放T2锁的一个过程**，并不是我之前理解的释放最开始的对象锁的
+
+如下样例代码就会出现死锁，因为**t1一直等待t2线程死亡才会释放demo锁却，而t2会无限等待demo锁**
 
 ```java
 public class JoinTest {
