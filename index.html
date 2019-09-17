@@ -359,17 +359,47 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/14/升级1.8对gc的影响/" >
+        <a class="abstract-title" href = "/2019/09/16/Thread-join会释放锁吗/" >
             
-                <span>浅析升级jdk8对jvm/GC的影响</span>
+                <span>Thread.join会释放锁吗?释放的是什么锁?</span>
         </a>
         <div class="abstract-content">
-            jvm内存结构变化（HotSpot ）
+            答案当然是会，问题的关键是释放的什么锁呢？，我们先来看看join方法的源码
+1234567891011121314151617181920212223242526272829303132//比如我们在thread1（下面简称t1）中调用了thread2（下面简称t2）.join()方法，t2.join(0)方法//注意方法被synchronized修饰，所以t1中获取了t2的对象锁public final synchronized void join(long millis)    //默认0，不超时    throws InterruptedException &#123;      ...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/16</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "多线程">多线程</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/09/14/升级1.8对gc的影响/" >
+            
+                <span>浅析升级jdk8对jvm/GC（HotSpot）的影响</span>
+        </a>
+        <div class="abstract-content">
+            jvm内存结构变化
 不变点
 1、堆—–堆是所有线程共享的，主要用来存储对象。其中，堆可分为：年轻代和老年代两块区域，
 ​        老年代与年轻代比例使用NewRatio参数来设定比例。比如： –XX:NewRatio=2表示新生代 ( Young ) 与老年代 ( Old ) 的比例的值为 1:2 ，这也是jdk8的默认比例，也就是老年代 ( Old ) = 2/3 的堆空间大小。
 ​        对于年轻代，一个Eden区和两个Suvivor区（from，to），使用参数SuvivorRatio来设定大小，比如：
-–XX:SurvivorRatio=8表示E...
+–XX:SurvivorRatio=8表示Edem : from...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -397,10 +427,10 @@ height:50vh;
     <article class="index-post">
         <a class="abstract-title" href = "/2019/09/01/mybatis的mapper注入方式研究/" >
             
-                <span>spring-mybatis的mapper注入方式研究</span>
+                <span>mybatis-spring的mapper注入方式浅谈</span>
         </a>
         <div class="abstract-content">
-            众所周知，Spring注入bean时都是将可实例化对象注入。但是我们在写myabtis时却从来没有写过它的mapper实现类，仅仅是写了一个接口就可以在service层使用这个bean，这是为什么呢？我们可以先看下spring最终给我们注入到mapperBean的是什么类呢？
+            众所周知，Spring注入bean时都是将可实例化对象注入。但是我们在写myabtis时却从来没有写过它的mapper实现类，紧紧是写了一个接口就可以在service层使用这个bean，这是为什么呢？我们可以先看下spring最终给我们注入到mapperBean的是什么类呢？
 
 
 果然，它注入的是mybatis代理类：MapperProxy，那么这个实例是什么时候注入进入bean工厂的呢？我们继续往下看：
@@ -678,50 +708,6 @@ hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册�
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "hive">hive</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/02/tomcat-jetty-jboss跨域配置/" >
-            
-                <span>tomcat,jetty,jboss跨域配置</span>
-        </a>
-        <div class="abstract-content">
-            目前前后端分离的开发方式都是需要前端应用跨域访问后端服务器。这里记录下平时开发中用到的三种服务器支持跨域的方式。浏览器支持跨域的方式后面再讲。
-先来了解下跨域的主流方式：
-CORS：全称”跨域资源共享”（Cross-origin resource sharing）。
-CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目前几乎所有浏览器都支持CORS，IE则不能低于IE10。
-一：springMVC版本低于4.2的war包部署至jboss、jetty、tomcat在web.xml内加入处理跨域的过滤器（需要先引入jar包）：
-12345678910111213141516171819...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/02</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "jetty">jetty</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "jboss">jboss</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "tomcat">tomcat</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "CORS">CORS</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "sringboot">sringboot</a>
     
 </div>
             
@@ -1079,9 +1065,48 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 19
+        Total : 20
         </div>
         <!-- search  -->
         
@@ -1097,12 +1122,17 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/14</span><a class="archive-post-title" href= "/2019/09/14/升级1.8对gc的影响/" >浅析升级jdk8对jvm/GC的影响</a>
+            <span class="archive-post-date">09/16</span><a class="archive-post-title" href= "/2019/09/16/Thread-join会释放锁吗/" >Thread.join会释放锁吗?释放的是什么锁?</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/01</span><a class="archive-post-title" href= "/2019/09/01/mybatis的mapper注入方式研究/" >spring-mybatis的mapper注入方式研究</a>
+            <span class="archive-post-date">09/14</span><a class="archive-post-title" href= "/2019/09/14/升级1.8对gc的影响/" >浅析升级jdk8对jvm/GC（HotSpot）的影响</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span><a class="archive-post-title" href= "/2019/09/01/mybatis的mapper注入方式研究/" >mybatis-spring的mapper注入方式浅谈</a>
         </li>
     
     
@@ -1213,7 +1243,13 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
+        <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
+    
         <span class="sidebar-tag-name" data-tags="ajax"><span class="iconfont-archer">&#xe606;</span>ajax</span>
+    
+        <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
+    
+        <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
     
         <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
     
@@ -1227,19 +1263,21 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
         <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
     
-        <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
-    
-        <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
+        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
     
         <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
     
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
+    
         <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
     
-        <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
-    
-        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
-    
         <span class="sidebar-tag-name" data-tags="oracle"><span class="iconfont-archer">&#xe606;</span>oracle</span>
+    
+        <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
+    
+        <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
+    
+        <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
     
         <span class="sidebar-tag-name" data-tags="jetty"><span class="iconfont-archer">&#xe606;</span>jetty</span>
     
@@ -1252,12 +1290,6 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
         <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
     
         <span class="sidebar-tag-name" data-tags="sringboot"><span class="iconfont-archer">&#xe606;</span>sringboot</span>
-    
-        <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
-    
-        <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
-    
-        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
     
         <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
     
@@ -1310,21 +1342,23 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
+        <span class="sidebar-category-name" data-categories="多线程"><span class="iconfont-archer">&#xe60a;</span>多线程</span>
+    
         <span class="sidebar-category-name" data-categories="ajax"><span class="iconfont-archer">&#xe60a;</span>ajax</span>
+    
+        <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
     
         <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
     
         <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
     
-        <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
+        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
     
         <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
     
-        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
-    
-        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
-    
         <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
+    
+        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
     
         <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
     

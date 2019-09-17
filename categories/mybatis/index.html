@@ -348,10 +348,10 @@
     <article class="index-post">
         <a class="abstract-title" href = "/2019/09/01/mybatis的mapper注入方式研究/" >
             
-                <span>spring-mybatis的mapper注入方式研究</span>
+                <span>mybatis-spring的mapper注入方式浅谈</span>
         </a>
         <div class="abstract-content">
-            众所周知，Spring注入bean时都是将可实例化对象注入。但是我们在写myabtis时却从来没有写过它的mapper实现类，仅仅是写了一个接口就可以在service层使用这个bean，这是为什么呢？我们可以先看下spring最终给我们注入到mapperBean的是什么类呢？
+            众所周知，Spring注入bean时都是将可实例化对象注入。但是我们在写myabtis时却从来没有写过它的mapper实现类，紧紧是写了一个接口就可以在service层使用这个bean，这是为什么呢？我们可以先看下spring最终给我们注入到mapperBean的是什么类呢？
 
 
 果然，它注入的是mybatis代理类：MapperProxy，那么这个实例是什么时候注入进入bean工厂的呢？我们继续往下看：
@@ -737,9 +737,48 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 19
+        Total : 20
         </div>
         <!-- search  -->
         
@@ -755,12 +794,17 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/14</span><a class="archive-post-title" href= "/2019/09/14/升级1.8对gc的影响/" >浅析升级jdk8对jvm/GC的影响</a>
+            <span class="archive-post-date">09/16</span><a class="archive-post-title" href= "/2019/09/16/Thread-join会释放锁吗/" >Thread.join会释放锁吗?释放的是什么锁?</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/01</span><a class="archive-post-title" href= "/2019/09/01/mybatis的mapper注入方式研究/" >spring-mybatis的mapper注入方式研究</a>
+            <span class="archive-post-date">09/14</span><a class="archive-post-title" href= "/2019/09/14/升级1.8对gc的影响/" >浅析升级jdk8对jvm/GC（HotSpot）的影响</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span><a class="archive-post-title" href= "/2019/09/01/mybatis的mapper注入方式研究/" >mybatis-spring的mapper注入方式浅谈</a>
         </li>
     
     
@@ -871,7 +915,13 @@
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
+        <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
+    
         <span class="sidebar-tag-name" data-tags="ajax"><span class="iconfont-archer">&#xe606;</span>ajax</span>
+    
+        <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
+    
+        <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
     
         <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
     
@@ -885,19 +935,21 @@
     
         <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
     
-        <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
-    
-        <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
+        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
     
         <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
     
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
+    
         <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
     
-        <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
-    
-        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
-    
         <span class="sidebar-tag-name" data-tags="oracle"><span class="iconfont-archer">&#xe606;</span>oracle</span>
+    
+        <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
+    
+        <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
+    
+        <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
     
         <span class="sidebar-tag-name" data-tags="jetty"><span class="iconfont-archer">&#xe606;</span>jetty</span>
     
@@ -910,12 +962,6 @@
         <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
     
         <span class="sidebar-tag-name" data-tags="sringboot"><span class="iconfont-archer">&#xe606;</span>sringboot</span>
-    
-        <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
-    
-        <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
-    
-        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
     
         <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
     
@@ -968,21 +1014,23 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
+        <span class="sidebar-category-name" data-categories="多线程"><span class="iconfont-archer">&#xe60a;</span>多线程</span>
+    
         <span class="sidebar-category-name" data-categories="ajax"><span class="iconfont-archer">&#xe60a;</span>ajax</span>
+    
+        <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
     
         <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
     
         <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
     
-        <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
+        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
     
         <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
     
-        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
-    
-        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
-    
         <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
+    
+        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
     
         <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
     
