@@ -346,6 +346,59 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/15/hive从csv导入数据/" >
+            
+                <span>hive从csv导入数据</span>
+        </a>
+        <div class="abstract-content">
+            今天开发hive数据迁移遇到个问题，从旧库导出来的csv文件死活导入不进新表中，导入语句如下：
+1LOAD DATA INPATH '/user/upload/xiaomifengceshi.csv' OVERWRITE INTO TABLE default.dm_fity PARTITION (inc_day=20190814);
+
+后来研究发现：原来是导出的时候所选择的csv分隔符为’,‘（如下图:）
+
+
+，但是新建的hive表的默认分割符，hive使用不可见的字符作为分割符，如下表
+
+
+
+分隔符
+描述
+
+
+
+\n
+行分隔符
+
+
+^A
+字段分隔符,八进制表示为\001,
+
+
+^B
+a...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/15</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "hive">hive</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/08/hibernate4监听器的实现简单解析/" >
             
                 <span>hibernate4监听器的实现简单解析</span>
@@ -668,45 +721,6 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
         <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "mysql">mysql</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2017/01/28/sql排序-分页的小问题/" >
-            
-                <span>sql排序+分页的小问题</span>
-        </a>
-        <div class="abstract-content">
-            之前查询分页出现了一个数据重复出现的问题，第一页出现的问题第二页又出现了
-经过多次查证发现一个问题：
-在mysql查询中，使用limit和order by 一个非唯一字段时，结果集的顺序并不总是确定的。（后来经过验证，oracle也会出现这个问题）
-
-
-大家可以清晰看到这个问题。
-查询出来的11月28好的数据顺序完全不同，这样的话，limit后分页里面的数据有很大的可能会重复展示。
-我在网上找到了这个bug的报告地址：http://bugs.mysql.com/bug.php?spm=5176.100239.blogcont27649.4.5KNN5j&amp;id=72076
-下面的评...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/01/28</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "mysql">mysql</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "oracle">oracle</a>
     
 </div>
             
@@ -1054,9 +1068,70 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 22
+        Total : 23
         </div>
         <!-- search  -->
         
@@ -1069,6 +1144,11 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2019/10/07/jvmGcRecycler浅析/" >浅析jvm的四种垃圾回收器</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1209,12 +1289,6 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
         <span class="sidebar-tag-name" data-tags="ajax"><span class="iconfont-archer">&#xe606;</span>ajax</span>
     
-        <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
-    
-        <span class="sidebar-tag-name" data-tags="hibernate"><span class="iconfont-archer">&#xe606;</span>hibernate</span>
-    
-        <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
-    
         <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
     
         <span class="sidebar-tag-name" data-tags="js"><span class="iconfont-archer">&#xe606;</span>js</span>
@@ -1233,8 +1307,6 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
         <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
     
-        <span class="sidebar-tag-name" data-tags="codeImpression"><span class="iconfont-archer">&#xe606;</span>codeImpression</span>
-    
         <span class="sidebar-tag-name" data-tags="oracle"><span class="iconfont-archer">&#xe606;</span>oracle</span>
     
         <span class="sidebar-tag-name" data-tags="jetty"><span class="iconfont-archer">&#xe606;</span>jetty</span>
@@ -1248,6 +1320,10 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
         <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
     
         <span class="sidebar-tag-name" data-tags="sringboot"><span class="iconfont-archer">&#xe606;</span>sringboot</span>
+    
+        <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
+    
+        <span class="sidebar-tag-name" data-tags="codeImpression"><span class="iconfont-archer">&#xe606;</span>codeImpression</span>
     
         <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
     
@@ -1270,6 +1346,10 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
         <span class="sidebar-tag-name" data-tags="gc"><span class="iconfont-archer">&#xe606;</span>gc</span>
     
         <span class="sidebar-tag-name" data-tags="jvm"><span class="iconfont-archer">&#xe606;</span>jvm</span>
+    
+        <span class="sidebar-tag-name" data-tags="hibernate"><span class="iconfont-archer">&#xe606;</span>hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
     
         <span class="sidebar-tag-name" data-tags="springMVC"><span class="iconfont-archer">&#xe606;</span>springMVC</span>
     
@@ -1312,10 +1392,6 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="ajax"><span class="iconfont-archer">&#xe60a;</span>ajax</span>
     
-        <span class="sidebar-category-name" data-categories="多线程"><span class="iconfont-archer">&#xe60a;</span>多线程</span>
-    
-        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
-    
         <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
     
         <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
@@ -1324,15 +1400,19 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
     
-        <span class="sidebar-category-name" data-categories="codeImpression"><span class="iconfont-archer">&#xe60a;</span>codeImpression</span>
-    
         <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
     
         <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
     
+        <span class="sidebar-category-name" data-categories="多线程"><span class="iconfont-archer">&#xe60a;</span>多线程</span>
+    
+        <span class="sidebar-category-name" data-categories="codeImpression"><span class="iconfont-archer">&#xe60a;</span>codeImpression</span>
+    
         <span class="sidebar-category-name" data-categories="threadLocal"><span class="iconfont-archer">&#xe60a;</span>threadLocal</span>
     
         <span class="sidebar-category-name" data-categories="gc"><span class="iconfont-archer">&#xe60a;</span>gc</span>
+    
+        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
     
         <span class="sidebar-category-name" data-categories="gc/jvm"><span class="iconfont-archer">&#xe60a;</span>gc/jvm</span>
     
