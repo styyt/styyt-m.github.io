@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>mybatis占位符的区别 · learn and grow up</title>
+    <title>Springboot test · learn and grow up</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >learn and grow up</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">mybatis占位符的区别</a>
+                <a href="#" class="post-name">Springboot test</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            mybatis占位符的区别
+            Springboot test
             <!-- 404 -->
             
         </h1>
@@ -266,20 +266,18 @@ height:50vh;
                 
                     <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "mybatis">mybatis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "sql注入">sql注入</a>
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "Springboot">Springboot</a>
     
 </div>
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">294</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">762</span>阅读时长: <span class="post-count reading-time">3 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/05/22</span>
+                    <span class="post-intro-time">2019/11/23</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -403,23 +401,44 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>​        mybatis占位符分为#{}和${}</p>
-<p>​        #{}是利用jdbc的预编译（PreparedStatement），一个#{}会被解析为一个占位符？。它可以指定变量的类型，比如：<code>#{empCode,jdbcType=VARCHAR}</code>或<code>#{year,jdbcType=DECIMAL}</code>，</p>
-<p>​        ${}是一个纯粹的String替换，把变量的值直接替换在当前位置</p>
-<p>​        比如：    <code>select emp_id from user where code=#{code,jdbcType=VARCHAR}</code>在log内打印出来为sql为：<code>Preparing:select emp_id from user where code=?      Parameters:1（String）</code></p>
-<p>​            <code>select emp_id from user where code=${code}</code>在log内打印出来为sql为：<code>select emp_id from user where code=1</code></p>
-<p>​        可以看到${}会有很大的风险会被sql注入，如果用户恶意操作导致参数为一个sql短语句如： 1 or 1=1，那么使用${}，传送给dbms执行的sql变为：<code>select emp_id from user where code=1 or 1=1</code>，导致数据泄露。而使用#{}，则恶意的参数会被预编译为字符串，从而防止sql注入。</p>
-<p>​        所以日常开发中，除了特定场景，比如动态表名，动态排序这种无法使用预编译传变量的场景，要一律使用#{}。</p>
-<p>​        而且使用#{}还继承了预编译的一系列优点：提高执行效率和sql日志可读性高等优点。</p>
+        <h3 id="写在前面之为什么要写测试用例"><a href="#写在前面之为什么要写测试用例" class="headerlink" title="写在前面之为什么要写测试用例"></a>写在前面之为什么要写测试用例</h3><ul>
+<li>可以避免测试点的遗漏，为了更好的进行测试，可以提高测试效率 </li>
+<li>可以自动测试，可以在项目打包前进行测试校验 </li>
+<li>可以及时发现因为修改代码导致新的问题的出现，并及时解决 </li>
+</ul>
+<p>这是TDD中最重要的一环。</p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>在springboot中引入springboot-test需要以下几个步骤：</p>
+<ol>
+<li><p><strong>pom中引入 spring-boot-starter-test</strong></p>
+<p><img src="/intro/0041.png" alt="pom"></p>
+<p>如果需要打包是不运行test，则可以再pom中加入如下配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--打包跳过测试--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-surefire-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">skip</span>&gt;</span>true<span class="tag">&lt;/<span class="name">skip</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>测试springboot Testing Spring Boot applications</strong></p>
+<p>Spring Boot提供了一个@SpringBootTest注解，当您需要Spring Boot功能时，它可以用作标准spring-test @ContextConfiguration注释的替代方法。注解的工作原理是通过SpringApplication在测试中创建ApplicationContext。</p>
+<p>示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Title</span>: 基础测试类(其他需要环境进行测试的只需要继承此类即可)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="meta">@SpringBootTest</span>(classes = DemoApplication.class)</span><br><span class="line"><span class="meta">@ActiveProfiles</span>(<span class="string">"test"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseTest</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Title</span>: 其他业务测试类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Desc</span>: 都可以继承BaseTest, 构建的时候就可以共用一个环境避免每次加载上下文, 以节约时间</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoTest</span> <span class="keyword">extends</span> <span class="title">BaseTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 打包时不测试此方法</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="meta">@Ignore</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ignoreTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 打包要测试的方法</span></span><br><span class="line"><span class="comment">	 * 注: 方法名请不要和其他</span></span><br><span class="line"><span class="comment">	 * 适用范围: 如一些重点、复杂的查询接口测试</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 断言可以放测试类里头检验结果,不符合断言条件的会报错,停止打包,如检验状态码/对象等,避免人工输出检查结果,提高自动化测试效率</span></span><br><span class="line">		<span class="comment">// 是否相等</span></span><br><span class="line">		Assert.assertEquals(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">		Assert.assertEquals(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">		Assert.assertNotEquals(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">		<span class="comment">// 是否为空</span></span><br><span class="line">		Assert.assertNull(<span class="keyword">null</span>);</span><br><span class="line">		Assert.assertNotNull(<span class="string">""</span>);</span><br><span class="line">		<span class="comment">// 对错判断</span></span><br><span class="line">		Assert.assertTrue(<span class="number">1</span> == <span class="number">1</span>);</span><br><span class="line">		Assert.assertFalse(<span class="number">1</span> == <span class="number">2</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 写操作事物测试</span></span><br><span class="line"><span class="comment">	 * Transactional: 测完写数据会回滚的测试用例</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="meta">@Transactional</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">transactionalTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重点在于此：@RunWith(SpringRunner.class)。跟踪源代码可以发现spring test原理上是继承了了junit。</p>
+<p><img src="/intro/0042.png" alt="pom"></p>
+<p>可以使用<strong>@SpringBootTest</strong>的<strong>webEnvironment</strong>属性来进一步优化测试的运行方式：</p>
+</li>
+</ol>
+<ul>
+<li><strong>MOCK</strong> ： 加载一个WebApplicationContext并提供一个模拟servlet环境。嵌入式servlet容器在使用此注释时不会启动。如果servlet API不在你的类路径上，这个模式将透明地回退到创建一个常规的非web应用程序上下文。可以与@AutoConfigureMockMvc结合使用，用于基于MockMvc的应用程序测试。</li>
+<li><strong>RANDOM_PORT ：</strong> 加载一个EmbeddedWebApplicationContext并提供一个真正的servlet环境。嵌入式servlet容器启动并在随机端口上侦听。</li>
+<li><strong>DEFINED_PORT ：</strong> 加载一个EmbeddedWebApplicationContext并提供一个真正的servlet环境。嵌入式servlet容器启动并监听定义的端口（即从application.properties或默认端口8080）。</li>
+<li><strong>NONE ：</strong> 使用SpringApplication加载ApplicationContext，但不提供任何servlet环境（模拟或其他）。</li>
+</ul>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="https://styyt.github.io">styytNOTstop</a>
-            <p>原文链接：<a href="https://styyt.github.io/2019/05/22/mybatis-placeholder/">https://styyt.github.io/2019/05/22/mybatis-placeholder/</a>
-            <p>发表日期：<a href="https://styyt.github.io/2019/05/22/mybatis-placeholder/">May 22nd 2019, 12:00:00 am</a>
-            <p>更新日期：<a href="https://styyt.github.io/2019/05/22/mybatis-placeholder/">August 30th 2019, 9:01:24 pm</a>
+            <p>原文链接：<a href="https://styyt.github.io/2019/11/23/springboot-test/">https://styyt.github.io/2019/11/23/springboot-test/</a>
+            <p>发表日期：<a href="https://styyt.github.io/2019/11/23/springboot-test/">November 23rd 2019, 3:32:10 pm</a>
+            <p>更新日期：<a href="https://styyt.github.io/2019/11/23/springboot-test/">December 2nd 2019, 12:15:08 pm</a>
             <p>版权声明：本文采用<a rel="license noopener" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -427,17 +446,12 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/06/24/mybatis%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83/" title= "mybatis字符串比较">
-                    <div class="nextTitle">mybatis字符串比较</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/05/13/ORA-01722%20invalid%20number/" title= "ORA-01722 invalid number">
-                    <div class="prevTitle">ORA-01722 invalid number</div>
+                <a href= "/2019/11/16/zuul%E8%BD%AC%E5%8F%91%E8%AF%B7%E6%B1%82%E5%90%8E%E5%89%8D%E7%BC%80%E9%97%AE%E9%A2%98/" title= "zuul转发请求后前缀问题">
+                    <div class="prevTitle">zuul转发请求后前缀问题</div>
                 </a>
             
         </li>
@@ -524,7 +538,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#写在前面之为什么要写测试用例"><span class="toc-number">1.</span> <span class="toc-text">写在前面之为什么要写测试用例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#正文"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
