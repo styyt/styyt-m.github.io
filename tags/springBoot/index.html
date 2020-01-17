@@ -346,28 +346,34 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/28/springBoot%E8%87%AA%E5%AE%9A%E4%B9%89Controller%E7%9A%84%E8%B7%AF%E5%BE%84/" >
+        <a class="abstract-title" href = "/2019/11/23/springboot-test/" >
             
-                <span>springBoot自定义Controller的路径</span>
+                <span>Springboot test</span>
         </a>
         <div class="abstract-content">
-            今天手工重新搭建springboot的时候发现一个以前遗漏的知识点：
-Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接体现了springboot约定大于配置的做法，如果我们需要自定义springboot的扫描路径，需要在启动类上加入如下注解：
-1@ComponentScan(basePackages = &#123;"项目路径"&#125;)
+            写在前面之为什么要写测试用例
+可以避免测试点的遗漏，为了更好的进行测试，可以提高测试效率 
+可以自动测试，可以在项目打包前进行测试校验 
+可以及时发现因为修改代码导致新的问题的出现，并及时解决 
 
-和spring很像哦~
+这是TDD中最重要的一环。
+正文在springboot中引入springboot-test需要以下几个步骤：
 
+pom中引入 spring-boot-starter-test
+
+如果需要打包是不运行test，则可以再pom中加入如下配置
+12345678&lt;!--打包跳过测试--&gt;&lt;plugin&gt;    &lt;groupId&gt;org.apache.maven.pl...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/28</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/23</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "springBoot">springBoot</a>
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "Springboot">Springboot</a>
     
 </div>
             
@@ -804,9 +810,82 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 29
+        Total : 34
         </div>
         <!-- search  -->
         
@@ -819,6 +898,31 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/28</span><a class="archive-post-title" href= "/2019/12/28/%E7%BC%96%E8%AF%91openJDK%E4%B9%8Bc%E7%BC%96%E8%AF%91%E5%99%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E8%A7%A3%E5%86%B3/" >windows编译openJDK之c编译器找不到解决</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/21</span><a class="archive-post-title" href= "/2019/12/21/%E7%BC%96%E8%AF%91openJdk%E4%B9%8B%E4%BA%8C/" >windows编译openJdk之二-freeType+VS+jdk</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/13</span><a class="archive-post-title" href= "/2019/12/13/%E7%BC%96%E8%AF%91openJdk%E4%B9%8BCygWin%E7%9A%84%E5%AE%89%E8%A3%85/" >windows编译openJdk之一-CYGWIN</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/07</span><a class="archive-post-title" href= "/2019/12/07/java%E7%9A%84okhttp%E5%86%8D%E5%B0%81%E8%A3%85/" >java的okhttp再封装</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/30</span><a class="archive-post-title" href= "/2019/11/30/lambda%E4%B8%AD%E7%9A%84%E5%8F%97%E6%A3%80%E6%9F%A5%E5%BC%82%E5%B8%B8/" >lambda中的受检查异常</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -988,27 +1092,17 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
+        <span class="sidebar-tag-name" data-tags="mybatis_plus_generator"><span class="iconfont-archer">&#xe606;</span>mybatis_plus_generator</span>
+    
         <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
     
         <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
     
+        <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
+    
         <span class="sidebar-tag-name" data-tags="nio"><span class="iconfont-archer">&#xe606;</span>nio</span>
     
         <span class="sidebar-tag-name" data-tags="socket"><span class="iconfont-archer">&#xe606;</span>socket</span>
-    
-        <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
-    
-        <span class="sidebar-tag-name" data-tags="mybatis_plus_generator"><span class="iconfont-archer">&#xe606;</span>mybatis_plus_generator</span>
-    
-        <span class="sidebar-tag-name" data-tags="hibernate"><span class="iconfont-archer">&#xe606;</span>hibernate</span>
-    
-        <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
-    
-        <span class="sidebar-tag-name" data-tags="springMVC"><span class="iconfont-archer">&#xe606;</span>springMVC</span>
-    
-        <span class="sidebar-tag-name" data-tags="form_data"><span class="iconfont-archer">&#xe606;</span>form_data</span>
-    
-        <span class="sidebar-tag-name" data-tags="源码解读"><span class="iconfont-archer">&#xe606;</span>源码解读</span>
     
         <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
     
@@ -1018,7 +1112,11 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
         <span class="sidebar-tag-name" data-tags="ajax"><span class="iconfont-archer">&#xe606;</span>ajax</span>
     
-        <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
+        <span class="sidebar-tag-name" data-tags="springMVC"><span class="iconfont-archer">&#xe606;</span>springMVC</span>
+    
+        <span class="sidebar-tag-name" data-tags="form_data"><span class="iconfont-archer">&#xe606;</span>form_data</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码解读"><span class="iconfont-archer">&#xe606;</span>源码解读</span>
     
         <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
     
@@ -1026,25 +1124,35 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
         <span class="sidebar-tag-name" data-tags="设计模式"><span class="iconfont-archer">&#xe606;</span>设计模式</span>
     
-        <span class="sidebar-tag-name" data-tags="js"><span class="iconfont-archer">&#xe606;</span>js</span>
+        <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
+    
+        <span class="sidebar-tag-name" data-tags="hibernate"><span class="iconfont-archer">&#xe606;</span>hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
     
         <span class="sidebar-tag-name" data-tags="java"><span class="iconfont-archer">&#xe606;</span>java</span>
     
+        <span class="sidebar-tag-name" data-tags="http"><span class="iconfont-archer">&#xe606;</span>http</span>
+    
+        <span class="sidebar-tag-name" data-tags="js"><span class="iconfont-archer">&#xe606;</span>js</span>
+    
         <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
+    
+        <span class="sidebar-tag-name" data-tags="lambda"><span class="iconfont-archer">&#xe606;</span>lambda</span>
     
         <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
     
-        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
-    
-        <span class="sidebar-tag-name" data-tags="Springboot"><span class="iconfont-archer">&#xe606;</span>Springboot</span>
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
     
         <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
     
+        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
+    
         <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
     
-        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
-    
         <span class="sidebar-tag-name" data-tags="codeImpression"><span class="iconfont-archer">&#xe606;</span>codeImpression</span>
+    
+        <span class="sidebar-tag-name" data-tags="Springboot"><span class="iconfont-archer">&#xe606;</span>Springboot</span>
     
         <span class="sidebar-tag-name" data-tags="oracle"><span class="iconfont-archer">&#xe606;</span>oracle</span>
     
@@ -1062,17 +1170,19 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
         <span class="sidebar-tag-name" data-tags="jvm"><span class="iconfont-archer">&#xe606;</span>jvm</span>
     
+        <span class="sidebar-tag-name" data-tags="openJDK"><span class="iconfont-archer">&#xe606;</span>openJDK</span>
+    
         <span class="sidebar-tag-name" data-tags="zuul"><span class="iconfont-archer">&#xe606;</span>zuul</span>
     
         <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
     
         <span class="sidebar-tag-name" data-tags="JMM"><span class="iconfont-archer">&#xe606;</span>JMM</span>
     
-        <span class="sidebar-tag-name" data-tags="gc"><span class="iconfont-archer">&#xe606;</span>gc</span>
-    
         <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
     
         <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
+    
+        <span class="sidebar-tag-name" data-tags="gc"><span class="iconfont-archer">&#xe606;</span>gc</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -1107,15 +1217,11 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
+        <span class="sidebar-category-name" data-categories="mybatis-plus-generator"><span class="iconfont-archer">&#xe60a;</span>mybatis-plus-generator</span>
+    
         <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
     
         <span class="sidebar-category-name" data-categories="多线程"><span class="iconfont-archer">&#xe60a;</span>多线程</span>
-    
-        <span class="sidebar-category-name" data-categories="mybatis-plus-generator"><span class="iconfont-archer">&#xe60a;</span>mybatis-plus-generator</span>
-    
-        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
-    
-        <span class="sidebar-category-name" data-categories="springMVC源码解读"><span class="iconfont-archer">&#xe60a;</span>springMVC源码解读</span>
     
         <span class="sidebar-category-name" data-categories="threadLocal"><span class="iconfont-archer">&#xe60a;</span>threadLocal</span>
     
@@ -1123,11 +1229,17 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="ajax"><span class="iconfont-archer">&#xe60a;</span>ajax</span>
     
+        <span class="sidebar-category-name" data-categories="springMVC源码解读"><span class="iconfont-archer">&#xe60a;</span>springMVC源码解读</span>
+    
         <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
     
-        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
+        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
     
-        <span class="sidebar-category-name" data-categories="Springboot"><span class="iconfont-archer">&#xe60a;</span>Springboot</span>
+        <span class="sidebar-category-name" data-categories="java"><span class="iconfont-archer">&#xe60a;</span>java</span>
+    
+        <span class="sidebar-category-name" data-categories="lambda"><span class="iconfont-archer">&#xe60a;</span>lambda</span>
+    
+        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
     
         <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
     
@@ -1135,11 +1247,15 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="codeImpression"><span class="iconfont-archer">&#xe60a;</span>codeImpression</span>
     
+        <span class="sidebar-category-name" data-categories="Springboot"><span class="iconfont-archer">&#xe60a;</span>Springboot</span>
+    
         <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
     
         <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
     
         <span class="sidebar-category-name" data-categories="jvm"><span class="iconfont-archer">&#xe60a;</span>jvm</span>
+    
+        <span class="sidebar-category-name" data-categories="openJDK"><span class="iconfont-archer">&#xe60a;</span>openJDK</span>
     
         <span class="sidebar-category-name" data-categories="zuul"><span class="iconfont-archer">&#xe60a;</span>zuul</span>
     
@@ -1176,17 +1292,6 @@ jsonContent:
     <!-- busuanzi  -->
     
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    
-    <!-- CNZZ  -->
-    
-    </div>
-    <!-- async load share.js -->
-     
-    </body>
-</html>
-
-
-ure.mini.js"></script>
     
     <!-- CNZZ  -->
     
