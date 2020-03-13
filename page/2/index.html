@@ -359,6 +359,125 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/09/DDD/" >
+            
+                <span>mybatis_plus_generator with DDD</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    随着项目越来越庞大，MVC的传统web架构已经出现了弊端，就算是分了微服务，项目中的各个模块间也不可避免的出现了各种复杂的关系与调用，可能改动一个小地方，将会牵一发而动全身。
+​    所以公司开始大力推广DDD领域模型设计，经过几天的学习和上手，自己简单的根据mybatis-generator写了个可以生成关于javaWeb的DDD模型的工具类（并且可以轻松切换生成代码的type，MVC或者DDD）
+正文代码地址为： https://github.com/styyt/mybatis-generator-plus-ddd 
+生成的结构大致为：
+模型服务内调用过程为：
+​...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/09</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "mybatis_plus_generator">mybatis_plus_generator</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/02/URL/" >
+            
+                <span>SpringBoot启动报Failed to retrieve application JMX service URL</span>
+        </a>
+        <div class="abstract-content">
+            背景最近将项目切换到IDEA上，SpringBoot启动报如下错误：
+
+经过长时间分析和排查，终于解决了此问题。
+解决思路和过程首先看到报错信息指的是jmx连接失败，自己猜测可能有以下几种可能
+
+jmx服务没有启动
+IDEA配置有问题
+IDEA用java发送的请求被防火墙或者其他安全设备阻拦
+
+那么依次进行问题排查
+
+把程序搬到eclipse，启动本应用，发现可以正常启动，so排除了第一种可能
+
+在IDEA上用mvn package打包成jar包，然后再手动启动该jar包
+
+发现可以正常启动，so排除第二种可能
+
+使用管理员身份运行IDEA
+
+再重新启动
+
+成功了！果然是因为权限的问题！...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/02</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "SpringBoot">SpringBoot</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/10/26/volatile-item-2/" >
+            
+                <span>再从volatile第二个特性看JVM内存模型(JMM)</span>
+        </a>
+        <div class="abstract-content">
+            上一篇文章我们从volatile第一个特性浅析了JMM（JVM内存模型）及其在JVM中的实现，这篇文章我们从其第二个特性继续深入分析JVM的内存模型，当然本文依然假设大家已经了解了java基础知识和JVM的内存结构。
+先来回忆下的volatile的第二个特性
+1屏蔽指令重排序：指令重排序是编译器和处理器为了高效对程序进行优化的手段，它只能保证程序执行的结果时正确的，但是无法保证程序的操作顺序与代码顺序一致。这在单线程中不会构成问题，但是在多线程中就会出现问题。非常经典的例子是在单例方法中同时对字段加入volatile，就是为了防止指令重排序。
+
+示例代码老规矩，先上代码，这次还是拿单例模...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/26</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "volatile">volatile</a>
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "jvm">jvm</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/10/16/volidateandjvm1/" >
             
                 <span>从volatile第一个特性看JVM内存模型(JMM)</span>
@@ -578,109 +697,6 @@ Server.java
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "mybatis">mybatis</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/29/hibernate%E6%8C%81%E4%B9%85%E5%8C%96%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0%E7%9A%84%E5%9D%91/" >
-            
-                <span>hibernate自动更新的坑</span>
-        </a>
-        <div class="abstract-content">
-            昨天自己负责的一个系统的生产环境出现了一个神奇的BUG：
-123456789101112131415161718192021[2019-08-29 19:54:27.819] [ERROR] [org.hibernate.engine.jdbc.batch.internal.BatchingBatch.performExecution(BatchingBatch.java:137)] [qtp1165897474-48619] : HHH000315: Exception executing batch [Batch update returned unexpected row coun...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/29</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "hibernate">hibernate</a>
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "源码解析">源码解析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/28/springBoot%E8%87%AA%E5%AE%9A%E4%B9%89Controller%E7%9A%84%E8%B7%AF%E5%BE%84/" >
-            
-                <span>springBoot自定义Controller的路径</span>
-        </a>
-        <div class="abstract-content">
-            今天手工重新搭建springboot的时候发现一个以前遗漏的知识点：
-Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接体现了springboot约定大于配置的做法，如果我们需要自定义springboot的扫描路径，需要在启动类上加入如下注解：
-1@ComponentScan(basePackages = &#123;"项目路径"&#125;)
-
-和spring很像哦~
-
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/28</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "springBoot">springBoot</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/27/hive%E5%AF%B9%E8%A1%A8%E7%9A%84%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9/" >
-            
-                <span>hive对表的增删改</span>
-        </a>
-        <div class="abstract-content">
-            Hive 是针对数据仓库应用设计的，而数据仓库的内容是读多写少的。因此，Hive大部分情况下是不支持对数据的改写和添加，日常开发中如果需要真的对数据进行增删改，都可以通过模仿以下方式简单实现
-
-增
-
-1、文件方式增加：
-12#OVERWRITE 表示覆盖，不写则是appendLOAD DATA INPATH '/user/upload/3.csv' [OVERWRITE] INTO TABLE ods_sap_hr.bic_a100 PARTITION (inc_month=201907);
-
-2、insert into 方式
-12#OVERWRITE 表示覆盖，不写则是appendin...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/27</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "hive">hive</a>
     
 </div>
             
@@ -1251,9 +1267,52 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 34
+        Total : 37
         </div>
         <!-- search  -->
         
@@ -1263,6 +1322,30 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
     
     
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/18</span><a class="archive-post-title" href= "/2020/01/18/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A52/" >通过一次cannal监听问题浅读spring-dada源码及其在es中的应用二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/12</span><a class="archive-post-title" href= "/2020/01/12/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" >通过一次cannal监听问题浅读spring-dada源码及其在es中的应用一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/05</span><a class="archive-post-title" href= "/2020/01/05/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2/" >es的模糊搜索</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
@@ -1460,23 +1543,21 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="mybatis_plus_generator"><span class="iconfont-archer">&#xe606;</span>mybatis_plus_generator</span>
-    
-        <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
-    
-        <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
-    
         <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
-    
-        <span class="sidebar-tag-name" data-tags="nio"><span class="iconfont-archer">&#xe606;</span>nio</span>
-    
-        <span class="sidebar-tag-name" data-tags="socket"><span class="iconfont-archer">&#xe606;</span>socket</span>
     
         <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
     
         <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
     
-        <span class="sidebar-tag-name" data-tags="SpringBoot"><span class="iconfont-archer">&#xe606;</span>SpringBoot</span>
+        <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
+    
+        <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
+    
+        <span class="sidebar-tag-name" data-tags="es"><span class="iconfont-archer">&#xe606;</span>es</span>
+    
+        <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
+    
+        <span class="sidebar-tag-name" data-tags="mybatis_plus_generator"><span class="iconfont-archer">&#xe606;</span>mybatis_plus_generator</span>
     
         <span class="sidebar-tag-name" data-tags="ajax"><span class="iconfont-archer">&#xe606;</span>ajax</span>
     
@@ -1486,7 +1567,9 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
         <span class="sidebar-tag-name" data-tags="源码解读"><span class="iconfont-archer">&#xe606;</span>源码解读</span>
     
-        <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
+        <span class="sidebar-tag-name" data-tags="nio"><span class="iconfont-archer">&#xe606;</span>nio</span>
+    
+        <span class="sidebar-tag-name" data-tags="socket"><span class="iconfont-archer">&#xe606;</span>socket</span>
     
         <span class="sidebar-tag-name" data-tags="hibernate4"><span class="iconfont-archer">&#xe606;</span>hibernate4</span>
     
@@ -1498,13 +1581,17 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
         <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
     
-        <span class="sidebar-tag-name" data-tags="java"><span class="iconfont-archer">&#xe606;</span>java</span>
-    
-        <span class="sidebar-tag-name" data-tags="http"><span class="iconfont-archer">&#xe606;</span>http</span>
+        <span class="sidebar-tag-name" data-tags="SpringBoot"><span class="iconfont-archer">&#xe606;</span>SpringBoot</span>
     
         <span class="sidebar-tag-name" data-tags="js"><span class="iconfont-archer">&#xe606;</span>js</span>
     
+        <span class="sidebar-tag-name" data-tags="java"><span class="iconfont-archer">&#xe606;</span>java</span>
+    
         <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
+    
+        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
+    
+        <span class="sidebar-tag-name" data-tags="http"><span class="iconfont-archer">&#xe606;</span>http</span>
     
         <span class="sidebar-tag-name" data-tags="lambda"><span class="iconfont-archer">&#xe606;</span>lambda</span>
     
@@ -1512,15 +1599,11 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
         <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
     
-        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
+        <span class="sidebar-tag-name" data-tags="codeImpression"><span class="iconfont-archer">&#xe606;</span>codeImpression</span>
     
         <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
     
         <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
-    
-        <span class="sidebar-tag-name" data-tags="codeImpression"><span class="iconfont-archer">&#xe606;</span>codeImpression</span>
-    
-        <span class="sidebar-tag-name" data-tags="Springboot"><span class="iconfont-archer">&#xe606;</span>Springboot</span>
     
         <span class="sidebar-tag-name" data-tags="oracle"><span class="iconfont-archer">&#xe606;</span>oracle</span>
     
@@ -1538,9 +1621,11 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
         <span class="sidebar-tag-name" data-tags="jvm"><span class="iconfont-archer">&#xe606;</span>jvm</span>
     
+        <span class="sidebar-tag-name" data-tags="gc"><span class="iconfont-archer">&#xe606;</span>gc</span>
+    
         <span class="sidebar-tag-name" data-tags="openJDK"><span class="iconfont-archer">&#xe606;</span>openJDK</span>
     
-        <span class="sidebar-tag-name" data-tags="zuul"><span class="iconfont-archer">&#xe606;</span>zuul</span>
+        <span class="sidebar-tag-name" data-tags="Springboot"><span class="iconfont-archer">&#xe606;</span>Springboot</span>
     
         <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
     
@@ -1550,7 +1635,7 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
         <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
     
-        <span class="sidebar-tag-name" data-tags="gc"><span class="iconfont-archer">&#xe606;</span>gc</span>
+        <span class="sidebar-tag-name" data-tags="zuul"><span class="iconfont-archer">&#xe606;</span>zuul</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -1585,15 +1670,15 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="mybatis-plus-generator"><span class="iconfont-archer">&#xe60a;</span>mybatis-plus-generator</span>
-    
-        <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
-    
         <span class="sidebar-category-name" data-categories="多线程"><span class="iconfont-archer">&#xe60a;</span>多线程</span>
     
         <span class="sidebar-category-name" data-categories="threadLocal"><span class="iconfont-archer">&#xe60a;</span>threadLocal</span>
     
-        <span class="sidebar-category-name" data-categories="SpringBoot"><span class="iconfont-archer">&#xe60a;</span>SpringBoot</span>
+        <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
+    
+        <span class="sidebar-category-name" data-categories="es"><span class="iconfont-archer">&#xe60a;</span>es</span>
+    
+        <span class="sidebar-category-name" data-categories="mybatis-plus-generator"><span class="iconfont-archer">&#xe60a;</span>mybatis-plus-generator</span>
     
         <span class="sidebar-category-name" data-categories="ajax"><span class="iconfont-archer">&#xe60a;</span>ajax</span>
     
@@ -1603,19 +1688,19 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
     
+        <span class="sidebar-category-name" data-categories="SpringBoot"><span class="iconfont-archer">&#xe60a;</span>SpringBoot</span>
+    
+        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
+    
         <span class="sidebar-category-name" data-categories="java"><span class="iconfont-archer">&#xe60a;</span>java</span>
     
         <span class="sidebar-category-name" data-categories="lambda"><span class="iconfont-archer">&#xe60a;</span>lambda</span>
     
         <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
     
-        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
-    
-        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
-    
         <span class="sidebar-category-name" data-categories="codeImpression"><span class="iconfont-archer">&#xe60a;</span>codeImpression</span>
     
-        <span class="sidebar-category-name" data-categories="Springboot"><span class="iconfont-archer">&#xe60a;</span>Springboot</span>
+        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
     
         <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
     
@@ -1623,13 +1708,15 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="jvm"><span class="iconfont-archer">&#xe60a;</span>jvm</span>
     
+        <span class="sidebar-category-name" data-categories="gc"><span class="iconfont-archer">&#xe60a;</span>gc</span>
+    
         <span class="sidebar-category-name" data-categories="openJDK"><span class="iconfont-archer">&#xe60a;</span>openJDK</span>
     
-        <span class="sidebar-category-name" data-categories="zuul"><span class="iconfont-archer">&#xe60a;</span>zuul</span>
+        <span class="sidebar-category-name" data-categories="Springboot"><span class="iconfont-archer">&#xe60a;</span>Springboot</span>
     
         <span class="sidebar-category-name" data-categories="JMM"><span class="iconfont-archer">&#xe60a;</span>JMM</span>
     
-        <span class="sidebar-category-name" data-categories="gc"><span class="iconfont-archer">&#xe60a;</span>gc</span>
+        <span class="sidebar-category-name" data-categories="zuul"><span class="iconfont-archer">&#xe60a;</span>zuul</span>
     
         <span class="sidebar-category-name" data-categories="gc/jvm"><span class="iconfont-archer">&#xe60a;</span>gc/jvm</span>
     

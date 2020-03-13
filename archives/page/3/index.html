@@ -346,6 +346,109 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/29/hibernate%E6%8C%81%E4%B9%85%E5%8C%96%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0%E7%9A%84%E5%9D%91/" >
+            
+                <span>hibernate自动更新的坑</span>
+        </a>
+        <div class="abstract-content">
+            昨天自己负责的一个系统的生产环境出现了一个神奇的BUG：
+123456789101112131415161718192021[2019-08-29 19:54:27.819] [ERROR] [org.hibernate.engine.jdbc.batch.internal.BatchingBatch.performExecution(BatchingBatch.java:137)] [qtp1165897474-48619] : HHH000315: Exception executing batch [Batch update returned unexpected row coun...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/29</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "hibernate">hibernate</a>
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "源码解析">源码解析</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/28/springBoot%E8%87%AA%E5%AE%9A%E4%B9%89Controller%E7%9A%84%E8%B7%AF%E5%BE%84/" >
+            
+                <span>springBoot自定义Controller的路径</span>
+        </a>
+        <div class="abstract-content">
+            今天手工重新搭建springboot的时候发现一个以前遗漏的知识点：
+Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接体现了springboot约定大于配置的做法，如果我们需要自定义springboot的扫描路径，需要在启动类上加入如下注解：
+1@ComponentScan(basePackages = &#123;"项目路径"&#125;)
+
+和spring很像哦~
+
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/28</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "springBoot">springBoot</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/27/hive%E5%AF%B9%E8%A1%A8%E7%9A%84%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9/" >
+            
+                <span>hive对表的增删改</span>
+        </a>
+        <div class="abstract-content">
+            Hive 是针对数据仓库应用设计的，而数据仓库的内容是读多写少的。因此，Hive大部分情况下是不支持对数据的改写和添加，日常开发中如果需要真的对数据进行增删改，都可以通过模仿以下方式简单实现
+
+增
+
+1、文件方式增加：
+12#OVERWRITE 表示覆盖，不写则是appendLOAD DATA INPATH '/user/upload/3.csv' [OVERWRITE] INTO TABLE ods_sap_hr.bic_a100 PARTITION (inc_month=201907);
+
+2、insert into 方式
+12#OVERWRITE 表示覆盖，不写则是appendin...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/27</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "hive">hive</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/23/ThreadLocal%E5%86%85%E7%9A%84%E5%B0%8F%E7%A7%98%E5%AF%86-%E5%B7%A7%E5%A6%99%E9%99%8D%E4%BD%8E%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E9%A3%8E%E9%99%A9/" >
             
                 <span>ThreadLocal内的小秘密-巧妙降低内存泄露风险</span>
@@ -450,9 +553,9 @@ hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册�
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "源码解读">源码解读</a>
-    
         <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "spring">spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "源码解读">源码解读</a>
     
         <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "hibernate4">hibernate4</a>
     
@@ -609,113 +712,6 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
         <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "ElasticSearch">ElasticSearch</a>
     
         <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "Oracle">Oracle</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/06/24/mybatis%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83/" >
-            
-                <span>mybatis字符串比较</span>
-        </a>
-        <div class="abstract-content">
-            在mybatis的mapping内进行字符串比较应该使用以下方法:
-&lt;if test=&#39;type==&quot;y&quot;&#39;&gt;  
-    and status = 1   
-&lt;/if&gt;
-或者
-&lt;if test=&quot;type == &#39;y&#39;.toString()&quot;&gt;  
-    and status = 1   
-&lt;/if&gt;
-不能使用这种写法&lt;if test=&quot;type == &#39;y&#39;&quot;&gt;，因为tset内是ognl表达式，’Y’在java内被认...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/06/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "mybatis">mybatis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "字符串比较">字符串比较</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/05/22/mybatis-placeholder/" >
-            
-                <span>mybatis占位符的区别</span>
-        </a>
-        <div class="abstract-content">
-            ​        mybatis占位符分为#{}和${}
-​        #{}是利用jdbc的预编译（PreparedStatement），一个#{}会被解析为一个占位符？。它可以指定变量的类型，比如：#{empCode,jdbcType=VARCHAR}或#{year,jdbcType=DECIMAL}，
-​        ${}是一个纯粹的String替换，把变量的值直接替换在当前位置
-​        比如：    select emp_id from user where code=#{code,jdbcType=VARCHAR}在log内打印出来为sql为：Preparin...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/05/22</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "mybatis">mybatis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "sql注入">sql注入</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/05/13/ORA-01722%20invalid%20number/" >
-            
-                <span>ORA-01722 invalid number</span>
-        </a>
-        <div class="abstract-content">
-             ORA-01722: invalid number最常见的原因就是因为我们在条件筛选时写了文本格式的（varchar2）字段与数字进行对比，Oracle的字段类型隐式转换调用了to_number函数，当字段内有非数字的值时，就会报这个错误。比如下面两个sql:    
-1select * from TM_hrmis_USER U WHERE  U.EMP_CODE=592876
-
-1select * from TM_hrmis_USER U WHERE  U.EMP_CODE=592876 and u.emp_name='592876'
-
-​        首先emp_code这个字段...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/05/13</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "ORACLE">ORACLE</a>
     
 </div>
             
@@ -1229,9 +1225,52 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 34
+        Total : 37
         </div>
         <!-- search  -->
         
@@ -1241,6 +1280,30 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
     
     
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/18</span><a class="archive-post-title" href= "/2020/01/18/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A52/" >通过一次cannal监听问题浅读spring-dada源码及其在es中的应用二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/12</span><a class="archive-post-title" href= "/2020/01/12/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" >通过一次cannal监听问题浅读spring-dada源码及其在es中的应用一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/05</span><a class="archive-post-title" href= "/2020/01/05/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2/" >es的模糊搜索</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
@@ -1438,23 +1501,21 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="mybatis_plus_generator"><span class="iconfont-archer">&#xe606;</span>mybatis_plus_generator</span>
-    
-        <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
-    
-        <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
-    
         <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
-    
-        <span class="sidebar-tag-name" data-tags="nio"><span class="iconfont-archer">&#xe606;</span>nio</span>
-    
-        <span class="sidebar-tag-name" data-tags="socket"><span class="iconfont-archer">&#xe606;</span>socket</span>
     
         <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
     
         <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
     
-        <span class="sidebar-tag-name" data-tags="SpringBoot"><span class="iconfont-archer">&#xe606;</span>SpringBoot</span>
+        <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
+    
+        <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
+    
+        <span class="sidebar-tag-name" data-tags="es"><span class="iconfont-archer">&#xe606;</span>es</span>
+    
+        <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
+    
+        <span class="sidebar-tag-name" data-tags="mybatis_plus_generator"><span class="iconfont-archer">&#xe606;</span>mybatis_plus_generator</span>
     
         <span class="sidebar-tag-name" data-tags="ajax"><span class="iconfont-archer">&#xe606;</span>ajax</span>
     
@@ -1464,7 +1525,9 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
         <span class="sidebar-tag-name" data-tags="源码解读"><span class="iconfont-archer">&#xe606;</span>源码解读</span>
     
-        <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
+        <span class="sidebar-tag-name" data-tags="nio"><span class="iconfont-archer">&#xe606;</span>nio</span>
+    
+        <span class="sidebar-tag-name" data-tags="socket"><span class="iconfont-archer">&#xe606;</span>socket</span>
     
         <span class="sidebar-tag-name" data-tags="hibernate4"><span class="iconfont-archer">&#xe606;</span>hibernate4</span>
     
@@ -1476,13 +1539,17 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
         <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
     
-        <span class="sidebar-tag-name" data-tags="java"><span class="iconfont-archer">&#xe606;</span>java</span>
-    
-        <span class="sidebar-tag-name" data-tags="http"><span class="iconfont-archer">&#xe606;</span>http</span>
+        <span class="sidebar-tag-name" data-tags="SpringBoot"><span class="iconfont-archer">&#xe606;</span>SpringBoot</span>
     
         <span class="sidebar-tag-name" data-tags="js"><span class="iconfont-archer">&#xe606;</span>js</span>
     
+        <span class="sidebar-tag-name" data-tags="java"><span class="iconfont-archer">&#xe606;</span>java</span>
+    
         <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
+    
+        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
+    
+        <span class="sidebar-tag-name" data-tags="http"><span class="iconfont-archer">&#xe606;</span>http</span>
     
         <span class="sidebar-tag-name" data-tags="lambda"><span class="iconfont-archer">&#xe606;</span>lambda</span>
     
@@ -1490,15 +1557,11 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
         <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
     
-        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
+        <span class="sidebar-tag-name" data-tags="codeImpression"><span class="iconfont-archer">&#xe606;</span>codeImpression</span>
     
         <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
     
         <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
-    
-        <span class="sidebar-tag-name" data-tags="codeImpression"><span class="iconfont-archer">&#xe606;</span>codeImpression</span>
-    
-        <span class="sidebar-tag-name" data-tags="Springboot"><span class="iconfont-archer">&#xe606;</span>Springboot</span>
     
         <span class="sidebar-tag-name" data-tags="oracle"><span class="iconfont-archer">&#xe606;</span>oracle</span>
     
@@ -1516,9 +1579,11 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
         <span class="sidebar-tag-name" data-tags="jvm"><span class="iconfont-archer">&#xe606;</span>jvm</span>
     
+        <span class="sidebar-tag-name" data-tags="gc"><span class="iconfont-archer">&#xe606;</span>gc</span>
+    
         <span class="sidebar-tag-name" data-tags="openJDK"><span class="iconfont-archer">&#xe606;</span>openJDK</span>
     
-        <span class="sidebar-tag-name" data-tags="zuul"><span class="iconfont-archer">&#xe606;</span>zuul</span>
+        <span class="sidebar-tag-name" data-tags="Springboot"><span class="iconfont-archer">&#xe606;</span>Springboot</span>
     
         <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
     
@@ -1528,7 +1593,7 @@ CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目�
     
         <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
     
-        <span class="sidebar-tag-name" data-tags="gc"><span class="iconfont-archer">&#xe606;</span>gc</span>
+        <span class="sidebar-tag-name" data-tags="zuul"><span class="iconfont-archer">&#xe606;</span>zuul</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -1563,15 +1628,15 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="mybatis-plus-generator"><span class="iconfont-archer">&#xe60a;</span>mybatis-plus-generator</span>
-    
-        <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
-    
         <span class="sidebar-category-name" data-categories="多线程"><span class="iconfont-archer">&#xe60a;</span>多线程</span>
     
         <span class="sidebar-category-name" data-categories="threadLocal"><span class="iconfont-archer">&#xe60a;</span>threadLocal</span>
     
-        <span class="sidebar-category-name" data-categories="SpringBoot"><span class="iconfont-archer">&#xe60a;</span>SpringBoot</span>
+        <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
+    
+        <span class="sidebar-category-name" data-categories="es"><span class="iconfont-archer">&#xe60a;</span>es</span>
+    
+        <span class="sidebar-category-name" data-categories="mybatis-plus-generator"><span class="iconfont-archer">&#xe60a;</span>mybatis-plus-generator</span>
     
         <span class="sidebar-category-name" data-categories="ajax"><span class="iconfont-archer">&#xe60a;</span>ajax</span>
     
@@ -1581,19 +1646,19 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
     
+        <span class="sidebar-category-name" data-categories="SpringBoot"><span class="iconfont-archer">&#xe60a;</span>SpringBoot</span>
+    
+        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
+    
         <span class="sidebar-category-name" data-categories="java"><span class="iconfont-archer">&#xe60a;</span>java</span>
     
         <span class="sidebar-category-name" data-categories="lambda"><span class="iconfont-archer">&#xe60a;</span>lambda</span>
     
         <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
     
-        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
-    
-        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
-    
         <span class="sidebar-category-name" data-categories="codeImpression"><span class="iconfont-archer">&#xe60a;</span>codeImpression</span>
     
-        <span class="sidebar-category-name" data-categories="Springboot"><span class="iconfont-archer">&#xe60a;</span>Springboot</span>
+        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
     
         <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
     
@@ -1601,13 +1666,15 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="jvm"><span class="iconfont-archer">&#xe60a;</span>jvm</span>
     
+        <span class="sidebar-category-name" data-categories="gc"><span class="iconfont-archer">&#xe60a;</span>gc</span>
+    
         <span class="sidebar-category-name" data-categories="openJDK"><span class="iconfont-archer">&#xe60a;</span>openJDK</span>
     
-        <span class="sidebar-category-name" data-categories="zuul"><span class="iconfont-archer">&#xe60a;</span>zuul</span>
+        <span class="sidebar-category-name" data-categories="Springboot"><span class="iconfont-archer">&#xe60a;</span>Springboot</span>
     
         <span class="sidebar-category-name" data-categories="JMM"><span class="iconfont-archer">&#xe60a;</span>JMM</span>
     
-        <span class="sidebar-category-name" data-categories="gc"><span class="iconfont-archer">&#xe60a;</span>gc</span>
+        <span class="sidebar-category-name" data-categories="zuul"><span class="iconfont-archer">&#xe60a;</span>zuul</span>
     
         <span class="sidebar-category-name" data-categories="gc/jvm"><span class="iconfont-archer">&#xe60a;</span>gc/jvm</span>
     
