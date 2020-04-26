@@ -346,28 +346,27 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/09/DDD/" >
+        <a class="abstract-title" href = "/2020/01/18/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A52/" >
             
-                <span>mybatis_plus_generator with DDD</span>
+                <span>通过一次cannal监听问题浅读spring-data源码及其在es中的应用二</span>
         </a>
         <div class="abstract-content">
-            写在前面​    随着项目越来越庞大，MVC的传统web架构已经出现了弊端，就算是分了微服务，项目中的各个模块间也不可避免的出现了各种复杂的关系与调用，可能改动一个小地方，将会牵一发而动全身。
-​    所以公司开始大力推广DDD领域模型设计，经过几天的学习和上手，自己简单的根据mybatis-generator写了个可以生成关于javaWeb的DDD模型的工具类（并且可以轻松切换生成代码的type，MVC或者DDD）
-正文代码地址为： https://github.com/styyt/mybatis-generator-plus-ddd 
-生成的结构大致为：
-模型服务内调用过程为：
-​...
+            接上文​    可以看到queries在new的时候初始化，将repository中需要代理的方法和具体实现类也就是RepositoryQuery实现类放入其中，然后再拦截器中判断并执行实现的方法即：
+
+123456789101112131415161718192021222324252627282930313233343536//org.springframework.data.elasticsearch.repository.query.ElasticsearchPartQuery#executepublic Object execute(Object[] parameters) &...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/09</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/18</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "mybatis_plus_generator">mybatis_plus_generator</a>
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "es">es</a>
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "spring">spring</a>
     
 </div>
             
@@ -380,44 +379,30 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/02/URL/" >
+        <a class="abstract-title" href = "/2020/01/12/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" >
             
-                <span>SpringBoot启动报Failed to retrieve application JMX service URL</span>
+                <span>通过一次cannal监听问题浅读spring-data源码及其在es中的应用一</span>
         </a>
         <div class="abstract-content">
-            背景最近将项目切换到IDEA上，SpringBoot启动报如下错误：
+            写在前面​    系统需要与其他系统对接，并用到其他系统数据，但是其他系统又很难改造，所以使用canal来对其他系统数据库进行监控，并将变更的信息写入es，项目中使用spring-data-es的组件与es进行交互
+问题​    在测试环境突然报了一个很奇怪的错误
+​    
+解决​    经过分析异常堆栈，发现是因为用了spring-data的ElasticsearchRepository查询组件引起的，我们一步步来看，先看调用的地方
 
-经过长时间分析和排查，终于解决了此问题。
-解决思路和过程首先看到报错信息指的是jmx连接失败，自己猜测可能有以下几种可能
-
-jmx服务没有启动
-IDEA配置有问题
-IDEA用java发送的请求被防火墙或者其他安全设备阻拦
-
-那么依次进行问题排查
-
-把程序搬到eclipse，启动本应用，发现可以正常启动，so排除了第一种可能
-
-在IDEA上用mvn package打包成jar包，然后再手动启动该jar包
-
-发现可以正常启动，so排除第二种可能
-
-使用管理员身份运行IDEA
-
-再重新启动
-
-成功了！果然是因为权限的问题！...
+​    神奇的地方就在这里，我们不需要写任何逻辑代码，spring就帮我们实现了es的查询，这就归功于spring-data组件的功能了，缺点就是排...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/02</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/12</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "SpringBoot">SpringBoot</a>
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "es">es</a>
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "spring">spring</a>
     
 </div>
             
@@ -430,160 +415,33 @@ IDEA用java发送的请求被防火墙或者其他安全设备阻拦
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/26/volatile-item-2/" >
+        <a class="abstract-title" href = "/2020/01/05/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2/" >
             
-                <span>再从volatile第二个特性看JVM内存模型(JMM)</span>
+                <span>es的模糊搜索</span>
         </a>
         <div class="abstract-content">
-            上一篇文章我们从volatile第一个特性浅析了JMM（JVM内存模型）及其在JVM中的实现，这篇文章我们从其第二个特性继续深入分析JVM的内存模型，当然本文依然假设大家已经了解了java基础知识和JVM的内存结构。
-先来回忆下的volatile的第二个特性
-1屏蔽指令重排序：指令重排序是编译器和处理器为了高效对程序进行优化的手段，它只能保证程序执行的结果时正确的，但是无法保证程序的操作顺序与代码顺序一致。这在单线程中不会构成问题，但是在多线程中就会出现问题。非常经典的例子是在单例方法中同时对字段加入volatile，就是为了防止指令重排序。
+            写在前面最近新的项目中用到了大量的es，作为es方面的新手，逐渐熟悉es的DSL、analyzer、search等等，所以记录一下，加深自己的理解
+理解es的模糊搜索首先理解搜索分词和存储分词
 
-示例代码老规矩，先上代码，这次还是拿单例模...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/26</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "volatile">volatile</a>
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "jvm">jvm</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/16/volidateandjvm1/" >
-            
-                <span>从volatile第一个特性看JVM内存模型(JMM)</span>
-        </a>
-        <div class="abstract-content">
-            写在前面volatile两大特性
-保证变量的可见性：当一个被volatile关键字修饰的变量被一个线程修改的时候，其他线程可以立刻得到修改之后的结果。当一个线程向被volatile关键字修饰的变量写入数据的时候，虚拟机会强制它被值刷新到主内存中。当一个线程用到被volatile关键字修饰的值的时候，虚拟机会强制要求它从主内存中读取。
-屏蔽指令重排序：指令重排序是编译器和处理器为了高效对程序进行优化的手段，它只能保证程序执行的结果时正确的，但是无法保证程序的操作顺序与代码顺序一致。这在单线程中不会构成问题，但是在多线程中就会出现问题。非常经典的例子是在单例方法中同时对字段加入volatil...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/16</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "JVM">JVM</a>
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "JMM">JMM</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/07/jvmGcRecycler%E6%B5%85%E6%9E%90/" >
-            
-                <span>再度浅析jvm的四种垃圾收集器</span>
-        </a>
-        <div class="abstract-content">
-            写在前面在之前的文章中写到了jvm的垃圾回收器（收集器），所以这里主要是根据实际的小例子来浅析各个垃圾回收器的特点
-先贴出本次测试的测试代码
-12345678910111213141516171819202122232425262728293031323334package gc;import java.util.ArrayList;import java.util.HashMap;import java.util.List;import java.util.Map;import java.util.Random;public class SimpleTest &#123;	public...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/07</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "jvm">jvm</a>
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "gc">gc</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/28/programming/" >
-            
-                <span>浅论战术编程tactical programming与战略编程strategic programming</span>
-        </a>
-        <div class="abstract-content">
-            一个栗子自己前几天接收到一个需求，需求想要实现的功能十分简单：就是在某个表单内增加一个必填的下拉框，以提醒用户不要忘记做某一个动作（也许这就是表单设计太过简易的缺点吧@_@）。然后我就简单写了个功能设计文档，遂安排一名同学去完成这个工作。
-第二天我去查看完成效果，这位同学笑嘻嘻的说这么简单的功能我已经开发、自测完毕了，准备测试和上线了。我很满意，让他给我演示了下。嗯。不错。
-准备部署测试环境，突然发现他在confluence上传了份DB，我惊了，打开一看，DDL脚本在业务数据表内也新增了一个字段用来保存新增的下拉框用户所选的值。这个DDL完全是画蛇添足，造成的影响就是：原来仅仅只是修改前...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/28</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "codeImpression">codeImpression</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/20/NIO%E4%B9%8BSocketChannel%E5%B0%8F%E5%AE%9E%E8%B7%B5-%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8Fmin%E7%89%88/" >
-            
-                <span>NIO之SocketChannel小实践-聊天程序mini版</span>
-        </a>
-        <div class="abstract-content">
-            想起之前研究java的nio时候，发现自己大学时用的socket在nio上有一个实现：SocketChannel，所以很感兴趣的一边学一边尝试，写了个很简单的几百行小程序，模仿现实中的（一server对多client）聊天，话不多说直接上代码和实现效果,可以看到，得力于nio，server程序一个线程就可以同时处理多个client的socket连接
+搜索分词指的是match类查询，比如match、match_phrase，同时我们可以指定分词器，term类查询是不分词查询,比如term、terms
 
-Server.java
-123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585...
+存储分词es的text（2.x的string）类型字段存储，同搜索分词我们也可以利用不同的分词器来优化我们的搜索逻辑，比如默认的standard、ik等等
+
+存储不分词，在es2.x和5.x有不同的做法
+
+2.x
+由于2.x中没有text和ke...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/20</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/05</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "nio">nio</a>
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "socket">socket</a>
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "es">es</a>
     
 </div>
             
@@ -596,24 +454,26 @@ Server.java
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/16/Thread-join%E4%BC%9A%E9%87%8A%E6%94%BE%E9%94%81%E5%90%97/" >
+        <a class="abstract-title" href = "/2019/12/28/%E7%BC%96%E8%AF%91openJDK%E4%B9%8Bc%E7%BC%96%E8%AF%91%E5%99%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E8%A7%A3%E5%86%B3/" >
             
-                <span>Thread.join会释放锁吗?释放的是什么锁?会死锁吗?</span>
+                <span>windows编译openJDK之c编译器找不到解决</span>
         </a>
         <div class="abstract-content">
-            答案当然是会，问题的关键是释放的什么锁呢？，我们先来看看join方法的源码
-1234567891011121314151617181920212223242526272829303132//比如我们在thread1（下面简称t1）中调用了thread2（下面简称t2）.join()方法，t2.join(0)方法//注意方法被synchronized修饰，所以t1中获取了t2的对象锁public final synchronized void join(long millis)    //默认0，不超时    throws InterruptedException &#123;      ...
+            写在前面为什么单独列出来这个问题呢？是因为其他问题网上都有很多类似的示例和解决方法，比如Cygwin 版本不对，包不对等等，这些我就不再写了。
+c编译器找不到的问题花了我很多时间去找资料，功夫不负有心人，让我找到了结局方法，所以写下来记录。
+问题按照之前的流程安装好所必需的环境：cygwin 、VS2010、freeType 2.7后，开始对openJDK进行编译。
+12cd /cygdrive/c/openJDK8/jdk8ubash ./configure --with-freetype=/cygdrive/c/openJDK8/freetype-2.10.1 --with-boot...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/16</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/28</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "多线程">多线程</a>
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "openJDK">openJDK</a>
     
 </div>
             
@@ -626,64 +486,218 @@ Server.java
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/14/%E5%8D%87%E7%BA%A71.8%E5%AF%B9gc%E7%9A%84%E5%BD%B1%E5%93%8D/" >
+        <a class="abstract-title" href = "/2019/12/21/%E7%BC%96%E8%AF%91openJdk%E4%B9%8B%E4%BA%8C/" >
             
-                <span>浅析升级jdk8对jvm/GC（HotSpot）的影响</span>
+                <span>windows编译openJdk之二-freeType+VS+jdk</span>
         </a>
         <div class="abstract-content">
-            jvm内存结构变化
-不变点
-1、堆—–堆是所有线程共享的，主要用来存储对象。其中，堆可分为：年轻代和老年代两块区域，
-​        老年代与年轻代比例使用NewRatio参数来设定比例。比如： –XX:NewRatio=2表示新生代 ( Young ) 与老年代 ( Old ) 的比例的值为 1:2 ，这也是jdk8的默认比例，也就是老年代 ( Old ) = 2/3 的堆空间大小。
-​        对于年轻代，一个Eden区和两个Suvivor区（from，to），使用参数SuvivorRatio来设定大小，比如：
-–XX:SurvivorRatio=8表示Edem : from...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/14</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "jvm">jvm</a>
-    
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "gc">gc</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/01/mybatis%E7%9A%84mapper%E6%B3%A8%E5%85%A5%E6%96%B9%E5%BC%8F%E7%A0%94%E7%A9%B6/" >
-            
-                <span>mybatis-spring的mapper注入方式浅谈</span>
-        </a>
-        <div class="abstract-content">
-            众所周知，Spring注入bean时都是将可实例化对象注入。但是我们在写myabtis时却从来没有写过它的mapper实现类，仅仅是写了一个接口就可以在service层使用这个bean，这是为什么呢？我们可以先看下spring最终给我们注入到mapperBean的是什么类呢？
+            安装openJDK下载官方下载地址：http://jdk.java.net/java-se-ri/8
+
+freeType
+freeType最好下载已经编译好的，下载后解压至和openJDK同一目录下
+下载地址：https://codeload.github.com/ubawurinna/freetype-windows-binaries/zip/master
 
 
-果然，它注入的是mybatis代理类：MapperProxy，那么这个实例是什么时候注入进入bean工厂的呢？我们继续往下看：
-找问题从源头找，首先mybatis是怎么知道哪些mapper并且知道去哪里扫描呢？没错就是通过以下三种方式：
-12345678//第一种注解方式，如@MapperScan("com.d...
+
+Visual Studio 2010 Compliers安装
+根据指导手册，OpenJDK Windows构建需要VS2010专业版编译器。编译器以及其它工具的安装位置希望由变量VS100COMNTOOLS定义，这个会由Mic...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/01</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/21</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "mybatis">mybatis</a>
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "openJDK">openJDK</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/13/%E7%BC%96%E8%AF%91openJdk%E4%B9%8BCygWin%E7%9A%84%E5%AE%89%E8%A3%85/" >
+            
+                <span>windows编译openJdk之一-CYGWIN</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近在学习JVM，就接触到JDK的源码，传统的ORACLEJDK也就是JDK没有被开源，而OpenJDK是JDK的开放源码版本，以GPL协议的形式发布，适用于商业和个人。
+准备openJDK编译环境，第一步就是要去安装个CYGWIN，用来在windows下模拟linux运行环境。
+JDK和OpenJDK的区别，可以归纳为以下几点：
+授权协议的不同： 
+OpenJDK采用GPL V2协议发布，而JDK则采用JRL协议发布。两个协议虽然都是开放源代码的，但是在使用上的不同在于GPL V2允许在商业上使用，而JRL只允许个人研究使用。 
+
+OpenJDK只包含最精简的JDK： 
+Ope...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/13</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "openJDK">openJDK</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/07/java%E7%9A%84okhttp%E5%86%8D%E5%B0%81%E8%A3%85/" >
+            
+                <span>java的okhttp再封装</span>
+        </a>
+        <div class="abstract-content">
+            写在前面java生态中有很多对http封装的组件，比如原生的 HttpURLConnection 或者apache的 HTTPClient、spring cloud中的RestTemplate和Feign等。
+其中： 
+
+HttpURLConnection 和HttpClient：代码复杂，还得操心资源回收等。代码很复杂，冗余代码多，不建议直接使用。 
+RestTemplate和Feign主要是访问restful服务，其他非restful会很复杂。
+
+所以项目中对于非restful服务，使用了okhttp，OkHttp是一款优秀的HTTP框架，它支持get请求和post请求，支持基于Ht...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/07</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "java">java</a>
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "http">http</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/30/lambda%E4%B8%AD%E7%9A%84%E5%8F%97%E6%A3%80%E6%9F%A5%E5%BC%82%E5%B8%B8/" >
+            
+                <span>lambda中的受检查异常</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近开始尝试使用lambda表达式，使用起来感觉代码写起来速度快了很多，也整洁了不少。但是lambda表达式也有多坑，比如隐晦难懂，debug困难等等。今天就遇到了一个问题：lambda无法抛出受检查异常。
+正文
+场景
+我们都知道java异常分为：受检查异常（Checked Exception）跟非受检异常（UnChecked Exception）
+受检异常表示代码中必须显示的处理该异常，比如try-catch或者在方法声明上加入throws关键字把异常向上抛出。
+非受检异常也被称作运行时异常，就像我们常用的RuntimeException，表示代码中可以不进行处理，直白点说就是...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/30</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "lambda">lambda</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/23/springboot-test/" >
+            
+                <span>Springboot test</span>
+        </a>
+        <div class="abstract-content">
+            写在前面之为什么要写测试用例
+可以避免测试点的遗漏，为了更好的进行测试，可以提高测试效率 
+可以自动测试，可以在项目打包前进行测试校验 
+可以及时发现因为修改代码导致新的问题的出现，并及时解决 
+
+这是TDD中最重要的一环。
+正文在springboot中引入springboot-test需要以下几个步骤：
+
+pom中引入 spring-boot-starter-test
+
+如果需要打包是不运行test，则可以再pom中加入如下配置
+12345678&lt;!--打包跳过测试--&gt;&lt;plugin&gt;    &lt;groupId&gt;org.apache.maven.pl...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/23</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "Springboot">Springboot</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/16/zuul%E8%BD%AC%E5%8F%91%E8%AF%B7%E6%B1%82%E5%90%8E%E5%89%8D%E7%BC%80%E9%97%AE%E9%A2%98/" >
+            
+                <span>zuul转发请求后前缀问题</span>
+        </a>
+        <div class="abstract-content">
+            示例zuul作为springcloud的网关使用路由功能是，会默认把路由的前缀去掉
+比如路由前：http://127.0.0.1:8181/api/demo/list 
+路由后为： http://192.168.1.100:8080/demo/list
+如果我们需要让他不去掉api这个前缀,那么需要在对应路由上加上该属性： strip-prefix: false 
+源码解析首先我们从最开始加载zuul说起
+
+@EnableZuulProxy
+最开始的配置日入口是这里
+123456EnableCircuitBreaker@Target(&#123;ElementType.TYPE&#125...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/16</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "源码解析">源码解析</a>
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "zuul">zuul</a>
     
 </div>
             
@@ -693,7 +707,7 @@ Server.java
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/">&amp;#60; PREV</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="page-number" href="/archives/page/4/">4</a><a class="extend next" rel="next" href="/archives/page/3/">NEXT &amp;#62;</a>
+        <a class="extend prev" rel="prev" href="/archives/">&amp;#60; PREV</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="page-number" href="/archives/page/4/">4</a><a class="page-number" href="/archives/page/5/">5</a><a class="extend next" rel="next" href="/archives/page/3/">NEXT &amp;#62;</a>
     </nav>
     
 </main>
@@ -1240,9 +1254,171 @@ Server.java
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 37
+        Total : 47
         </div>
         <!-- search  -->
         
@@ -1258,12 +1434,62 @@ Server.java
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">01/18</span><a class="archive-post-title" href= "/2020/01/18/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A52/" >通过一次cannal监听问题浅读spring-dada源码及其在es中的应用二</a>
+            <span class="archive-post-date">03/29</span><a class="archive-post-title" href= "/2020/03/29/%E5%85%B3%E4%BA%8Elocale%E5%92%8CResourceBundle%E8%B8%A9%E7%9A%84%E5%9D%91/" >关于Locale和ResourceBundle踩的坑</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">01/12</span><a class="archive-post-title" href= "/2020/01/12/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" >通过一次cannal监听问题浅读spring-dada源码及其在es中的应用一</a>
+            <span class="archive-post-date">03/21</span><a class="archive-post-title" href= "/2020/03/21/%E9%AB%98%E5%B9%B6%E5%8F%91%E4%B8%8B%E4%BD%BF%E7%94%A8java%E6%9B%B4%E6%96%B0es%E5%90%8C%E4%B8%80%E6%9D%A1%E8%AE%B0%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%8E%A2%E7%B4%A2%E4%BA%8C/" >高并发下使用java更新es同一条记录的问题及解决方案探索二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/14</span><a class="archive-post-title" href= "/2020/03/14/%E9%AB%98%E5%B9%B6%E5%8F%91%E4%B8%8B%E4%BD%BF%E7%94%A8java%E6%9B%B4%E6%96%B0es%E5%90%8C%E4%B8%80%E6%9D%A1%E8%AE%B0%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%8E%A2%E7%B4%A2/" >高并发下使用java更新es同一条记录的问题及解决方案探索一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/07</span><a class="archive-post-title" href= "/2020/03/07/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E5%9B%9B/" >spring-data-es抽象service集成简单增删查改之四</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/29</span><a class="archive-post-title" href= "/2020/02/29/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E4%B8%89/" >spring-data-es抽象service集成简单增删查改之三</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/22</span><a class="archive-post-title" href= "/2020/02/22/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E4%BA%8C/" >spring-data-es抽象service集成简单增删查改之二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/16</span><a class="archive-post-title" href= "/2020/02/16/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9/" >spring-data-es抽象service集成简单增删查改之一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/08</span><a class="archive-post-title" href= "/2020/02/08/FeignRequestInterceptor%E7%A4%BA%E4%BE%8B/" >FeignRequestInterceptor示例</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/02</span><a class="archive-post-title" href= "/2020/02/02/es%E4%BF%AE%E6%94%B9%E7%B4%A2%E5%BC%95%E4%B8%ADmapping%E7%9A%84%E7%B1%BB%E5%9E%8B/" >es修改索引中mapping的类型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/25</span><a class="archive-post-title" href= "/2020/01/25/idea%E4%B9%8BCommandLineIsTooLong/" >idea之CommandLineIsTooLong问题解决</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/18</span><a class="archive-post-title" href= "/2020/01/18/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A52/" >通过一次cannal监听问题浅读spring-data源码及其在es中的应用二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/12</span><a class="archive-post-title" href= "/2020/01/12/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" >通过一次cannal监听问题浅读spring-data源码及其在es中的应用一</a>
         </li>
     
     
@@ -1473,11 +1699,9 @@ Server.java
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
+        <span class="sidebar-tag-name" data-tags="mybatis_plus_generator"><span class="iconfont-archer">&#xe606;</span>mybatis_plus_generator</span>
     
-        <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
-    
-        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
+        <span class="sidebar-tag-name" data-tags="feign"><span class="iconfont-archer">&#xe606;</span>feign</span>
     
         <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
     
@@ -1487,9 +1711,19 @@ Server.java
     
         <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
     
-        <span class="sidebar-tag-name" data-tags="mybatis_plus_generator"><span class="iconfont-archer">&#xe606;</span>mybatis_plus_generator</span>
+        <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
+    
+        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
     
         <span class="sidebar-tag-name" data-tags="ajax"><span class="iconfont-archer">&#xe606;</span>ajax</span>
+    
+        <span class="sidebar-tag-name" data-tags="nio"><span class="iconfont-archer">&#xe606;</span>nio</span>
+    
+        <span class="sidebar-tag-name" data-tags="socket"><span class="iconfont-archer">&#xe606;</span>socket</span>
+    
+        <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
+    
+        <span class="sidebar-tag-name" data-tags="SpringBoot"><span class="iconfont-archer">&#xe606;</span>SpringBoot</span>
     
         <span class="sidebar-tag-name" data-tags="springMVC"><span class="iconfont-archer">&#xe606;</span>springMVC</span>
     
@@ -1497,45 +1731,41 @@ Server.java
     
         <span class="sidebar-tag-name" data-tags="源码解读"><span class="iconfont-archer">&#xe606;</span>源码解读</span>
     
-        <span class="sidebar-tag-name" data-tags="nio"><span class="iconfont-archer">&#xe606;</span>nio</span>
-    
-        <span class="sidebar-tag-name" data-tags="socket"><span class="iconfont-archer">&#xe606;</span>socket</span>
-    
         <span class="sidebar-tag-name" data-tags="hibernate4"><span class="iconfont-archer">&#xe606;</span>hibernate4</span>
     
         <span class="sidebar-tag-name" data-tags="设计模式"><span class="iconfont-archer">&#xe606;</span>设计模式</span>
-    
-        <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
     
         <span class="sidebar-tag-name" data-tags="hibernate"><span class="iconfont-archer">&#xe606;</span>hibernate</span>
     
         <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
     
-        <span class="sidebar-tag-name" data-tags="SpringBoot"><span class="iconfont-archer">&#xe606;</span>SpringBoot</span>
+        <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
     
-        <span class="sidebar-tag-name" data-tags="js"><span class="iconfont-archer">&#xe606;</span>js</span>
+        <span class="sidebar-tag-name" data-tags="idea"><span class="iconfont-archer">&#xe606;</span>idea</span>
     
         <span class="sidebar-tag-name" data-tags="java"><span class="iconfont-archer">&#xe606;</span>java</span>
     
+        <span class="sidebar-tag-name" data-tags="http"><span class="iconfont-archer">&#xe606;</span>http</span>
+    
+        <span class="sidebar-tag-name" data-tags="js"><span class="iconfont-archer">&#xe606;</span>js</span>
+    
         <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
     
-        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
+        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
     
-        <span class="sidebar-tag-name" data-tags="http"><span class="iconfont-archer">&#xe606;</span>http</span>
+        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
     
         <span class="sidebar-tag-name" data-tags="lambda"><span class="iconfont-archer">&#xe606;</span>lambda</span>
     
-        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
+        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
+    
+        <span class="sidebar-tag-name" data-tags="elasticsearch"><span class="iconfont-archer">&#xe606;</span>elasticsearch</span>
     
         <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
     
         <span class="sidebar-tag-name" data-tags="codeImpression"><span class="iconfont-archer">&#xe606;</span>codeImpression</span>
     
-        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
-    
         <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
-    
-        <span class="sidebar-tag-name" data-tags="oracle"><span class="iconfont-archer">&#xe606;</span>oracle</span>
     
         <span class="sidebar-tag-name" data-tags="jetty"><span class="iconfont-archer">&#xe606;</span>jetty</span>
     
@@ -1547,25 +1777,31 @@ Server.java
     
         <span class="sidebar-tag-name" data-tags="sringboot"><span class="iconfont-archer">&#xe606;</span>sringboot</span>
     
+        <span class="sidebar-tag-name" data-tags="Springboot"><span class="iconfont-archer">&#xe606;</span>Springboot</span>
+    
+        <span class="sidebar-tag-name" data-tags="oracle"><span class="iconfont-archer">&#xe606;</span>oracle</span>
+    
+        <span class="sidebar-tag-name" data-tags="Locale"><span class="iconfont-archer">&#xe606;</span>Locale</span>
+    
+        <span class="sidebar-tag-name" data-tags="ResourceBundle"><span class="iconfont-archer">&#xe606;</span>ResourceBundle</span>
+    
         <span class="sidebar-tag-name" data-tags="volatile"><span class="iconfont-archer">&#xe606;</span>volatile</span>
     
         <span class="sidebar-tag-name" data-tags="jvm"><span class="iconfont-archer">&#xe606;</span>jvm</span>
-    
-        <span class="sidebar-tag-name" data-tags="gc"><span class="iconfont-archer">&#xe606;</span>gc</span>
-    
-        <span class="sidebar-tag-name" data-tags="openJDK"><span class="iconfont-archer">&#xe606;</span>openJDK</span>
-    
-        <span class="sidebar-tag-name" data-tags="Springboot"><span class="iconfont-archer">&#xe606;</span>Springboot</span>
     
         <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
     
         <span class="sidebar-tag-name" data-tags="JMM"><span class="iconfont-archer">&#xe606;</span>JMM</span>
     
+        <span class="sidebar-tag-name" data-tags="zuul"><span class="iconfont-archer">&#xe606;</span>zuul</span>
+    
+        <span class="sidebar-tag-name" data-tags="openJDK"><span class="iconfont-archer">&#xe606;</span>openJDK</span>
+    
+        <span class="sidebar-tag-name" data-tags="gc"><span class="iconfont-archer">&#xe606;</span>gc</span>
+    
         <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
     
         <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
-    
-        <span class="sidebar-tag-name" data-tags="zuul"><span class="iconfont-archer">&#xe606;</span>zuul</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -1600,53 +1836,63 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="多线程"><span class="iconfont-archer">&#xe60a;</span>多线程</span>
+        <span class="sidebar-category-name" data-categories="mybatis-plus-generator"><span class="iconfont-archer">&#xe60a;</span>mybatis-plus-generator</span>
     
-        <span class="sidebar-category-name" data-categories="threadLocal"><span class="iconfont-archer">&#xe60a;</span>threadLocal</span>
+        <span class="sidebar-category-name" data-categories="springboot"><span class="iconfont-archer">&#xe60a;</span>springboot</span>
     
         <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
     
         <span class="sidebar-category-name" data-categories="es"><span class="iconfont-archer">&#xe60a;</span>es</span>
     
-        <span class="sidebar-category-name" data-categories="mybatis-plus-generator"><span class="iconfont-archer">&#xe60a;</span>mybatis-plus-generator</span>
+        <span class="sidebar-category-name" data-categories="threadLocal"><span class="iconfont-archer">&#xe60a;</span>threadLocal</span>
     
         <span class="sidebar-category-name" data-categories="ajax"><span class="iconfont-archer">&#xe60a;</span>ajax</span>
     
-        <span class="sidebar-category-name" data-categories="springMVC源码解读"><span class="iconfont-archer">&#xe60a;</span>springMVC源码解读</span>
+        <span class="sidebar-category-name" data-categories="springboot/feign"><span class="iconfont-archer">&#xe60a;</span>springboot/feign</span>
     
-        <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
-    
-        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
+        <span class="sidebar-category-name" data-categories="多线程"><span class="iconfont-archer">&#xe60a;</span>多线程</span>
     
         <span class="sidebar-category-name" data-categories="SpringBoot"><span class="iconfont-archer">&#xe60a;</span>SpringBoot</span>
     
-        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
+        <span class="sidebar-category-name" data-categories="springMVC源码解读"><span class="iconfont-archer">&#xe60a;</span>springMVC源码解读</span>
+    
+        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
+    
+        <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
+    
+        <span class="sidebar-category-name" data-categories="idea"><span class="iconfont-archer">&#xe60a;</span>idea</span>
     
         <span class="sidebar-category-name" data-categories="java"><span class="iconfont-archer">&#xe60a;</span>java</span>
     
+        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
+    
         <span class="sidebar-category-name" data-categories="lambda"><span class="iconfont-archer">&#xe60a;</span>lambda</span>
     
-        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
+        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
+    
+        <span class="sidebar-category-name" data-categories="elasticsearch"><span class="iconfont-archer">&#xe60a;</span>elasticsearch</span>
     
         <span class="sidebar-category-name" data-categories="codeImpression"><span class="iconfont-archer">&#xe60a;</span>codeImpression</span>
     
         <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
     
-        <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
-    
         <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
     
-        <span class="sidebar-category-name" data-categories="jvm"><span class="iconfont-archer">&#xe60a;</span>jvm</span>
-    
-        <span class="sidebar-category-name" data-categories="gc"><span class="iconfont-archer">&#xe60a;</span>gc</span>
-    
-        <span class="sidebar-category-name" data-categories="openJDK"><span class="iconfont-archer">&#xe60a;</span>openJDK</span>
-    
         <span class="sidebar-category-name" data-categories="Springboot"><span class="iconfont-archer">&#xe60a;</span>Springboot</span>
+    
+        <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
+    
+        <span class="sidebar-category-name" data-categories="Locale"><span class="iconfont-archer">&#xe60a;</span>Locale</span>
+    
+        <span class="sidebar-category-name" data-categories="jvm"><span class="iconfont-archer">&#xe60a;</span>jvm</span>
     
         <span class="sidebar-category-name" data-categories="JMM"><span class="iconfont-archer">&#xe60a;</span>JMM</span>
     
         <span class="sidebar-category-name" data-categories="zuul"><span class="iconfont-archer">&#xe60a;</span>zuul</span>
+    
+        <span class="sidebar-category-name" data-categories="openJDK"><span class="iconfont-archer">&#xe60a;</span>openJDK</span>
+    
+        <span class="sidebar-category-name" data-categories="gc"><span class="iconfont-archer">&#xe60a;</span>gc</span>
     
         <span class="sidebar-category-name" data-categories="gc/jvm"><span class="iconfont-archer">&#xe60a;</span>gc/jvm</span>
     
