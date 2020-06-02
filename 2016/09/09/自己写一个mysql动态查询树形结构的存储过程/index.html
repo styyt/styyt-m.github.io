@@ -20,8 +20,24 @@
     <meta name="keywords" content="learn,grow up">
     
     <meta name="description" content="">
+    <meta name="description" content="写在前面  这是我三年前记录在自己csdn博客上的，觉得很有用，搬过来~ 正文mysql不像oracle有start with … connect by …这种递归查询树形结构的语句，但是日常开发中会经常查询树形数据，所以自己就摸索了一套可以动态传参来递归查询树形结构的数据 调用示例：  参数  schema_name 库名 table_name 表名 type ：1、父级2、子级 self_va">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自己写一个mysql动态查询树形结构的存储过程">
+<meta property="og:url" content="https://styyt.github.io/2016/09/09/%E8%87%AA%E5%B7%B1%E5%86%99%E4%B8%80%E4%B8%AAmysql%E5%8A%A8%E6%80%81%E6%9F%A5%E8%AF%A2%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84%E7%9A%84%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="写在前面  这是我三年前记录在自己csdn博客上的，觉得很有用，搬过来~ 正文mysql不像oracle有start with … connect by …这种递归查询树形结构的语句，但是日常开发中会经常查询树形数据，所以自己就摸索了一套可以动态传参来递归查询树形结构的数据 调用示例：  参数  schema_name 库名 table_name 表名 type ：1、父级2、子级 self_va">
+<meta property="og:image" content="https://styyt.github.io/intro/0013.png">
+<meta property="article:published_time" content="2016-09-09T07:08:57.000Z">
+<meta property="article:modified_time" content="2019-08-22T07:40:42.000Z">
+<meta property="article:author" content="styytNOTstop">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="tree">
+<meta property="article:tag" content="history">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://styyt.github.io/intro/0013.png">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    
     <title>自己写一个mysql动态查询树形结构的存储过程 · learn and grow up</title>
     <style type="text/css">
     @font-face {
@@ -200,7 +216,7 @@
     
     <!-- 谷歌统计  -->
     
-</head>
+<meta name="generator" content="Hexo 4.2.1"></head>
 
     
         <body class="post-body">
@@ -266,17 +282,17 @@ height:50vh;
                 
                     <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "mysql">mysql</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "mysql">mysql</a>
     
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "tree">tree</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "tree">tree</a>
     
-        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "history">history</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "history">history</a>
     
 </div>
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">1.1k</span>阅读时长: <span class="post-count reading-time">5 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">1.2k</span>阅读时长: <span class="post-count reading-time">6 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -425,11 +441,11 @@ height:50vh;
 <li>rt_value   所有节点id拼起来的、以,号分隔的字符串</li>
 </ul>
 <p>mysql源码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#辅助方法</span><br><span class="line">CREATE FUNCTION `func_get_split_string`(`f_string` varchar(1000), `f_delimiter` varchar(5), `f_order` int)</span><br><span class="line">    RETURNS varchar(255) CHARSET utf8</span><br><span class="line">    LANGUAGE SQL</span><br><span class="line">    NOT DETERMINISTIC</span><br><span class="line">    CONTAINS SQL</span><br><span class="line">    SQL SECURITY DEFINER</span><br><span class="line">    COMMENT &apos;&apos;</span><br><span class="line">BEGIN</span><br><span class="line">#592876</span><br><span class="line">#f_string字符串按f_delimiter截取后获取第f_order位</span><br><span class="line">  declare result varchar(255) default &apos;&apos;;</span><br><span class="line">  declare oneSub varchar(255) default &apos;&apos;;</span><br><span class="line">  declare cou int default 0;</span><br><span class="line"></span><br><span class="line">  set cou=1+(length(f_string) - length(replace(f_string,f_delimiter,&apos;&apos;))); </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  if f_order&gt;cou then </span><br><span class="line">    return result;</span><br><span class="line">  end if;</span><br><span class="line">  set result = reverse(substring_index(reverse(substring_index(f_string,f_delimiter,f_order)),f_delimiter,1));</span><br><span class="line">  return result;</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#辅助方法</span><br><span class="line">CREATE FUNCTION &#96;func_get_split_string&#96;(&#96;f_string&#96; varchar(1000), &#96;f_delimiter&#96; varchar(5), &#96;f_order&#96; int)</span><br><span class="line">    RETURNS varchar(255) CHARSET utf8</span><br><span class="line">    LANGUAGE SQL</span><br><span class="line">    NOT DETERMINISTIC</span><br><span class="line">    CONTAINS SQL</span><br><span class="line">    SQL SECURITY DEFINER</span><br><span class="line">    COMMENT &#39;&#39;</span><br><span class="line">BEGIN</span><br><span class="line">#592876</span><br><span class="line">#f_string字符串按f_delimiter截取后获取第f_order位</span><br><span class="line">  declare result varchar(255) default &#39;&#39;;</span><br><span class="line">  declare oneSub varchar(255) default &#39;&#39;;</span><br><span class="line">  declare cou int default 0;</span><br><span class="line"></span><br><span class="line">  set cou&#x3D;1+(length(f_string) - length(replace(f_string,f_delimiter,&#39;&#39;))); </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  if f_order&gt;cou then </span><br><span class="line">    return result;</span><br><span class="line">  end if;</span><br><span class="line">  set result &#x3D; reverse(substring_index(reverse(substring_index(f_string,f_delimiter,f_order)),f_delimiter,1));</span><br><span class="line">  return result;</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">#子存储过程</span><br><span class="line">CREATE PROCEDURE `pro_find_tree_recursion`(IN `table_name` VARCHAR(50), IN `parent_name` VARCHAR(50), IN `id_name` VARCHAR(50), IN `self_value` VARCHAR(50), INOUT `rt_value` MEDIUMTEXT)</span><br><span class="line">    LANGUAGE SQL</span><br><span class="line">    NOT DETERMINISTIC</span><br><span class="line">    CONTAINS SQL</span><br><span class="line">    SQL SECURITY DEFINER</span><br><span class="line">    COMMENT &apos;&apos;</span><br><span class="line">recur:BEGIN</span><br><span class="line">    DECLARE done INT DEFAULT 0;</span><br><span class="line">   DECLARE b VARCHAR (32);</span><br><span class="line">    DECLARE all_value VARCHAR (1000);</span><br><span class="line">    DECLARE tree_sql1 VARCHAR (1000);</span><br><span class="line">    DECLARE cou INT default 0;</span><br><span class="line">    DECLARE ALL_VALUE_COU INT default 0;</span><br><span class="line">    DECLARE one_value VARCHAR (100);</span><br><span class="line">    DECLARE max_loop INT DEFAULT 0;</span><br><span class="line">    DECLARE now_loop INT DEFAULT 0;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    set @@session.max_sp_recursion_depth=20;</span><br><span class="line"></span><br><span class="line">    #现将自己塞进来</span><br><span class="line">    if length(rt_value)=0 or rt_value is null</span><br><span class="line">        then </span><br><span class="line">            set rt_value=concat(self_value);</span><br><span class="line">        else </span><br><span class="line">            set rt_value=concat(rt_value,&apos;;&apos;,self_value);</span><br><span class="line">    end if;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    #查找出自己所有的下级</span><br><span class="line">    set tree_sql1= concat(&apos;select   GROUP_CONCAT(&apos;,id_name,&apos;) into @l_value &apos;,/*,id_name,&apos; into @l_id&apos;,&apos;*/&apos;from &apos;,table_name,&apos; t where t.&apos;,parent_name,&apos; = &apos;,self_value);</span><br><span class="line">    #select tree_sql1;</span><br><span class="line">    set @tree_sql1=tree_sql1;  </span><br><span class="line">     prepare stmt from @tree_sql1; </span><br><span class="line">     EXECUTE stmt;     </span><br><span class="line">     deallocate prepare stmt;    </span><br><span class="line">     set all_value=@l_value;</span><br><span class="line"></span><br><span class="line">    #如果没有下级，返回上一层</span><br><span class="line">    if length(all_value)=0 or all_value is null</span><br><span class="line">    then </span><br><span class="line">        leave recur;</span><br><span class="line">    end if;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    #如果有下级，则继续循环</span><br><span class="line">    rec_while :while 1=1</span><br><span class="line">        do</span><br><span class="line">            set now_loop=now_loop+1;</span><br><span class="line">            #拼接符设置</span><br><span class="line">            set one_value=func_get_split_string(all_value,&apos;,&apos;,now_loop);</span><br><span class="line">            if length(one_value)=0 or one_value is null then</span><br><span class="line">            #下级循环结束，返回上一层</span><br><span class="line">                leave rec_while;</span><br><span class="line">            end if;</span><br><span class="line">            #继续找下级的子节点</span><br><span class="line">            call pro_find_tree_recursion(table_name,parent_name,id_name,one_value,rt_value);</span><br><span class="line">    end while;</span><br><span class="line"></span><br><span class="line">    leave recur;</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">#子存储过程</span><br><span class="line">CREATE PROCEDURE &#96;pro_find_tree_recursion&#96;(IN &#96;table_name&#96; VARCHAR(50), IN &#96;parent_name&#96; VARCHAR(50), IN &#96;id_name&#96; VARCHAR(50), IN &#96;self_value&#96; VARCHAR(50), INOUT &#96;rt_value&#96; MEDIUMTEXT)</span><br><span class="line">    LANGUAGE SQL</span><br><span class="line">    NOT DETERMINISTIC</span><br><span class="line">    CONTAINS SQL</span><br><span class="line">    SQL SECURITY DEFINER</span><br><span class="line">    COMMENT &#39;&#39;</span><br><span class="line">recur:BEGIN</span><br><span class="line">    DECLARE done INT DEFAULT 0;</span><br><span class="line">   DECLARE b VARCHAR (32);</span><br><span class="line">    DECLARE all_value VARCHAR (1000);</span><br><span class="line">    DECLARE tree_sql1 VARCHAR (1000);</span><br><span class="line">    DECLARE cou INT default 0;</span><br><span class="line">    DECLARE ALL_VALUE_COU INT default 0;</span><br><span class="line">    DECLARE one_value VARCHAR (100);</span><br><span class="line">    DECLARE max_loop INT DEFAULT 0;</span><br><span class="line">    DECLARE now_loop INT DEFAULT 0;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    set @@session.max_sp_recursion_depth&#x3D;20;</span><br><span class="line"></span><br><span class="line">    #现将自己塞进来</span><br><span class="line">    if length(rt_value)&#x3D;0 or rt_value is null</span><br><span class="line">        then </span><br><span class="line">            set rt_value&#x3D;concat(self_value);</span><br><span class="line">        else </span><br><span class="line">            set rt_value&#x3D;concat(rt_value,&#39;;&#39;,self_value);</span><br><span class="line">    end if;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    #查找出自己所有的下级</span><br><span class="line">    set tree_sql1&#x3D; concat(&#39;select   GROUP_CONCAT(&#39;,id_name,&#39;) into @l_value &#39;,&#x2F;*,id_name,&#39; into @l_id&#39;,&#39;*&#x2F;&#39;from &#39;,table_name,&#39; t where t.&#39;,parent_name,&#39; &#x3D; &#39;,self_value);</span><br><span class="line">    #select tree_sql1;</span><br><span class="line">    set @tree_sql1&#x3D;tree_sql1;  </span><br><span class="line">     prepare stmt from @tree_sql1; </span><br><span class="line">     EXECUTE stmt;     </span><br><span class="line">     deallocate prepare stmt;    </span><br><span class="line">     set all_value&#x3D;@l_value;</span><br><span class="line"></span><br><span class="line">    #如果没有下级，返回上一层</span><br><span class="line">    if length(all_value)&#x3D;0 or all_value is null</span><br><span class="line">    then </span><br><span class="line">        leave recur;</span><br><span class="line">    end if;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    #如果有下级，则继续循环</span><br><span class="line">    rec_while :while 1&#x3D;1</span><br><span class="line">        do</span><br><span class="line">            set now_loop&#x3D;now_loop+1;</span><br><span class="line">            #拼接符设置</span><br><span class="line">            set one_value&#x3D;func_get_split_string(all_value,&#39;,&#39;,now_loop);</span><br><span class="line">            if length(one_value)&#x3D;0 or one_value is null then</span><br><span class="line">            #下级循环结束，返回上一层</span><br><span class="line">                leave rec_while;</span><br><span class="line">            end if;</span><br><span class="line">            #继续找下级的子节点</span><br><span class="line">            call pro_find_tree_recursion(table_name,parent_name,id_name,one_value,rt_value);</span><br><span class="line">    end while;</span><br><span class="line"></span><br><span class="line">    leave recur;</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">#主存储过程</span><br><span class="line">CREATE PROCEDURE `pro_find_tree_value`(IN `schema_name` VARCHAR(50), IN `table_name` VARCHAR(50), IN `type` INT, IN `self_value` VARCHAR(50), IN `id_name` VARCHAR(50), IN `self_name` VARCHAR(50), IN `parent_name` VARCHAR(50), IN `recure_num` INT, INOUT `rt_value` MEDIUMTEXT)</span><br><span class="line">    LANGUAGE SQL</span><br><span class="line">    NOT DETERMINISTIC</span><br><span class="line">    CONTAINS SQL</span><br><span class="line">    SQL SECURITY DEFINER</span><br><span class="line">    COMMENT &apos;&apos;</span><br><span class="line">pro_begin:BEGIN  </span><br><span class="line"></span><br><span class="line">DECLARE _value varchar(100);</span><br><span class="line">DECLARE rtValue text default &apos;&apos;;</span><br><span class="line">DECLARE _schema varchar(100);</span><br><span class="line">DECLARE cou int;</span><br><span class="line">DECLARE tree_sql1 VARCHAR(500);</span><br><span class="line">DECLARE id_value varchar(100);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if length(schema_name)=0</span><br><span class="line">    then select database() into _schema;</span><br><span class="line">else  set _schema=schema_name ;</span><br><span class="line">end if;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> select count(1) into cou</span><br><span class="line">       from information_schema.columns a  where a.table_schema = _schema and a.table_name= table_name </span><br><span class="line">       and a.column_name=self_name;</span><br><span class="line">if cou=0</span><br><span class="line"></span><br><span class="line">    then  leave pro_begin;</span><br><span class="line">end if;</span><br><span class="line"></span><br><span class="line"> select count(1) into cou</span><br><span class="line">       from information_schema.columns a  where a.table_schema = _schema and a.table_name= table_name </span><br><span class="line">       and a.column_name=parent_name;</span><br><span class="line">if cou=0</span><br><span class="line">    then  leave pro_begin;</span><br><span class="line">end if;</span><br><span class="line"></span><br><span class="line">    set tree_sql1= concat(&apos;select count(1) into @l_value from &apos;,table_name,&apos; t where t.&apos;,self_name,&apos; = &apos;,self_value);</span><br><span class="line">        select tree_sql1;</span><br><span class="line">    set @tree_sql1=tree_sql1;   ##注意很重要，将连成成的字符串赋值给一个变量（可以之前没有定义，但要以@开头）</span><br><span class="line">     prepare stmt from @tree_sql1;  ##预处理需要执行的动态SQL，其中stmt是一个变量</span><br><span class="line">     EXECUTE stmt;      ##执行SQL语句</span><br><span class="line">     deallocate prepare stmt;     ##释放掉预处理段</span><br><span class="line">     set cou=@l_value;</span><br><span class="line">     select cou;</span><br><span class="line">     if cou=0</span><br><span class="line">        then leave pro_begin;</span><br><span class="line">    end if;</span><br><span class="line"></span><br><span class="line">    #type =1</span><br><span class="line">    #table_name的self_name值为self_value，返回parent_name的上级的上级的上级....（用分号隔开）</span><br><span class="line">    if type =1 then </span><br><span class="line">        ontTypeLoop:loop</span><br><span class="line">            set tree_sql1= concat(&apos;select &apos;,parent_name,&apos; into @l_value &apos;,/*,id_name,&apos; into @l_id&apos;,&apos;*/&apos;from &apos;,table_name,&apos; t where t.&apos;,self_name,&apos; = &apos;,self_value);</span><br><span class="line">            #select tree_sql1;</span><br><span class="line">        set @tree_sql1=tree_sql1;   ##注意很重要，将连成成的字符串赋值给一个变量（可以之前没有定义，但要以@开头）</span><br><span class="line">         prepare stmt from @tree_sql1;  ##预处理需要执行的动态SQL，其中stmt是一个变量</span><br><span class="line">         EXECUTE stmt;      ##执行SQL语句</span><br><span class="line">         deallocate prepare stmt;     ##释放掉预处理段</span><br><span class="line"></span><br><span class="line">     if length(rt_value)=0 or rt_value is null</span><br><span class="line">        then </span><br><span class="line">            set rt_value=concat(@l_value);</span><br><span class="line">        else </span><br><span class="line">            set rt_value=concat(rt_value,&apos;;&apos;,@l_value);</span><br><span class="line">        end if;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        set self_value=@l_value;</span><br><span class="line"></span><br><span class="line">        set tree_sql1= concat(&apos;select count(1) into @l_value from &apos;,table_name,&apos; t where t.&apos;,self_name,&apos; = &apos;,self_value);</span><br><span class="line">    set @tree_sql1=tree_sql1;  </span><br><span class="line">     prepare stmt from @tree_sql1;  </span><br><span class="line">     EXECUTE stmt;      </span><br><span class="line">     deallocate prepare stmt;    </span><br><span class="line">     set cou=@l_value;</span><br><span class="line">        if cou=0</span><br><span class="line">            then leave ontTypeLoop;</span><br><span class="line">        end if;</span><br><span class="line">    end loop;</span><br><span class="line"></span><br><span class="line">   end if;</span><br><span class="line"></span><br><span class="line">   #type =2</span><br><span class="line">   #树的子节点查询：根节点值：self_value，上级节点名：parent_name，节点id名：id_name</span><br><span class="line">    #利用递归返回table_name的parent_name值为self_value的下级的下级的下级....</span><br><span class="line">   if type=2 then</span><br><span class="line">    select 1;</span><br><span class="line">        call pro_find_tree_recursion(table_name,parent_name,id_name,self_value,rt_value);</span><br><span class="line"></span><br><span class="line">    end if; </span><br><span class="line"></span><br><span class="line">   leave pro_begin;</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">#主存储过程</span><br><span class="line">CREATE PROCEDURE &#96;pro_find_tree_value&#96;(IN &#96;schema_name&#96; VARCHAR(50), IN &#96;table_name&#96; VARCHAR(50), IN &#96;type&#96; INT, IN &#96;self_value&#96; VARCHAR(50), IN &#96;id_name&#96; VARCHAR(50), IN &#96;self_name&#96; VARCHAR(50), IN &#96;parent_name&#96; VARCHAR(50), IN &#96;recure_num&#96; INT, INOUT &#96;rt_value&#96; MEDIUMTEXT)</span><br><span class="line">    LANGUAGE SQL</span><br><span class="line">    NOT DETERMINISTIC</span><br><span class="line">    CONTAINS SQL</span><br><span class="line">    SQL SECURITY DEFINER</span><br><span class="line">    COMMENT &#39;&#39;</span><br><span class="line">pro_begin:BEGIN  </span><br><span class="line"></span><br><span class="line">DECLARE _value varchar(100);</span><br><span class="line">DECLARE rtValue text default &#39;&#39;;</span><br><span class="line">DECLARE _schema varchar(100);</span><br><span class="line">DECLARE cou int;</span><br><span class="line">DECLARE tree_sql1 VARCHAR(500);</span><br><span class="line">DECLARE id_value varchar(100);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if length(schema_name)&#x3D;0</span><br><span class="line">    then select database() into _schema;</span><br><span class="line">else  set _schema&#x3D;schema_name ;</span><br><span class="line">end if;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> select count(1) into cou</span><br><span class="line">       from information_schema.columns a  where a.table_schema &#x3D; _schema and a.table_name&#x3D; table_name </span><br><span class="line">       and a.column_name&#x3D;self_name;</span><br><span class="line">if cou&#x3D;0</span><br><span class="line"></span><br><span class="line">    then  leave pro_begin;</span><br><span class="line">end if;</span><br><span class="line"></span><br><span class="line"> select count(1) into cou</span><br><span class="line">       from information_schema.columns a  where a.table_schema &#x3D; _schema and a.table_name&#x3D; table_name </span><br><span class="line">       and a.column_name&#x3D;parent_name;</span><br><span class="line">if cou&#x3D;0</span><br><span class="line">    then  leave pro_begin;</span><br><span class="line">end if;</span><br><span class="line"></span><br><span class="line">    set tree_sql1&#x3D; concat(&#39;select count(1) into @l_value from &#39;,table_name,&#39; t where t.&#39;,self_name,&#39; &#x3D; &#39;,self_value);</span><br><span class="line">        select tree_sql1;</span><br><span class="line">    set @tree_sql1&#x3D;tree_sql1;   ##注意很重要，将连成成的字符串赋值给一个变量（可以之前没有定义，但要以@开头）</span><br><span class="line">     prepare stmt from @tree_sql1;  ##预处理需要执行的动态SQL，其中stmt是一个变量</span><br><span class="line">     EXECUTE stmt;      ##执行SQL语句</span><br><span class="line">     deallocate prepare stmt;     ##释放掉预处理段</span><br><span class="line">     set cou&#x3D;@l_value;</span><br><span class="line">     select cou;</span><br><span class="line">     if cou&#x3D;0</span><br><span class="line">        then leave pro_begin;</span><br><span class="line">    end if;</span><br><span class="line"></span><br><span class="line">    #type &#x3D;1</span><br><span class="line">    #table_name的self_name值为self_value，返回parent_name的上级的上级的上级....（用分号隔开）</span><br><span class="line">    if type &#x3D;1 then </span><br><span class="line">        ontTypeLoop:loop</span><br><span class="line">            set tree_sql1&#x3D; concat(&#39;select &#39;,parent_name,&#39; into @l_value &#39;,&#x2F;*,id_name,&#39; into @l_id&#39;,&#39;*&#x2F;&#39;from &#39;,table_name,&#39; t where t.&#39;,self_name,&#39; &#x3D; &#39;,self_value);</span><br><span class="line">            #select tree_sql1;</span><br><span class="line">        set @tree_sql1&#x3D;tree_sql1;   ##注意很重要，将连成成的字符串赋值给一个变量（可以之前没有定义，但要以@开头）</span><br><span class="line">         prepare stmt from @tree_sql1;  ##预处理需要执行的动态SQL，其中stmt是一个变量</span><br><span class="line">         EXECUTE stmt;      ##执行SQL语句</span><br><span class="line">         deallocate prepare stmt;     ##释放掉预处理段</span><br><span class="line"></span><br><span class="line">     if length(rt_value)&#x3D;0 or rt_value is null</span><br><span class="line">        then </span><br><span class="line">            set rt_value&#x3D;concat(@l_value);</span><br><span class="line">        else </span><br><span class="line">            set rt_value&#x3D;concat(rt_value,&#39;;&#39;,@l_value);</span><br><span class="line">        end if;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        set self_value&#x3D;@l_value;</span><br><span class="line"></span><br><span class="line">        set tree_sql1&#x3D; concat(&#39;select count(1) into @l_value from &#39;,table_name,&#39; t where t.&#39;,self_name,&#39; &#x3D; &#39;,self_value);</span><br><span class="line">    set @tree_sql1&#x3D;tree_sql1;  </span><br><span class="line">     prepare stmt from @tree_sql1;  </span><br><span class="line">     EXECUTE stmt;      </span><br><span class="line">     deallocate prepare stmt;    </span><br><span class="line">     set cou&#x3D;@l_value;</span><br><span class="line">        if cou&#x3D;0</span><br><span class="line">            then leave ontTypeLoop;</span><br><span class="line">        end if;</span><br><span class="line">    end loop;</span><br><span class="line"></span><br><span class="line">   end if;</span><br><span class="line"></span><br><span class="line">   #type &#x3D;2</span><br><span class="line">   #树的子节点查询：根节点值：self_value，上级节点名：parent_name，节点id名：id_name</span><br><span class="line">    #利用递归返回table_name的parent_name值为self_value的下级的下级的下级....</span><br><span class="line">   if type&#x3D;2 then</span><br><span class="line">    select 1;</span><br><span class="line">        call pro_find_tree_recursion(table_name,parent_name,id_name,self_value,rt_value);</span><br><span class="line"></span><br><span class="line">    end if; </span><br><span class="line"></span><br><span class="line">   leave pro_begin;</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
 
 
     </article>
@@ -463,6 +479,10 @@ height:50vh;
 <!-- City版安装代码已完成 -->
     
     
+    <!-- gitalk评论 -->
+
+    <!-- utteranc评论 -->
+
     <!-- partial('_partial/comment/changyan') -->
     <!--PC版-->
 
@@ -483,7 +503,7 @@ height:50vh;
     
         
             
-                <a href="mailto:543441649@qq.com" target="_blank" rel="noopener" class="iconfont-archer email" title=email ></a>
+                <a href="mailto:543441649@qq.com" class="iconfont-archer email" title=email ></a>
             
         
     
@@ -1195,9 +1215,52 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 47
+        Total : 50
         </div>
         <!-- search  -->
         
@@ -1210,6 +1273,21 @@ top:50vh;
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/01</span><a class="archive-post-title" href= "/2020/05/01/macOS%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/" >macOS常用命令记录</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/19</span><a class="archive-post-title" href= "/2020/04/19/spring-data-elasticsearch-%E7%BB%84%E4%BB%B6%E6%9F%A5%E8%AF%A2%E7%9A%84bug%E8%A7%A3%E6%9E%90/" >spring-data-elasticsearch-组件查询的bug跟踪</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/05</span><a class="archive-post-title" href= "/2020/04/05/canal%E4%BD%BF%E7%94%A8%E4%B8%AD%E7%9A%84%E9%99%B7%E9%98%B1%E7%94%A8%E6%B3%95/" >canal使用中的陷阱用法</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1258,7 +1336,7 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">01/25</span><a class="archive-post-title" href= "/2020/01/25/idea%E4%B9%8BCommandLineIsTooLong/" >idea之CommandLineIsTooLong问题解决</a>
+            <span class="archive-post-date">01/25</span><a class="archive-post-title" href= "/2020/01/25/idea%D6%AECommandLineIsTooLong/" >idea之CommandLineIsTooLong问题解决</a>
         </li>
     
     
@@ -1478,23 +1556,13 @@ top:50vh;
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="mybatis_plus_generator"><span class="iconfont-archer">&#xe606;</span>mybatis_plus_generator</span>
-    
-        <span class="sidebar-tag-name" data-tags="feign"><span class="iconfont-archer">&#xe606;</span>feign</span>
-    
         <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
     
         <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
     
-        <span class="sidebar-tag-name" data-tags="es"><span class="iconfont-archer">&#xe606;</span>es</span>
+        <span class="sidebar-tag-name" data-tags="feign"><span class="iconfont-archer">&#xe606;</span>feign</span>
     
-        <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
-    
-        <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
-    
-        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
-    
-        <span class="sidebar-tag-name" data-tags="ajax"><span class="iconfont-archer">&#xe606;</span>ajax</span>
+        <span class="sidebar-tag-name" data-tags="mybatis_plus_generator"><span class="iconfont-archer">&#xe606;</span>mybatis_plus_generator</span>
     
         <span class="sidebar-tag-name" data-tags="nio"><span class="iconfont-archer">&#xe606;</span>nio</span>
     
@@ -1504,47 +1572,65 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="SpringBoot"><span class="iconfont-archer">&#xe606;</span>SpringBoot</span>
     
+        <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
+    
+        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
+    
+        <span class="sidebar-tag-name" data-tags="ajax"><span class="iconfont-archer">&#xe606;</span>ajax</span>
+    
+        <span class="sidebar-tag-name" data-tags="es"><span class="iconfont-archer">&#xe606;</span>es</span>
+    
+        <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
+    
+        <span class="sidebar-tag-name" data-tags="canal"><span class="iconfont-archer">&#xe606;</span>canal</span>
+    
         <span class="sidebar-tag-name" data-tags="springMVC"><span class="iconfont-archer">&#xe606;</span>springMVC</span>
     
         <span class="sidebar-tag-name" data-tags="form_data"><span class="iconfont-archer">&#xe606;</span>form_data</span>
     
         <span class="sidebar-tag-name" data-tags="源码解读"><span class="iconfont-archer">&#xe606;</span>源码解读</span>
     
-        <span class="sidebar-tag-name" data-tags="hibernate4"><span class="iconfont-archer">&#xe606;</span>hibernate4</span>
-    
-        <span class="sidebar-tag-name" data-tags="设计模式"><span class="iconfont-archer">&#xe606;</span>设计模式</span>
+        <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
     
         <span class="sidebar-tag-name" data-tags="hibernate"><span class="iconfont-archer">&#xe606;</span>hibernate</span>
     
         <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
     
-        <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
+        <span class="sidebar-tag-name" data-tags="hibernate4"><span class="iconfont-archer">&#xe606;</span>hibernate4</span>
+    
+        <span class="sidebar-tag-name" data-tags="设计模式"><span class="iconfont-archer">&#xe606;</span>设计模式</span>
     
         <span class="sidebar-tag-name" data-tags="idea"><span class="iconfont-archer">&#xe606;</span>idea</span>
     
-        <span class="sidebar-tag-name" data-tags="java"><span class="iconfont-archer">&#xe606;</span>java</span>
-    
-        <span class="sidebar-tag-name" data-tags="http"><span class="iconfont-archer">&#xe606;</span>http</span>
-    
         <span class="sidebar-tag-name" data-tags="js"><span class="iconfont-archer">&#xe606;</span>js</span>
+    
+        <span class="sidebar-tag-name" data-tags="java"><span class="iconfont-archer">&#xe606;</span>java</span>
     
         <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
     
-        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
+        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
     
-        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
+        <span class="sidebar-tag-name" data-tags="http"><span class="iconfont-archer">&#xe606;</span>http</span>
     
         <span class="sidebar-tag-name" data-tags="lambda"><span class="iconfont-archer">&#xe606;</span>lambda</span>
     
-        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
-    
-        <span class="sidebar-tag-name" data-tags="elasticsearch"><span class="iconfont-archer">&#xe606;</span>elasticsearch</span>
+        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
     
         <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
     
+        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
+    
         <span class="sidebar-tag-name" data-tags="codeImpression"><span class="iconfont-archer">&#xe606;</span>codeImpression</span>
     
+        <span class="sidebar-tag-name" data-tags="spring-data-elasticsearch"><span class="iconfont-archer">&#xe606;</span>spring-data-elasticsearch</span>
+    
+        <span class="sidebar-tag-name" data-tags="elasticsearch"><span class="iconfont-archer">&#xe606;</span>elasticsearch</span>
+    
         <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
+    
+        <span class="sidebar-tag-name" data-tags="Springboot"><span class="iconfont-archer">&#xe606;</span>Springboot</span>
+    
+        <span class="sidebar-tag-name" data-tags="oracle"><span class="iconfont-archer">&#xe606;</span>oracle</span>
     
         <span class="sidebar-tag-name" data-tags="jetty"><span class="iconfont-archer">&#xe606;</span>jetty</span>
     
@@ -1556,31 +1642,29 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="sringboot"><span class="iconfont-archer">&#xe606;</span>sringboot</span>
     
-        <span class="sidebar-tag-name" data-tags="Springboot"><span class="iconfont-archer">&#xe606;</span>Springboot</span>
-    
-        <span class="sidebar-tag-name" data-tags="oracle"><span class="iconfont-archer">&#xe606;</span>oracle</span>
-    
-        <span class="sidebar-tag-name" data-tags="Locale"><span class="iconfont-archer">&#xe606;</span>Locale</span>
-    
-        <span class="sidebar-tag-name" data-tags="ResourceBundle"><span class="iconfont-archer">&#xe606;</span>ResourceBundle</span>
-    
         <span class="sidebar-tag-name" data-tags="volatile"><span class="iconfont-archer">&#xe606;</span>volatile</span>
     
         <span class="sidebar-tag-name" data-tags="jvm"><span class="iconfont-archer">&#xe606;</span>jvm</span>
+    
+        <span class="sidebar-tag-name" data-tags="zuul"><span class="iconfont-archer">&#xe606;</span>zuul</span>
     
         <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
     
         <span class="sidebar-tag-name" data-tags="JMM"><span class="iconfont-archer">&#xe606;</span>JMM</span>
     
-        <span class="sidebar-tag-name" data-tags="zuul"><span class="iconfont-archer">&#xe606;</span>zuul</span>
+        <span class="sidebar-tag-name" data-tags="gc"><span class="iconfont-archer">&#xe606;</span>gc</span>
+    
+        <span class="sidebar-tag-name" data-tags="Locale"><span class="iconfont-archer">&#xe606;</span>Locale</span>
+    
+        <span class="sidebar-tag-name" data-tags="ResourceBundle"><span class="iconfont-archer">&#xe606;</span>ResourceBundle</span>
     
         <span class="sidebar-tag-name" data-tags="openJDK"><span class="iconfont-archer">&#xe606;</span>openJDK</span>
-    
-        <span class="sidebar-tag-name" data-tags="gc"><span class="iconfont-archer">&#xe606;</span>gc</span>
     
         <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
     
         <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
+    
+        <span class="sidebar-tag-name" data-tags="macOS"><span class="iconfont-archer">&#xe606;</span>macOS</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -1615,65 +1699,71 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="mybatis-plus-generator"><span class="iconfont-archer">&#xe60a;</span>mybatis-plus-generator</span>
+        <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
     
         <span class="sidebar-category-name" data-categories="springboot"><span class="iconfont-archer">&#xe60a;</span>springboot</span>
     
-        <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
-    
-        <span class="sidebar-category-name" data-categories="es"><span class="iconfont-archer">&#xe60a;</span>es</span>
-    
-        <span class="sidebar-category-name" data-categories="threadLocal"><span class="iconfont-archer">&#xe60a;</span>threadLocal</span>
-    
-        <span class="sidebar-category-name" data-categories="ajax"><span class="iconfont-archer">&#xe60a;</span>ajax</span>
-    
-        <span class="sidebar-category-name" data-categories="springboot/feign"><span class="iconfont-archer">&#xe60a;</span>springboot/feign</span>
+        <span class="sidebar-category-name" data-categories="mybatis-plus-generator"><span class="iconfont-archer">&#xe60a;</span>mybatis-plus-generator</span>
     
         <span class="sidebar-category-name" data-categories="多线程"><span class="iconfont-archer">&#xe60a;</span>多线程</span>
     
         <span class="sidebar-category-name" data-categories="SpringBoot"><span class="iconfont-archer">&#xe60a;</span>SpringBoot</span>
     
-        <span class="sidebar-category-name" data-categories="springMVC源码解读"><span class="iconfont-archer">&#xe60a;</span>springMVC源码解读</span>
+        <span class="sidebar-category-name" data-categories="springboot/feign"><span class="iconfont-archer">&#xe60a;</span>springboot/feign</span>
     
-        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
+        <span class="sidebar-category-name" data-categories="threadLocal"><span class="iconfont-archer">&#xe60a;</span>threadLocal</span>
+    
+        <span class="sidebar-category-name" data-categories="ajax"><span class="iconfont-archer">&#xe60a;</span>ajax</span>
+    
+        <span class="sidebar-category-name" data-categories="es"><span class="iconfont-archer">&#xe60a;</span>es</span>
+    
+        <span class="sidebar-category-name" data-categories="canal"><span class="iconfont-archer">&#xe60a;</span>canal</span>
+    
+        <span class="sidebar-category-name" data-categories="springMVC源码解读"><span class="iconfont-archer">&#xe60a;</span>springMVC源码解读</span>
     
         <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
     
+        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
+    
         <span class="sidebar-category-name" data-categories="idea"><span class="iconfont-archer">&#xe60a;</span>idea</span>
-    
-        <span class="sidebar-category-name" data-categories="java"><span class="iconfont-archer">&#xe60a;</span>java</span>
-    
-        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
-    
-        <span class="sidebar-category-name" data-categories="lambda"><span class="iconfont-archer">&#xe60a;</span>lambda</span>
     
         <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
     
-        <span class="sidebar-category-name" data-categories="elasticsearch"><span class="iconfont-archer">&#xe60a;</span>elasticsearch</span>
+        <span class="sidebar-category-name" data-categories="java"><span class="iconfont-archer">&#xe60a;</span>java</span>
+    
+        <span class="sidebar-category-name" data-categories="lambda"><span class="iconfont-archer">&#xe60a;</span>lambda</span>
+    
+        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
     
         <span class="sidebar-category-name" data-categories="codeImpression"><span class="iconfont-archer">&#xe60a;</span>codeImpression</span>
     
-        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
+        <span class="sidebar-category-name" data-categories="spring"><span class="iconfont-archer">&#xe60a;</span>spring</span>
     
-        <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
+        <span class="sidebar-category-name" data-categories="elasticsearch"><span class="iconfont-archer">&#xe60a;</span>elasticsearch</span>
+    
+        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
     
         <span class="sidebar-category-name" data-categories="Springboot"><span class="iconfont-archer">&#xe60a;</span>Springboot</span>
     
         <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
     
-        <span class="sidebar-category-name" data-categories="Locale"><span class="iconfont-archer">&#xe60a;</span>Locale</span>
+        <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
     
         <span class="sidebar-category-name" data-categories="jvm"><span class="iconfont-archer">&#xe60a;</span>jvm</span>
     
-        <span class="sidebar-category-name" data-categories="JMM"><span class="iconfont-archer">&#xe60a;</span>JMM</span>
-    
         <span class="sidebar-category-name" data-categories="zuul"><span class="iconfont-archer">&#xe60a;</span>zuul</span>
     
-        <span class="sidebar-category-name" data-categories="openJDK"><span class="iconfont-archer">&#xe60a;</span>openJDK</span>
+        <span class="sidebar-category-name" data-categories="JMM"><span class="iconfont-archer">&#xe60a;</span>JMM</span>
     
         <span class="sidebar-category-name" data-categories="gc"><span class="iconfont-archer">&#xe60a;</span>gc</span>
     
+        <span class="sidebar-category-name" data-categories="Locale"><span class="iconfont-archer">&#xe60a;</span>Locale</span>
+    
+        <span class="sidebar-category-name" data-categories="openJDK"><span class="iconfont-archer">&#xe60a;</span>openJDK</span>
+    
         <span class="sidebar-category-name" data-categories="gc/jvm"><span class="iconfont-archer">&#xe60a;</span>gc/jvm</span>
+    
+        <span class="sidebar-category-name" data-categories="macOS"><span class="iconfont-archer">&#xe60a;</span>macOS</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
