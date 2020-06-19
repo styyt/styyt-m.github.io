@@ -353,6 +353,40 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/09/20/NIO%E4%B9%8BSocketChannel%E5%B0%8F%E5%AE%9E%E8%B7%B5-%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8Fmin%E7%89%88/" >
+            
+                <span>NIO之SocketChannel小实践-聊天程序mini版</span>
+        </a>
+        <div class="abstract-content">
+            想起之前研究java的nio时候，发现自己大学时用的socket在nio上有一个实现：SocketChannel，所以很感兴趣的一边学一边尝试，写了个很简单的几百行小程序，模仿现实中的（一server对多client）聊天，话不多说直接上代码和实现效果,可以看到，得力于nio，server程序一个线程就可以同时处理多个client的socket连接
+
+Server.java
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/20</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "nio">nio</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "socket">socket</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/09/16/Thread-join%E4%BC%9A%E9%87%8A%E6%94%BE%E9%94%81%E5%90%97/" >
             
                 <span>Thread.join会释放锁吗?释放的是什么锁?会死锁吗?</span>
@@ -673,45 +707,10 @@ hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册�
         </div>
     </article>
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/06/hive%E5%AD%98%E5%82%A8%E6%8D%A2%E8%A1%8C%E7%AC%A6%E7%AD%89%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6/" >
-            
-                <span>hive存储换行符等特殊字符</span>
-        </a>
-        <div class="abstract-content">
-            etl抽取oracle数据到hive库中的时候，oracle表中如果有换行符如:‘\n\r’，会造成当前行的数据错位。
-原来是因为hive默认的存储方式是textfile，这种方式不支持存储换行符。
-方案一、替换这些特殊字符：
-1regexp_replace(t.test, '\n|\t|\r', '')
-
-方案二、修改表的存储格式为:parquet
-12345678910drop table if exists test_table;create table test_table(	create_by string comment '',	create_time date commen...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/06</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "hive">hive</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/page/3/">&lt; PREV</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/archives/page/5/">5</a><a class="extend next" rel="next" href="/archives/page/5/">NEXT &gt;</a>
+        <a class="extend prev" rel="prev" href="/archives/page/3/">&lt; PREV</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/archives/page/5/">5</a><a class="page-number" href="/archives/page/6/">6</a><a class="extend next" rel="next" href="/archives/page/5/">NEXT &gt;</a>
     </nav>
     
 </main>
@@ -1463,9 +1462,26 @@ hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册�
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 50
+        Total : 51
         </div>
         <!-- search  -->
         
@@ -1478,6 +1494,11 @@ hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册�
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/15</span><a class="archive-post-title" href= "/2020/05/15/%E8%87%AA%E5%B7%B1%E5%86%99%E7%9A%84%E6%A0%B9%E6%8D%AE%E5%85%A8%E8%B7%AF%E5%BE%84%E8%8E%B7%E5%8F%96%E5%8F%98%E9%87%8F%E5%80%BC/" >自己封装模拟json全路径获取某个对象下某个变量的工具类</a>
+        </li>
     
     
         <li class="archive-post-item">

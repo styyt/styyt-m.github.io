@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://styyt.github.io/categories/Springboot/index.html">
+<meta property="og:url" content="https://styyt.github.io/categories/SpringBoot/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="article:author" content="styytNOTstop">
 <meta name="twitter:card" content="summary">
@@ -353,34 +353,44 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/23/springboot-test/" >
+        <a class="abstract-title" href = "/2019/11/02/URL/" >
             
-                <span>Springboot test</span>
+                <span>SpringBoot启动报Failed to retrieve application JMX service URL</span>
         </a>
         <div class="abstract-content">
-            写在前面之为什么要写测试用例
-可以避免测试点的遗漏，为了更好的进行测试，可以提高测试效率 
-可以自动测试，可以在项目打包前进行测试校验 
-可以及时发现因为修改代码导致新的问题的出现，并及时解决 
+            背景最近将项目切换到IDEA上，SpringBoot启动报如下错误：
 
-这是TDD中最重要的一环。
-正文在springboot中引入springboot-test需要以下几个步骤：
+经过长时间分析和排查，终于解决了此问题。
+解决思路和过程首先看到报错信息指的是jmx连接失败，自己猜测可能有以下几种可能
 
-pom中引入 spring-boot-starter-test
+jmx服务没有启动
+IDEA配置有问题
+IDEA用java发送的请求被防火墙或者其他安全设备阻拦
 
-如果需要打包是不运行test，则可以再pom中加入如下配置
-12345678&lt;!--打包跳过测试--&gt;&lt;plugin&gt;    &lt;groupId&gt;org.apache.maven.pl...
+那么依次进行问题排查
+
+把程序搬到eclipse，启动本应用，发现可以正常启动，so排除了第一种可能
+
+在IDEA上用mvn package打包成jar包，然后再手动启动该jar包
+
+发现可以正常启动，so排除第二种可能
+
+使用管理员身份运行IDEA
+
+再重新启动
+
+成功了！果然是因为权限的问题！...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/23</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/02</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Springboot">Springboot</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot">SpringBoot</a>
     
 </div>
             
@@ -1138,9 +1148,26 @@ pom中引入 spring-boot-starter-test
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 50
+        Total : 51
         </div>
         <!-- search  -->
         
@@ -1153,6 +1180,11 @@ pom中引入 spring-boot-starter-test
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/15</span><a class="archive-post-title" href= "/2020/05/15/%E8%87%AA%E5%B7%B1%E5%86%99%E7%9A%84%E6%A0%B9%E6%8D%AE%E5%85%A8%E8%B7%AF%E5%BE%84%E8%8E%B7%E5%8F%96%E5%8F%98%E9%87%8F%E5%80%BC/" >自己封装模拟json全路径获取某个对象下某个变量的工具类</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1672,17 +1704,6 @@ jsonContent:
     <!-- busuanzi  -->
     
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    
-    <!-- CNZZ  -->
-    
-    </div>
-    <!-- async load share.js -->
-     
-    </body>
-</html>
-
-
-.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     
     <!-- CNZZ  -->
     
