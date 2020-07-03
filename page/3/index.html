@@ -366,6 +366,187 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/01/12/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" >
+            
+                <span>通过一次cannal监听问题浅读spring-data源码及其在es中的应用一</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    系统需要与其他系统对接，并用到其他系统数据，但是其他系统又很难改造，所以使用canal来对其他系统数据库进行监控，并将变更的信息写入es，项目中使用spring-data-es的组件与es进行交互
+问题​    在测试环境突然报了一个很奇怪的错误
+​    
+解决​    经过分析异常堆栈，发现是因为用了spring-data的ElasticsearchRepository查询组件引起的，我们一步步来看，先看调用的地方
+
+​    神奇的地方就在这里，我们不需要写任何逻辑代码，spring就帮我们实现了es的查询，这就归功于spring-data组件的功能了，缺点就是排...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/12</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/01/05/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2/" >
+            
+                <span>es的模糊搜索</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近新的项目中用到了大量的es，作为es方面的新手，逐渐熟悉es的DSL、analyzer、search等等，所以记录一下，加深自己的理解
+理解es的模糊搜索首先理解搜索分词和存储分词
+
+搜索分词指的是match类查询，比如match、match_phrase，同时我们可以指定分词器，term类查询是不分词查询,比如term、terms
+
+存储分词es的text（2.x的string）类型字段存储，同搜索分词我们也可以利用不同的分词器来优化我们的搜索逻辑，比如默认的standard、ik等等
+
+存储不分词，在es2.x和5.x有不同的做法
+
+2.x
+由于2.x中没有text和ke...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/05</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/28/%E7%BC%96%E8%AF%91openJDK%E4%B9%8Bc%E7%BC%96%E8%AF%91%E5%99%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E8%A7%A3%E5%86%B3/" >
+            
+                <span>windows编译openJDK之c编译器找不到解决</span>
+        </a>
+        <div class="abstract-content">
+            写在前面为什么单独列出来这个问题呢？是因为其他问题网上都有很多类似的示例和解决方法，比如Cygwin 版本不对，包不对等等，这些我就不再写了。
+c编译器找不到的问题花了我很多时间去找资料，功夫不负有心人，让我找到了结局方法，所以写下来记录。
+问题按照之前的流程安装好所必需的环境：cygwin 、VS2010、freeType 2.7后，开始对openJDK进行编译。
+12cd /cygdrive/c/openJDK8/jdk8ubash ./configure --with-freetype=/cygdrive/c/openJDK8/freetype-2.10.1 --with-boot...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/28</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/21/%E7%BC%96%E8%AF%91openJdk%E4%B9%8B%E4%BA%8C/" >
+            
+                <span>windows编译openJdk之二-freeType+VS+jdk</span>
+        </a>
+        <div class="abstract-content">
+            安装openJDK下载官方下载地址：http://jdk.java.net/java-se-ri/8
+
+freeType
+freeType最好下载已经编译好的，下载后解压至和openJDK同一目录下
+下载地址：https://codeload.github.com/ubawurinna/freetype-windows-binaries/zip/master
+
+
+
+Visual Studio 2010 Compliers安装
+根据指导手册，OpenJDK Windows构建需要VS2010专业版编译器。编译器以及其它工具的安装位置希望由变量VS100COMNTOOLS定义，这个会由Mic...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/21</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/13/%E7%BC%96%E8%AF%91openJdk%E4%B9%8BCygWin%E7%9A%84%E5%AE%89%E8%A3%85/" >
+            
+                <span>windows编译openJdk之一-CYGWIN</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近在学习JVM，就接触到JDK的源码，传统的ORACLEJDK也就是JDK没有被开源，而OpenJDK是JDK的开放源码版本，以GPL协议的形式发布，适用于商业和个人。
+准备openJDK编译环境，第一步就是要去安装个CYGWIN，用来在windows下模拟linux运行环境。
+JDK和OpenJDK的区别，可以归纳为以下几点：
+授权协议的不同： 
+OpenJDK采用GPL V2协议发布，而JDK则采用JRL协议发布。两个协议虽然都是开放源代码的，但是在使用上的不同在于GPL V2允许在商业上使用，而JRL只允许个人研究使用。 
+
+OpenJDK只包含最精简的JDK： 
+Ope...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/13</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/12/07/java%E7%9A%84okhttp%E5%86%8D%E5%B0%81%E8%A3%85/" >
             
                 <span>java的okhttp再封装</span>
@@ -538,188 +719,6 @@ pom中引入 spring-boot-starter-test
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis_plus_generator">mybatis_plus_generator</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/02/URL/" >
-            
-                <span>SpringBoot启动报Failed to retrieve application JMX service URL</span>
-        </a>
-        <div class="abstract-content">
-            背景最近将项目切换到IDEA上，SpringBoot启动报如下错误：
-
-经过长时间分析和排查，终于解决了此问题。
-解决思路和过程首先看到报错信息指的是jmx连接失败，自己猜测可能有以下几种可能
-
-jmx服务没有启动
-IDEA配置有问题
-IDEA用java发送的请求被防火墙或者其他安全设备阻拦
-
-那么依次进行问题排查
-
-把程序搬到eclipse，启动本应用，发现可以正常启动，so排除了第一种可能
-
-在IDEA上用mvn package打包成jar包，然后再手动启动该jar包
-
-发现可以正常启动，so排除第二种可能
-
-使用管理员身份运行IDEA
-
-再重新启动
-
-成功了！果然是因为权限的问题！...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/02</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot">SpringBoot</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/26/volatile-item-2/" >
-            
-                <span>再从volatile第二个特性看JVM内存模型(JMM)</span>
-        </a>
-        <div class="abstract-content">
-            上一篇文章我们从volatile第一个特性浅析了JMM（JVM内存模型）及其在JVM中的实现，这篇文章我们从其第二个特性继续深入分析JVM的内存模型，当然本文依然假设大家已经了解了java基础知识和JVM的内存结构。
-先来回忆下的volatile的第二个特性
-1屏蔽指令重排序：指令重排序是编译器和处理器为了高效对程序进行优化的手段，它只能保证程序执行的结果时正确的，但是无法保证程序的操作顺序与代码顺序一致。这在单线程中不会构成问题，但是在多线程中就会出现问题。非常经典的例子是在单例方法中同时对字段加入volatile，就是为了防止指令重排序。
-
-示例代码老规矩，先上代码，这次还是拿单例模...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/26</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "volatile">volatile</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "jvm">jvm</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/16/volidateandjvm1/" >
-            
-                <span>从volatile第一个特性看JVM内存模型(JMM)</span>
-        </a>
-        <div class="abstract-content">
-            写在前面volatile两大特性
-保证变量的可见性：当一个被volatile关键字修饰的变量被一个线程修改的时候，其他线程可以立刻得到修改之后的结果。当一个线程向被volatile关键字修饰的变量写入数据的时候，虚拟机会强制它被值刷新到主内存中。当一个线程用到被volatile关键字修饰的值的时候，虚拟机会强制要求它从主内存中读取。
-屏蔽指令重排序：指令重排序是编译器和处理器为了高效对程序进行优化的手段，它只能保证程序执行的结果时正确的，但是无法保证程序的操作顺序与代码顺序一致。这在单线程中不会构成问题，但是在多线程中就会出现问题。非常经典的例子是在单例方法中同时对字段加入volatil...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/16</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "JVM">JVM</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "JMM">JMM</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/07/jvmGcRecycler%E6%B5%85%E6%9E%90/" >
-            
-                <span>再度浅析jvm的四种垃圾收集器</span>
-        </a>
-        <div class="abstract-content">
-            写在前面在之前的文章中写到了jvm的垃圾回收器（收集器），所以这里主要是根据实际的小例子来浅析各个垃圾回收器的特点
-先贴出本次测试的测试代码
-12345678910111213141516171819202122232425262728293031323334package gc;import java.util.ArrayList;import java.util.HashMap;import java.util.List;import java.util.Map;import java.util.Random;public class SimpleTest &#123;	public...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/07</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "jvm">jvm</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "gc">gc</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/28/programming/" >
-            
-                <span>浅论战术编程tactical programming与战略编程strategic programming</span>
-        </a>
-        <div class="abstract-content">
-            一个栗子自己前几天接收到一个需求，需求想要实现的功能十分简单：就是在某个表单内增加一个必填的下拉框，以提醒用户不要忘记做某一个动作（也许这就是表单设计太过简易的缺点吧@_@）。然后我就简单写了个功能设计文档，遂安排一名同学去完成这个工作。
-第二天我去查看完成效果，这位同学笑嘻嘻的说这么简单的功能我已经开发、自测完毕了，准备测试和上线了。我很满意，让他给我演示了下。嗯。不错。
-准备部署测试环境，突然发现他在confluence上传了份DB，我惊了，打开一看，DDL脚本在业务数据表内也新增了一个字段用来保存新增的下拉框用户所选的值。这个DDL完全是画蛇添足，造成的影响就是：原来仅仅只是修改前...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/28</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "codeImpression">codeImpression</a>
     
 </div>
             
@@ -1555,11 +1554,100 @@ IDEA用java发送的请求被防火墙或者其他安全设备阻拦
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 51
+        Total : 56
         </div>
         <!-- search  -->
+        
+            <div class="site-search popup-trigger">
+                <span class="iconfont-archer search-icon">&#xe627;</span>
+            </div>
         
     </div>
     
@@ -1570,6 +1658,31 @@ IDEA用java发送的请求被防火墙或者其他安全设备阻拦
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/20</span><a class="archive-post-title" href= "/2020/06/20/%E8%87%AA%E5%B7%B1%E5%86%99%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%8F%82%E6%95%B0%E7%BA%A7%E7%BB%9F%E4%B8%80%E6%95%B0%E6%8D%AE%E6%9D%83%E9%99%90%E7%BB%84%E4%BB%B6/" >自己写基于注解的参数级统一数据权限组件</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/14</span><a class="archive-post-title" href= "/2020/06/14/%E8%A7%A3%E6%9E%90springBean%E7%B1%BB%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E5%A6%82AOP%7Ccglib%E4%BB%A3%E7%90%86%E7%AD%89%E9%97%AE%E9%A2%98%E5%9B%9B/" >解析springBean类的注解引发的一系列如AOP|cglib代理等问题四</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/07</span><a class="archive-post-title" href= "/2020/06/07/%E8%A7%A3%E6%9E%90springBean%E7%B1%BB%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E5%A6%82AOP%7Ccglib%E4%BB%A3%E7%90%86%E7%AD%89%E9%97%AE%E9%A2%98%E4%B8%89/" >解析springBean类的注解引发的一系列如AOP|cglib代理等问题三</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/25</span><a class="archive-post-title" href= "/2020/05/25/%E8%A7%A3%E6%9E%90springBean%E7%B1%BB%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E5%A6%82AOP%7Ccglib%E4%BB%A3%E7%90%86%E7%AD%89%E9%97%AE%E9%A2%98%E4%BA%8C/" >解析springBean类的注解引发的一系列如AOP|cglib代理等问题二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/24</span><a class="archive-post-title" href= "/2020/05/24/%E8%A7%A3%E6%9E%90springBean%E7%B1%BB%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E5%A6%82AOP%7Ccglib%E4%BB%A3%E7%90%86%E7%AD%89%E9%97%AE%E9%A2%98%E4%B8%80/" >解析springBean类的注解引发的一系列如AOP|cglib代理等问题一</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1968,6 +2081,12 @@ IDEA用java发送的请求被防火墙或者其他安全设备阻拦
     
         <span class="sidebar-tag-name" data-tags="macOS"><span class="iconfont-archer">&#xe606;</span>macOS</span>
     
+        <span class="sidebar-tag-name" data-tags="Spring"><span class="iconfont-archer">&#xe606;</span>Spring</span>
+    
+        <span class="sidebar-tag-name" data-tags="数据权限"><span class="iconfont-archer">&#xe606;</span>数据权限</span>
+    
+        <span class="sidebar-tag-name" data-tags="动态代理"><span class="iconfont-archer">&#xe606;</span>动态代理</span>
+    
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -2067,6 +2186,8 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="macOS"><span class="iconfont-archer">&#xe60a;</span>macOS</span>
     
+        <span class="sidebar-category-name" data-categories="Spring"><span class="iconfont-archer">&#xe60a;</span>Spring</span>
+    
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
     <div class="sidebar-categories-list"></div>
@@ -2090,6 +2211,29 @@ jsonContent:
     </script>
     <script src="/scripts/main.js"></script>
     <!-- algolia -->
+    
+        <div class="site-search">
+  <div class="algolia-popup popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="iconfont-archer">&#xe609;</i>
+    </span>
+  </div>
+</div>
+        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.8.0/dist/instantsearch.min.js" defer></script>
+        <script src="/scripts/search.js" defer></script>
     
     <!-- busuanzi  -->
     
