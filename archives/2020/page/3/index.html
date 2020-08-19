@@ -353,6 +353,206 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/02/22/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E4%BA%8C/" >
+            
+                <span>spring-data-es抽象service集成简单增删查改之二</span>
+        </a>
+        <div class="abstract-content">
+            写在前面接一
+代码继续整理了后续的实现类，注释已经比较清楚了，不在此赘述
+主要是基于ElasticsearchRepository来实现简单的增删改查的
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273import java.util.HashMap;import java.util.Map;import java.util.Optional;/** * 公共查询的...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/22</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "elasticsearch">elasticsearch</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/02/16/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9/" >
+            
+                <span>spring-data-es抽象service集成简单增删查改之一</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近项目中用到了大量而是es进行数据的整合和查询，在项目完成后将自己花点时间整理了下组件，然后放上来，后面也可以继续用到~
+代码直接上代码，太忙了，先整理了base类，以下为代码，都有注释，就不在此赘述了
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798991...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/16</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "elasticsearch">elasticsearch</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/02/08/FeignRequestInterceptor%E7%A4%BA%E4%BE%8B/" >
+            
+                <span>FeignRequestInterceptor示例</span>
+        </a>
+        <div class="abstract-content">
+            背景
+项目中A服务需要频繁调用B服务，且参数内有许多共同属性，所以考虑利用feign的拦截器来进行统一参数的获取和封装，减少调用B服务前重复代码的编写
+示例
+直接上代码，后续遇到相同场景可以参考参考
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/08</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "feign">feign</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/02/02/es%E4%BF%AE%E6%94%B9%E7%B4%A2%E5%BC%95%E4%B8%ADmapping%E7%9A%84%E7%B1%BB%E5%9E%8B/" >
+            
+                <span>es修改索引中mapping的类型</span>
+        </a>
+        <div class="abstract-content">
+            问题es不允许对索引的type进行字段的删除和修改，只允许新增。
+新增字段12345678PUT my_index/_mapping/my_type&#123;  "properties": &#123;    "new_column": &#123;       "type":     "integer"    &#125;  &#125;&#125;
+
+删除和修改的步骤比较麻烦，具体步骤如下：
+新增索引t2为想要的数据类型
+
+将t1 reindex到t2
+1234567891011121314POST _reindex&#123;  &quot;source&quot;: &#123...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/02</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/01/25/idea%D6%AECommandLineIsTooLong/" >
+            
+                <span>idea之CommandLineIsTooLong问题解决</span>
+        </a>
+        <div class="abstract-content">
+            问题在某一次新增springboot项目部署启动时报了如下错误：
+1Error running &#39;XXXApplication&#39;: Command line is too long. Shorten command line for XXXApplication or also for Spring Boot default configuration.
+
+解决方法​    经过排查发现是因为项目启动的命令行太长引起的。最终通过idea的配置来解决
+
+shorten command line 选项提供三种选项缩短类路径，这里我们需要选JAR manifest。
+　　non...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/25</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "idea">idea</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/01/18/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A52/" >
+            
+                <span>通过一次cannal监听问题浅读spring-data源码及其在es中的应用二</span>
+        </a>
+        <div class="abstract-content">
+            接上文​    可以看到queries在new的时候初始化，将repository中需要代理的方法和具体实现类也就是RepositoryQuery实现类放入其中，然后再拦截器中判断并执行实现的方法即：
+
+123456789101112131415161718192021222324252627282930313233343536//org.springframework.data.elasticsearch.repository.query.ElasticsearchPartQuery#executepublic Object execute(Object[] parameters) &...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/18</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2020/01/12/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" >
             
                 <span>通过一次cannal监听问题浅读spring-data源码及其在es中的应用一</span>
@@ -1279,9 +1479,111 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 56
+        Total : 62
         </div>
         <!-- search  -->
         
@@ -1298,6 +1600,36 @@
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/09</span><a class="archive-post-title" href= "/2020/08/09/mac%E4%B8%8B%E7%BC%96%E8%AF%91openjdk/" >mac下编译openjdk14u36</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/01</span><a class="archive-post-title" href= "/2020/08/01/SPI%E6%98%AF%E5%90%A6%E7%A0%B4%E5%9D%8F%E4%BA%86%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/" >SPI是否破坏了双亲委派？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/26</span><a class="archive-post-title" href= "/2020/07/26/%E9%80%9A%E8%BF%87%E5%AD%97%E8%8A%82%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90i++%E5%92%8C++i%E7%9A%84%E5%8C%BA%E5%88%AB/" >通过字节码简单解析i++和++i的区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/12</span><a class="archive-post-title" href= "/2020/07/12/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90%E4%BA%8C/" >class文件简单解析之二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/05</span><a class="archive-post-title" href= "/2020/07/05/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90/" >class文件简单解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/28</span><a class="archive-post-title" href= "/2020/06/28/%E8%87%AA%E5%B7%B1%E5%86%99%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%8F%82%E6%95%B0%E7%BA%A7%E7%BB%9F%E4%B8%80%E6%95%B0%E6%8D%AE%E6%9D%83%E9%99%90%E7%BB%84%E4%BB%B6%E4%BA%8C/" >自己写基于注解的参数级统一数据权限组件</a>
+        </li>
     
     
         <li class="archive-post-item">

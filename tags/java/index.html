@@ -353,6 +353,135 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/08/01/SPI%E6%98%AF%E5%90%A6%E7%A0%B4%E5%9D%8F%E4%BA%86%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/" >
+            
+                <span>SPI是否破坏了双亲委派？</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    之前看很多文章讲到class加载的双亲委派机制，百分之九十概率会提到SPI且说SPI破坏了双亲委派机制，之前也只是糊里糊涂的觉得是这么个回事，但是最近在看jvm。回过头来看，自己觉得SPI其实并没有破坏双亲委派。
+双亲委派  含义：如果一个类加载器收到了加载某个类的请求,则该类加载器并不会去加载该类,而是把这个请求委派给父类加载器,每一个层次的类加载器都是如此,因此所有的类加载请求最终都会传送到顶端的启动类加载器;只有当父类加载器在其搜索范围内无法找到所需的类,并将该结果反馈给子类加载器,子类加载器会尝试去自己加载。
+​    这里有几个流程要注意一下：
+
+子类先委托父...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/08/01</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/07/26/%E9%80%9A%E8%BF%87%E5%AD%97%E8%8A%82%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90i++%E5%92%8C++i%E7%9A%84%E5%8C%BA%E5%88%AB/" >
+            
+                <span>通过字节码简单解析i++和++i的区别</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近闲暇时间在研究jvm虚拟机原理，所以把日常看到的、学习到的记录下来，这篇文章比较简单，主要是基于上篇文章简单了解下i++和++i的区别
+实例直接上代码
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546//sourcepublic int iinc()&#123;        return a++;    &#125;    public int inci()&#123;        return ++a;    &#125;//classpublic in...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/07/26</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/07/12/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90%E4%BA%8C/" >
+            
+                <span>class文件简单解析之二</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近闲暇时间在研究jvm虚拟机原理，所以把日常看到的、学习到的记录下来，这篇文章主要是讲基础的Class文件的查看和解析
+会持续更新，接上文
+实例见注释
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/07/12</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/07/05/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90/" >
+            
+                <span>class文件简单解析</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近闲暇时间在研究jvm虚拟机原理，所以把日常看到的、学习到的记录下来，这篇文章主要是讲基础的Class文件的查看和解析
+会持续更新
+概念Class文件是经过JDK中javac工具编译后的一组以8位字节为基础单位的二进制流,各个数据项目严格按照顺序紧凑地排列在Class文件之中,中间没有添加任何分隔符.如何查看编译后的Class文件?推荐两种不需要安装任何额外工具的查看方式.在IDE中打开.class文件,会被内置的反编译插件反编译,还原成java类文件,既不能起到查看.class文件的目的,也不符合不安装额外工具的要求.
+这里使用javap命令对class文件查看
+对于clas...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/07/05</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2020/05/15/%E8%87%AA%E5%B7%B1%E5%86%99%E7%9A%84%E6%A0%B9%E6%8D%AE%E5%85%A8%E8%B7%AF%E5%BE%84%E8%8E%B7%E5%8F%96%E5%8F%98%E9%87%8F%E5%80%BC/" >
             
                 <span>自己封装模拟json全路径获取某个对象下某个变量的工具类</span>
@@ -1306,9 +1435,111 @@ RestTemplate和Feign主要是访问restful服务，其他非restful会很复杂�
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 56
+        Total : 62
         </div>
         <!-- search  -->
         
@@ -1325,6 +1556,36 @@ RestTemplate和Feign主要是访问restful服务，其他非restful会很复杂�
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/09</span><a class="archive-post-title" href= "/2020/08/09/mac%E4%B8%8B%E7%BC%96%E8%AF%91openjdk/" >mac下编译openjdk14u36</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/01</span><a class="archive-post-title" href= "/2020/08/01/SPI%E6%98%AF%E5%90%A6%E7%A0%B4%E5%9D%8F%E4%BA%86%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/" >SPI是否破坏了双亲委派？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/26</span><a class="archive-post-title" href= "/2020/07/26/%E9%80%9A%E8%BF%87%E5%AD%97%E8%8A%82%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90i++%E5%92%8C++i%E7%9A%84%E5%8C%BA%E5%88%AB/" >通过字节码简单解析i++和++i的区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/12</span><a class="archive-post-title" href= "/2020/07/12/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90%E4%BA%8C/" >class文件简单解析之二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/05</span><a class="archive-post-title" href= "/2020/07/05/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90/" >class文件简单解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/28</span><a class="archive-post-title" href= "/2020/06/28/%E8%87%AA%E5%B7%B1%E5%86%99%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%8F%82%E6%95%B0%E7%BA%A7%E7%BB%9F%E4%B8%80%E6%95%B0%E6%8D%AE%E6%9D%83%E9%99%90%E7%BB%84%E4%BB%B6%E4%BA%8C/" >自己写基于注解的参数级统一数据权限组件</a>
+        </li>
     
     
         <li class="archive-post-item">

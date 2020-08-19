@@ -366,6 +366,234 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/08/hibernate4%E7%9B%91%E5%90%AC%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90/" >
+            
+                <span>hibernate4监听器的实现简单解析</span>
+        </a>
+        <div class="abstract-content">
+            这几天旧项目运维时发现曾经写的hibernate监听器很有意思，混合利用了工厂模式和观察者模式。所以特意记录一下
+hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册的方式，而是新增了一个监听器注册类：org.hibernate.event.service.spi.EventListenerRegistry，注册方式为：
+1234567891011121314151617@Componentpublic class HandleEnvetListener &#123;	//注册监听器		@Autowired      private SessionFa...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/08</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码解读">源码解读</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "hibernate4">hibernate4</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "设计模式">设计模式</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/06/hive%E5%AD%98%E5%82%A8%E6%8D%A2%E8%A1%8C%E7%AC%A6%E7%AD%89%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6/" >
+            
+                <span>hive存储换行符等特殊字符</span>
+        </a>
+        <div class="abstract-content">
+            etl抽取oracle数据到hive库中的时候，oracle表中如果有换行符如:‘\n\r’，会造成当前行的数据错位。
+原来是因为hive默认的存储方式是textfile，这种方式不支持存储换行符。
+方案一、替换这些特殊字符：
+1regexp_replace(t.test, '\n|\t|\r', '')
+
+方案二、修改表的存储格式为:parquet
+12345678910drop table if exists test_table;create table test_table(	create_by string comment '',	create_time date commen...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/06</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "hive">hive</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/02/tomcat-jetty-jboss%E8%B7%A8%E5%9F%9F%E9%85%8D%E7%BD%AE/" >
+            
+                <span>tomcat,jetty,jboss跨域配置</span>
+        </a>
+        <div class="abstract-content">
+            目前前后端分离的开发方式都是需要前端应用跨域访问后端服务器。这里记录下平时开发中用到的三种服务器支持跨域的方式。浏览器支持跨域的方式后面再讲。
+先来了解下跨域的主流方式：
+CORS：全称”跨域资源共享”（Cross-origin resource sharing）。
+CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目前几乎所有浏览器都支持CORS，IE则不能低于IE10。
+一：springMVC版本低于4.2的war包部署至jboss、jetty、tomcat在web.xml内加入处理跨域的过滤器（需要先引入jar包）：
+12345678910111213141516171819...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/02</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "jetty">jetty</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "jboss">jboss</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "tomcat">tomcat</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "CORS">CORS</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "sringboot">sringboot</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/07/25/content-type01/" >
+            
+                <span>springMVC获取content-type为form-data类型的参数和值解析</span>
+        </a>
+        <div class="abstract-content">
+            写在前面传统的servlet处理request请求是，会自动帮我们封装get请求、post且Content-Type为application/x-www-form-urlencoded请求参数至request parameter map。但是当Content-Type为其他类型时，需要基于servlet的框架比如struts、spring来帮我们封装，不按的话得我们自己获取请求流来处理。
+之所以会这样，是因为：Content-Type不是application/x-www-form-urlencoded时数据格式不固定，不一定是key=value对的方式，所以服务器无法知道具体的处理方式...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/25</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "springMVC">springMVC</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "form_data">form_data</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码解读">源码解读</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/07/14/ElasticSearch-001/" >
+            
+                <span>ElasticSearch笔记</span>
+        </a>
+        <div class="abstract-content">
+            最近开发的人员搜索功能使用到了ElasticSearch(ES)，所以把自己学到的东西记录下来
+介绍ES是一个分布式可扩展的实时搜索和分析引擎,一个建立在全文搜索引擎 Apache Lucene(TM) 基础上的搜索引擎.当然 ES并不仅仅是 Lucene 那么简单，它不仅包括了全文搜索功能，还可以进行以下工作:
+
+分布式实时文件存储，并将每一个字段都编入索引，使其可以被搜索。
+
+实时分析的分布式搜索引擎。
+
+可以扩展到上百台服务器，处理PB级别的结构化或非结构化数据。
+经过两三天时间的琢磨，大概明白了ES的表面运作流程，ES除了上述特征之外，他提供服务的方式是RESTful web接口...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/14</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "ElasticSearch">ElasticSearch</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Oracle">Oracle</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/06/24/mybatis%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83/" >
+            
+                <span>mybatis字符串比较</span>
+        </a>
+        <div class="abstract-content">
+            在mybatis的mapping内进行字符串比较应该使用以下方法:
+&lt;if test=&#39;type==&quot;y&quot;&#39;&gt;  
+    and status = 1   
+&lt;/if&gt;
+或者
+&lt;if test=&quot;type == &#39;y&#39;.toString()&quot;&gt;  
+    and status = 1   
+&lt;/if&gt;
+不能使用这种写法&lt;if test=&quot;type == &#39;y&#39;&quot;&gt;，因为tset内是ognl表达式，’Y’在java内被认...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/06/24</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis">mybatis</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "字符串比较">字符串比较</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/05/22/mybatis-placeholder/" >
             
                 <span>mybatis占位符的区别</span>
@@ -505,88 +733,10 @@ height:50vh;
         </div>
     </article>
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2016/09/26/ajax%E7%9A%84traditional%E4%BD%9C%E7%94%A8/" >
-            
-                <span>ajax的traditional作用</span>
-        </a>
-        <div class="abstract-content">
-            开发中前端利用ajax传递一个js数组对象，后台（struts）只能获取到数组的第一个值，后续值完全获取不到，经过查找资料，发现了解决方案
-123456$.ajax&#123;      url:"xxxx",      traditional: true//这个设置为true，data:&#123;"steps":["qwe","asd","zxc"]&#125;会转换成steps=qwe&amp;steps=asd&amp;...&#125;);      data:&#123;"steps":["qwe","asd","zxc"]&#125;&#125;
-
-这是因为jQuery封装...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2016/09/26</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "ajax">ajax</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2016/09/09/%E8%87%AA%E5%B7%B1%E5%86%99%E4%B8%80%E4%B8%AAmysql%E5%8A%A8%E6%80%81%E6%9F%A5%E8%AF%A2%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84%E7%9A%84%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/" >
-            
-                <span>自己写一个mysql动态查询树形结构的存储过程</span>
-        </a>
-        <div class="abstract-content">
-            写在前面  这是我三年前记录在自己csdn博客上的，觉得很有用，搬过来~
-正文mysql不像oracle有start with … connect by …这种递归查询树形结构的语句，但是日常开发中会经常查询树形数据，所以自己就摸索了一套可以动态传参来递归查询树形结构的数据
-调用示例：
-
-参数
-
-schema_name 库名
-table_name 表名
-type ：1、父级2、子级
-self_value： 节点值
-id_name：节点主键id，用于查找子节点
-self_name：本节点的字段名称，用于找父级
-parent_name：父节点名称，用于找子级和父级
-rt_value：返回值，...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2016/09/09</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "mysql">mysql</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "tree">tree</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "history">history</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/page/5/">&lt; PREV</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
+        <a class="extend prev" rel="prev" href="/page/5/">&lt; PREV</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/">NEXT &gt;</a>
     </nav>
     
 </main>
@@ -1497,9 +1647,111 @@ rt_value：返回值，...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 56
+        Total : 62
         </div>
         <!-- search  -->
         
@@ -1516,6 +1768,36 @@ rt_value：返回值，...
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/09</span><a class="archive-post-title" href= "/2020/08/09/mac%E4%B8%8B%E7%BC%96%E8%AF%91openjdk/" >mac下编译openjdk14u36</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/01</span><a class="archive-post-title" href= "/2020/08/01/SPI%E6%98%AF%E5%90%A6%E7%A0%B4%E5%9D%8F%E4%BA%86%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/" >SPI是否破坏了双亲委派？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/26</span><a class="archive-post-title" href= "/2020/07/26/%E9%80%9A%E8%BF%87%E5%AD%97%E8%8A%82%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90i++%E5%92%8C++i%E7%9A%84%E5%8C%BA%E5%88%AB/" >通过字节码简单解析i++和++i的区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/12</span><a class="archive-post-title" href= "/2020/07/12/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90%E4%BA%8C/" >class文件简单解析之二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/05</span><a class="archive-post-title" href= "/2020/07/05/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90/" >class文件简单解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/28</span><a class="archive-post-title" href= "/2020/06/28/%E8%87%AA%E5%B7%B1%E5%86%99%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%8F%82%E6%95%B0%E7%BA%A7%E7%BB%9F%E4%B8%80%E6%95%B0%E6%8D%AE%E6%9D%83%E9%99%90%E7%BB%84%E4%BB%B6%E4%BA%8C/" >自己写基于注解的参数级统一数据权限组件</a>
+        </li>
     
     
         <li class="archive-post-item">

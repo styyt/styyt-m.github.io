@@ -366,6 +366,200 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/08/09/mac%E4%B8%8B%E7%BC%96%E8%AF%91openjdk/" >
+            
+                <span>mac下编译openjdk14u36</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​        年初自己在windows上编译了openjdk8，花费了好几天才成功。前几个月换到mac上，所有的东西都不能用，感到很可惜，所以自己只能重新编译一次。
+​        幸好mac上编译openjdk相对于windows方便很多。不需要安装那么多插件，建议大家在Mac可以直接按照doc/build.md里的指引进行操作即可，唯一需要注意的就是各个工具版本就好。
+​        本机各项环境配置如下：
+​        ps：如果想编译旧版本的openjdk，前几天尝试了下，会报 找不到#include 头文件，查了很久，是因为链接时会找不到libstdc++，...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/08/09</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/08/01/SPI%E6%98%AF%E5%90%A6%E7%A0%B4%E5%9D%8F%E4%BA%86%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/" >
+            
+                <span>SPI是否破坏了双亲委派？</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    之前看很多文章讲到class加载的双亲委派机制，百分之九十概率会提到SPI且说SPI破坏了双亲委派机制，之前也只是糊里糊涂的觉得是这么个回事，但是最近在看jvm。回过头来看，自己觉得SPI其实并没有破坏双亲委派。
+双亲委派  含义：如果一个类加载器收到了加载某个类的请求,则该类加载器并不会去加载该类,而是把这个请求委派给父类加载器,每一个层次的类加载器都是如此,因此所有的类加载请求最终都会传送到顶端的启动类加载器;只有当父类加载器在其搜索范围内无法找到所需的类,并将该结果反馈给子类加载器,子类加载器会尝试去自己加载。
+​    这里有几个流程要注意一下：
+
+子类先委托父...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/08/01</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/07/26/%E9%80%9A%E8%BF%87%E5%AD%97%E8%8A%82%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90i++%E5%92%8C++i%E7%9A%84%E5%8C%BA%E5%88%AB/" >
+            
+                <span>通过字节码简单解析i++和++i的区别</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近闲暇时间在研究jvm虚拟机原理，所以把日常看到的、学习到的记录下来，这篇文章比较简单，主要是基于上篇文章简单了解下i++和++i的区别
+实例直接上代码
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546//sourcepublic int iinc()&#123;        return a++;    &#125;    public int inci()&#123;        return ++a;    &#125;//classpublic in...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/07/26</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/07/12/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90%E4%BA%8C/" >
+            
+                <span>class文件简单解析之二</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近闲暇时间在研究jvm虚拟机原理，所以把日常看到的、学习到的记录下来，这篇文章主要是讲基础的Class文件的查看和解析
+会持续更新，接上文
+实例见注释
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/07/12</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/07/05/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90/" >
+            
+                <span>class文件简单解析</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近闲暇时间在研究jvm虚拟机原理，所以把日常看到的、学习到的记录下来，这篇文章主要是讲基础的Class文件的查看和解析
+会持续更新
+概念Class文件是经过JDK中javac工具编译后的一组以8位字节为基础单位的二进制流,各个数据项目严格按照顺序紧凑地排列在Class文件之中,中间没有添加任何分隔符.如何查看编译后的Class文件?推荐两种不需要安装任何额外工具的查看方式.在IDE中打开.class文件,会被内置的反编译插件反编译,还原成java类文件,既不能起到查看.class文件的目的,也不符合不安装额外工具的要求.
+这里使用javap命令对class文件查看
+对于clas...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/07/05</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/06/28/%E8%87%AA%E5%B7%B1%E5%86%99%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%8F%82%E6%95%B0%E7%BA%A7%E7%BB%9F%E4%B8%80%E6%95%B0%E6%8D%AE%E6%9D%83%E9%99%90%E7%BB%84%E4%BB%B6%E4%BA%8C/" >
+            
+                <span>自己写基于注解的参数级统一数据权限组件</span>
+        </a>
+        <div class="abstract-content">
+            写在前面接上一篇
+代码片段废话不多说，上代码片段
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354/** * 随便取一个拦截实现类来展示 * @author yyt */@Component@Slf4jpublic class ProjectDataAuthHandle extends DataAuthAbstractHandle &#123;    @Override    protected Set&lt;DataAuthDomain&...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/06/28</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "数据权限">数据权限</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2020/06/20/%E8%87%AA%E5%B7%B1%E5%86%99%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%8F%82%E6%95%B0%E7%BA%A7%E7%BB%9F%E4%B8%80%E6%95%B0%E6%8D%AE%E6%9D%83%E9%99%90%E7%BB%84%E4%BB%B6/" >
             
                 <span>自己写基于注解的参数级统一数据权限组件</span>
@@ -498,216 +692,10 @@ Springboot动态代理全是cglib吗？还是根据是否接口来判断是使�
         </div>
     </article>
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/05/24/%E8%A7%A3%E6%9E%90springBean%E7%B1%BB%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E5%A6%82AOP%7Ccglib%E4%BB%A3%E7%90%86%E7%AD%89%E9%97%AE%E9%A2%98%E4%B8%80/" >
-            
-                <span>解析springBean类的注解引发的一系列如AOP|cglib代理等问题一</span>
-        </a>
-        <div class="abstract-content">
-            写在前面接上一篇，同样的需求：需要写一个针对controller内参数的数据权限校验组件，所以需要想办法获取都某个对象的某个变量（可能跨层级）的值，所以研究和封装了一套可以使用的工具。这个工具类需要开发时定义好取值的路径，最终决定使用对参数注解，这样就可以针对单独参数的某个值进行权限校验。
-开发思路：
-​    1、在controller层的方法的参数上进行注解
-​    2、为了提高拦截时的程序运行效率，项目启动时扫描所有注解的参数的方法放入缓存
-​    3、aop拦截时进行判断是否需要存在于缓存，如有则进行权限校验
-问题写完了注解代码，然后决定使用BeanPostProcessor...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/05/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "动态代理">动态代理</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/05/15/%E8%87%AA%E5%B7%B1%E5%86%99%E7%9A%84%E6%A0%B9%E6%8D%AE%E5%85%A8%E8%B7%AF%E5%BE%84%E8%8E%B7%E5%8F%96%E5%8F%98%E9%87%8F%E5%80%BC/" >
-            
-                <span>自己封装模拟json全路径获取某个对象下某个变量的工具类</span>
-        </a>
-        <div class="abstract-content">
-            写在前面最近需要写一个针对controller内参数的数据权限校验组件，所以需要想办法获取都某个对象的某个变量（可能跨层级）的值，所以研究和封装了一套可以使用的工具类
-代码废话不多说，直接上代码，注释也写得比较明白了，就不赘述了
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/05/15</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/05/01/macOS%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/" >
-            
-                <span>macOS常用命令记录</span>
-        </a>
-        <div class="abstract-content">
-            写在前面最近开始切换到mac上办公，所以记录了一下重要且实用的命令，以便后面再用。
-会持续更新
-命令
-Iterm2
-
-iterm2自动登录远程服务器
-
-设置登录脚本
-123cd ~/.sshtouch testvi test
-
-然后复制以下bash,保存退出
-1234567891011#!/usr/bin/expect -fset host 10.10.120.312set user rootset password root#set timeout -1spawn ssh $user@$hostexpect "*assword:*"send "$password\r"interacte...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/05/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "macOS">macOS</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/04/19/spring-data-elasticsearch-%E7%BB%84%E4%BB%B6%E6%9F%A5%E8%AF%A2%E7%9A%84bug%E8%A7%A3%E6%9E%90/" >
-            
-                <span>spring-data-elasticsearch-组件查询的bug跟踪</span>
-        </a>
-        <div class="abstract-content">
-            写在前面最近在排查生产问题的时候发现，基于spring-data-es（版本：spring-data-elasticsearch-3.0.8.RELEASE.jar）的ElasticsearchRepository的查询有bug，如下方法：
-1234public interface IiapImplTemplateDeviceRepository extends ElasticsearchRepository&lt;IiapTemplateDeviceDoc, String&gt; &#123;    List&lt;IiapTemplateDeviceDoc&gt; findByXXI...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/19</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "spring-data-elasticsearch">spring-data-elasticsearch</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/04/05/canal%E4%BD%BF%E7%94%A8%E4%B8%AD%E7%9A%84%E9%99%B7%E9%98%B1%E7%94%A8%E6%B3%95/" >
-            
-                <span>canal使用中的陷阱用法</span>
-        </a>
-        <div class="abstract-content">
-            写在前面项目中因为涉及到其他系统的数据状态同步，但是部署在不同机房和区域，所以使用了阿里开源的canal进行数据状态的同步
-问题分析在维护这个项目的时候发现，系统在测试环境启动canal监听服务后，停止使用stop或kill命令都无法使服务停止，最后只能使用kill -9来强制杀掉进程
-排查步骤
-排查前是不知道是因为canal无法停止引起的。所以使用如下步骤来排查
-1、jps -l确定进程确实一直存在，并获取到进程id
-2、使用 jstack 查看当前进程id下有哪些异常的线程
-​    拉到当前进程的线程信息首先看有没有系统内自写的代码所造成的的异常，这种可能性是最大的
-结果真的发现有...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/05</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "canal">canal</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/03/29/%E5%85%B3%E4%BA%8Elocale%E5%92%8CResourceBundle%E8%B8%A9%E7%9A%84%E5%9D%91/" >
-            
-                <span>关于Locale和ResourceBundle踩的坑</span>
-        </a>
-        <div class="abstract-content">
-            问题为新项目写了一个错误码支持国际化的缓存，但是在测试的时候遇到了一个难解的问题，测试环境不管header里传zh还是en都是英文提示，但是在本地调试却都是中文提示
-解析先缓存处理的代码
-1234567891011121314151617181920212223242526272829303132333435363738394041public class ErrorCodeMessageResource &#123;    /** 将国际化信息存放在一个map中 */    private static final Map&lt;String, ResourceBundle&gt; M...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/03/29</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Locale">Locale</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "ResourceBundle">ResourceBundle</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">NEXT &gt;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">NEXT &gt;</a>
     </nav>
     
 </main>
@@ -1618,9 +1606,111 @@ iterm2自动登录远程服务器
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 56
+        Total : 62
         </div>
         <!-- search  -->
         
@@ -1637,6 +1727,36 @@ iterm2自动登录远程服务器
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/09</span><a class="archive-post-title" href= "/2020/08/09/mac%E4%B8%8B%E7%BC%96%E8%AF%91openjdk/" >mac下编译openjdk14u36</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/01</span><a class="archive-post-title" href= "/2020/08/01/SPI%E6%98%AF%E5%90%A6%E7%A0%B4%E5%9D%8F%E4%BA%86%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/" >SPI是否破坏了双亲委派？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/26</span><a class="archive-post-title" href= "/2020/07/26/%E9%80%9A%E8%BF%87%E5%AD%97%E8%8A%82%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90i++%E5%92%8C++i%E7%9A%84%E5%8C%BA%E5%88%AB/" >通过字节码简单解析i++和++i的区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/12</span><a class="archive-post-title" href= "/2020/07/12/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90%E4%BA%8C/" >class文件简单解析之二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/05</span><a class="archive-post-title" href= "/2020/07/05/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90/" >class文件简单解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/28</span><a class="archive-post-title" href= "/2020/06/28/%E8%87%AA%E5%B7%B1%E5%86%99%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%8F%82%E6%95%B0%E7%BA%A7%E7%BB%9F%E4%B8%80%E6%95%B0%E6%8D%AE%E6%9D%83%E9%99%90%E7%BB%84%E4%BB%B6%E4%BA%8C/" >自己写基于注解的参数级统一数据权限组件</a>
+        </li>
     
     
         <li class="archive-post-item">
