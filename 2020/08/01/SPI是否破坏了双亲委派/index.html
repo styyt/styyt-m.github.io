@@ -27,7 +27,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="写在前面​    之前看很多文章讲到class加载的双亲委派机制，百分之九十概率会提到SPI且说SPI破坏了双亲委派机制，之前也只是糊里糊涂的觉得是这么个回事，但是最近在看jvm。回过头来看，自己觉得SPI其实并没有破坏双亲委派。 双亲委派  含义：如果一个类加载器收到了加载某个类的请求,则该类加载器并不会去加载该类,而是把这个请求委派给父类加载器,每一个层次的类加载器都是如此,因此所有的类加载请">
 <meta property="article:published_time" content="2020-08-01T02:54:38.000Z">
-<meta property="article:modified_time" content="2020-08-18T07:20:09.151Z">
+<meta property="article:modified_time" content="2020-08-28T04:02:03.255Z">
 <meta property="article:author" content="styytNOTstop">
 <meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary">
@@ -284,7 +284,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">904</span>阅读时长: <span class="post-count reading-time">3 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">908</span>阅读时长: <span class="post-count reading-time">3 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -432,6 +432,7 @@ height:50vh;
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//入口</span></span><br><span class="line"><span class="comment">//java.util.ServiceLoader#load(java.lang.Class&lt;S&gt;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;S&gt; <span class="function">ServiceLoader&lt;S&gt; <span class="title">load</span><span class="params">(Class&lt;S&gt; service)</span> </span>&#123;</span><br><span class="line">  <span class="comment">//一开始就获取了应用的APClassLoader</span></span><br><span class="line">        ClassLoader cl = Thread.currentThread().getContextClassLoader();</span><br><span class="line">        <span class="keyword">return</span> ServiceLoader.load(service, cl);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;S&gt; <span class="function">ServiceLoader&lt;S&gt; <span class="title">load</span><span class="params">(Class&lt;S&gt; service,</span></span></span><br><span class="line"><span class="function"><span class="params">                                            ClassLoader loader)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ServiceLoader&lt;&gt;(service, loader);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">ServiceLoader</span><span class="params">(Class&lt;S&gt; svc, ClassLoader cl)</span> </span>&#123;</span><br><span class="line">        service = Objects.requireNonNull(svc, <span class="string">"Service interface cannot be null"</span>);</span><br><span class="line">  <span class="comment">//如果空则使用jvm默认classloader</span></span><br><span class="line">        loader = (cl == <span class="keyword">null</span>) ? ClassLoader.getSystemClassLoader() : cl;</span><br><span class="line">        acc = (System.getSecurityManager() != <span class="keyword">null</span>) ? AccessController.getContext() : <span class="keyword">null</span>;</span><br><span class="line">        reload();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reload</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        providers.clear();</span><br><span class="line">  <span class="comment">//lookupIterator就是用来扫描及加载类的</span></span><br><span class="line">        lookupIterator = <span class="keyword">new</span> LazyIterator(service, loader);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//LazyIterator是个内部类，用来懒加载，逻辑比较简单</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">hasNextService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (nextName != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (configs == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                  <span class="comment">//PREFIX="META-INF/services/"</span></span><br><span class="line">                    String fullName = PREFIX + service.getName();</span><br><span class="line">                    <span class="keyword">if</span> (loader == <span class="keyword">null</span>)</span><br><span class="line">                      <span class="comment">//默认classLoader</span></span><br><span class="line">                        configs = ClassLoader.getSystemResources(fullName);</span><br><span class="line">                    <span class="keyword">else</span></span><br><span class="line">                      <span class="comment">//SPI走这里</span></span><br><span class="line">                        configs = loader.getResources(fullName);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException x) &#123;</span><br><span class="line">                    fail(service, <span class="string">"Error locating configuration files"</span>, x);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> ((pending == <span class="keyword">null</span>) || !pending.hasNext()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!configs.hasMoreElements()) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                pending = parse(service, configs.nextElement());</span><br><span class="line">            &#125;</span><br><span class="line">            nextName = pending.next();</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> S <span class="title">nextService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (!hasNextService())</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException();</span><br><span class="line">            String cn = nextName;</span><br><span class="line">            nextName = <span class="keyword">null</span>;</span><br><span class="line">            Class&lt;?&gt; c = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">              <span class="comment">//重点在这里，可以看到他是用到forName这个进行clas</span></span><br><span class="line">                c = Class.forName(cn, <span class="keyword">false</span>, loader);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ClassNotFoundException x) &#123;</span><br><span class="line">                fail(service,</span><br><span class="line">                     <span class="string">"Provider "</span> + cn + <span class="string">" not found"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (!service.isAssignableFrom(c)) &#123;</span><br><span class="line">                fail(service,</span><br><span class="line">                     <span class="string">"Provider "</span> + cn  + <span class="string">" not a subtype"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                S p = service.cast(c.newInstance());</span><br><span class="line">              <span class="comment">//放入缓存</span></span><br><span class="line">                providers.put(cn, p);</span><br><span class="line">                <span class="keyword">return</span> p;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Throwable x) &#123;</span><br><span class="line">                fail(service,</span><br><span class="line">                     <span class="string">"Provider "</span> + cn + <span class="string">" could not be instantiated"</span>,</span><br><span class="line">                     x);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Error();          <span class="comment">// This cannot happen</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 
 <p>​    通过上面代码可以看到，最终的加载class还是利用原生的classLoader进行了class的加载，只是双亲委派的代表是Classloader的load，而这里使用了forName而已。所以并没有打破双亲委派。</p>
+<p>未完待续……</p>
 
     </article>
     <!-- license  -->
@@ -440,7 +441,7 @@ height:50vh;
             <p>原文作者：<a href="https://styyt.github.io">styytNOTstop</a>
             <p>原文链接：<a href="https://styyt.github.io/2020/08/01/SPI%E6%98%AF%E5%90%A6%E7%A0%B4%E5%9D%8F%E4%BA%86%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/">https://styyt.github.io/2020/08/01/SPI%E6%98%AF%E5%90%A6%E7%A0%B4%E5%9D%8F%E4%BA%86%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/</a>
             <p>发表日期：<a href="https://styyt.github.io/2020/08/01/SPI%E6%98%AF%E5%90%A6%E7%A0%B4%E5%9D%8F%E4%BA%86%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/">August 1st 2020, 10:54:38 am</a>
-            <p>更新日期：<a href="https://styyt.github.io/2020/08/01/SPI%E6%98%AF%E5%90%A6%E7%A0%B4%E5%9D%8F%E4%BA%86%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/">August 18th 2020, 3:20:09 pm</a>
+            <p>更新日期：<a href="https://styyt.github.io/2020/08/01/SPI%E6%98%AF%E5%90%A6%E7%A0%B4%E5%9D%8F%E4%BA%86%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/">August 28th 2020, 12:02:03 pm</a>
             <p>版权声明：本文采用<a rel="license noopener" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -1452,9 +1453,144 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 62
+        Total : 71
         </div>
         <!-- search  -->
         
@@ -1471,6 +1607,51 @@ top:50vh;
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/17</span><a class="archive-post-title" href= "/2020/10/17/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E5%9B%9B%E4%B9%8B%E5%88%86%E6%9E%90/" >mysql诡异的死锁问题排查及分析全过程记录四之分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2020/10/07/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%B8%89%E4%B9%8B%E9%87%8D%E7%8E%B0/" >mysql诡异的死锁问题排查及分析全过程记录三之重现</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/02</span><a class="archive-post-title" href= "/2020/10/02/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%BA%8C/" >mysql诡异的死锁问题排查及分析全过程记录二之RR的锁</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/27</span><a class="archive-post-title" href= "/2020/09/27/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%B8%80/" >mysql诡异的死锁问题排查及分析全过程记录一之概述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/05</span><a class="archive-post-title" href= "/2020/09/05/openjdk%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90%E4%B9%8Bjni_registerNatives%E4%BA%8C/" >openjdk源码浅析之jni_registerNatives二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span><a class="archive-post-title" href= "/2020/08/30/openjdk%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90%E4%B9%8Bjni_registerNatives/" >openjdk源码浅析之jni_registerNatives</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2020/08/29/habse%E4%B8%AD%E4%BD%BF%E7%94%A8shell%E6%A8%A1%E7%B3%8Ascan/" >habse中使用shell模相关命令</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/23</span><a class="archive-post-title" href= "/2020/08/23/hikari%E4%B8%AD%E7%94%A8%E5%88%B0%E7%9A%84SPI%E6%80%9D%E6%83%B3/" >hikari中用到的SPI思想</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2020/08/15/mac%E4%B8%8Bxcode%E8%B0%83%E8%AF%95openJDK/" >mac下xcode调试openJDK</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1930,6 +2111,12 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="动态代理"><span class="iconfont-archer">&#xe606;</span>动态代理</span>
     
+        <span class="sidebar-tag-name" data-tags="hbase"><span class="iconfont-archer">&#xe606;</span>hbase</span>
+    
+        <span class="sidebar-tag-name" data-tags="SPI"><span class="iconfont-archer">&#xe606;</span>SPI</span>
+    
+        <span class="sidebar-tag-name" data-tags="innodb事务"><span class="iconfont-archer">&#xe606;</span>innodb事务</span>
+    
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -2030,6 +2217,10 @@ jsonContent:
         <span class="sidebar-category-name" data-categories="macOS"><span class="iconfont-archer">&#xe60a;</span>macOS</span>
     
         <span class="sidebar-category-name" data-categories="Spring"><span class="iconfont-archer">&#xe60a;</span>Spring</span>
+    
+        <span class="sidebar-category-name" data-categories="hbase"><span class="iconfont-archer">&#xe60a;</span>hbase</span>
+    
+        <span class="sidebar-category-name" data-categories="SPI"><span class="iconfont-archer">&#xe60a;</span>SPI</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

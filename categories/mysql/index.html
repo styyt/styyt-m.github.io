@@ -353,6 +353,190 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/10/17/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E5%9B%9B%E4%B9%8B%E5%88%86%E6%9E%90/" >
+            
+                <span>mysql诡异的死锁问题排查及分析全过程记录四之分析</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    接上文，本文主要是对复现的场景仔细分析下，如何会产生死锁以及该怎么避免？以及后续的思考
+正文
+接下来我们有机会一步步分析下为什么会出现死锁(因为锁等待50s会自动关闭事务，所以截图内的事务id某个步骤会变化，但是不影响问题分析)
+
+第一步：事务1：select  * from lotest where type=’B20’ lock in share mode; 
+
+日志如下（无锁等待）：
+
+
+
+
+
+第二步：事务2：    select  * from lotest where type=’B20’ lock in share mode; 
+
+日志如下（亦无锁等待）：
+...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/10/17</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "mysql">mysql</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "innodb事务">innodb事务</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/10/07/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%B8%89%E4%B9%8B%E9%87%8D%E7%8E%B0/" >
+            
+                <span>mysql诡异的死锁问题排查及分析全过程记录三之重现</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    接上文，本文主要是根据前两篇的场景，扩展重现篇章最开始的死锁问题。
+正文
+上文说的，RR使用gap锁和next-key锁能解决大部分幻读问题，还有某些特定场景还是会出现幻读，如下：
+
+
+
+
+步骤
+事务1
+
+
+事务2
+
+
+
+
+
+1
+select  * from lotest where type=’B20’;
+success
+1 row
+
+
+
+
+
+2
+
+
+
+select  * from lotest where type=’B20’;
+success
+1 row
+
+
+3
+
+
+
+insert into lotest (type) values(‘B20’);
+success...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/10/07</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "mysql">mysql</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "innodb事务">innodb事务</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/10/02/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%BA%8C/" >
+            
+                <span>mysql诡异的死锁问题排查及分析全过程记录二之RR的锁</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    接上文，本文主要讲述RR锁的概念和场景
+正文
+innodb默认隔离级别为RR，本服务用的也是RR，所以我们重点来看下RR相关的东西
+假如有如下表：
+12345CREATE TABLE &#96;lotest&#96; (  &#96;type&#96; varchar(20) NOT NULL,  &#96;name&#96; varchar(255) NOT NULL DEFAULT &#39;1&#39;,  KEY &#96;idx_order_id&#96; (&#96;type&#96;)) ENGINE&#x3D;InnoDB DEFAULT CHARSET...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/10/02</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "mysql">mysql</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "innodb事务">innodb事务</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/09/27/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%B8%80/" >
+            
+                <span>mysql诡异的死锁问题排查及分析全过程记录一之概述</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    在负责一功能优化改造后，测试运行过程中极少几率会出现如下错误，而其他环境却没出现过此错误：
+123456789101112131415161718org.springframework.dao.DeadlockLoserDataAccessException: ### Error updating database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLTransactionRollbackException: Deadlock found when trying to get lock; try restartin...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/09/27</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "mysql">mysql</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "innodb事务">innodb事务</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2017/01/28/sql%E6%8E%92%E5%BA%8F-%E5%88%86%E9%A1%B5%E7%9A%84%E5%B0%8F%E9%97%AE%E9%A2%98/" >
             
                 <span>sql排序+分页的小问题</span>
@@ -1387,9 +1571,144 @@ rt_value：返回值，...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 62
+        Total : 71
         </div>
         <!-- search  -->
         
@@ -1406,6 +1725,51 @@ rt_value：返回值，...
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/17</span><a class="archive-post-title" href= "/2020/10/17/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E5%9B%9B%E4%B9%8B%E5%88%86%E6%9E%90/" >mysql诡异的死锁问题排查及分析全过程记录四之分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2020/10/07/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%B8%89%E4%B9%8B%E9%87%8D%E7%8E%B0/" >mysql诡异的死锁问题排查及分析全过程记录三之重现</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/02</span><a class="archive-post-title" href= "/2020/10/02/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%BA%8C/" >mysql诡异的死锁问题排查及分析全过程记录二之RR的锁</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/27</span><a class="archive-post-title" href= "/2020/09/27/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%B8%80/" >mysql诡异的死锁问题排查及分析全过程记录一之概述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/05</span><a class="archive-post-title" href= "/2020/09/05/openjdk%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90%E4%B9%8Bjni_registerNatives%E4%BA%8C/" >openjdk源码浅析之jni_registerNatives二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span><a class="archive-post-title" href= "/2020/08/30/openjdk%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90%E4%B9%8Bjni_registerNatives/" >openjdk源码浅析之jni_registerNatives</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2020/08/29/habse%E4%B8%AD%E4%BD%BF%E7%94%A8shell%E6%A8%A1%E7%B3%8Ascan/" >habse中使用shell模相关命令</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/23</span><a class="archive-post-title" href= "/2020/08/23/hikari%E4%B8%AD%E7%94%A8%E5%88%B0%E7%9A%84SPI%E6%80%9D%E6%83%B3/" >hikari中用到的SPI思想</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2020/08/15/mac%E4%B8%8Bxcode%E8%B0%83%E8%AF%95openJDK/" >mac下xcode调试openJDK</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1865,6 +2229,12 @@ rt_value：返回值，...
     
         <span class="sidebar-tag-name" data-tags="动态代理"><span class="iconfont-archer">&#xe606;</span>动态代理</span>
     
+        <span class="sidebar-tag-name" data-tags="hbase"><span class="iconfont-archer">&#xe606;</span>hbase</span>
+    
+        <span class="sidebar-tag-name" data-tags="SPI"><span class="iconfont-archer">&#xe606;</span>SPI</span>
+    
+        <span class="sidebar-tag-name" data-tags="innodb事务"><span class="iconfont-archer">&#xe606;</span>innodb事务</span>
+    
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -1965,6 +2335,10 @@ jsonContent:
         <span class="sidebar-category-name" data-categories="macOS"><span class="iconfont-archer">&#xe60a;</span>macOS</span>
     
         <span class="sidebar-category-name" data-categories="Spring"><span class="iconfont-archer">&#xe60a;</span>Spring</span>
+    
+        <span class="sidebar-category-name" data-categories="hbase"><span class="iconfont-archer">&#xe60a;</span>hbase</span>
+    
+        <span class="sidebar-category-name" data-categories="SPI"><span class="iconfont-archer">&#xe60a;</span>SPI</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
