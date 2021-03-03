@@ -366,40 +366,49 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2020/10/17/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E5%9B%9B%E4%B9%8B%E5%88%86%E6%9E%90/" >
+        <a class="abstract-title" href = "/2021/02/28/%E5%BF%AB%E9%80%9F%E5%88%87%E6%8D%A2%E6%9C%8D%E5%8A%A1bean%E9%85%8D%E7%BD%AE%E6%88%96%E4%BE%9D%E8%B5%96%E7%9A%84%E7%AE%80%E5%8D%95%E6%A1%86%E6%9E%B6%E5%AE%9E%E7%8E%B0%E6%A0%B7%E4%BE%8B/" >
             
-                <span>mysql诡异的死锁问题排查及分析全过程记录四之分析</span>
+                <span>快速切换服务bean配置或依赖的简单框架实现样例</span>
         </a>
         <div class="abstract-content">
-            写在前面​    接上文，本文主要是对复现的场景仔细分析下，如何会产生死锁以及该怎么避免？以及后续的思考
+            写在前面​    为了满足项目SrpingBoot服务部署的时候可以不修改代码而快速切换服务内部配置如：数据源、rpc等配置，所以独自为项目开发了一套动态修改bean配置或者依赖的微服务，这里做个简单记录
 正文
-接下来我们有机会一步步分析下为什么会出现死锁(因为锁等待50s会自动关闭事务，所以截图内的事务id某个步骤会变化，但是不影响问题分析)
+假如有如下需求：
 
-第一步：事务1：select  * from lotest where type=’B20’ lock in share mode; 
-
-日志如下（无锁等待）：
+动态配置的结构如下，想要按照配置的方案切换某个功能的存储方式，只需要改动配置文件并重启服务即可完成。
 
 
+首先分析需要动态配合元数据结构，如下：
 
 
 
-第二步：事务2：    select  * from lotest where type=’B20’ lock in share mode; 
 
-日志如下（亦无锁等待）：
-...
+那么可以根据上面的思路来写代码，具体代码（因时间关系，未完全版）如下
+
+首先是配置：application.yml
+
+
+
+
+使用方法如下：
+
+
+
+
+一步一步往下：
+
+/**EnableModuleConfig...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/10/17</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/02/28</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "mysql">mysql</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "innodb事务">innodb事务</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot">SpringBoot</a>
     
 </div>
             
@@ -412,65 +421,62 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2020/10/07/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%B8%89%E4%B9%8B%E9%87%8D%E7%8E%B0/" >
+        <a class="abstract-title" href = "/2021/02/13/%E5%9F%BA%E7%A1%80%E5%90%91-%E4%BB%8E%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E5%92%8C%E5%AD%97%E8%8A%82%E7%A0%81%E7%9C%8Bjava%E5%8C%85%E8%A3%85%E7%B1%BB%E7%9A%84%E5%9D%91/" >
             
-                <span>mysql诡异的死锁问题排查及分析全过程记录三之重现</span>
+                <span>基础向-从三元运算符和字节码看java包装类的坑</span>
         </a>
         <div class="abstract-content">
-            写在前面​    接上文，本文主要是根据前两篇的场景，扩展重现篇章最开始的死锁问题。
+            写在前面​    之前经常看资料说不推荐滥用三元运算，刚好之前研究了字节码，那么我从字节码的角度看看三元运算为什么会有坑
+正文​    直接上示例代码：
+123456789101112public class HelloWord &#123;    public static void main(String[] args) throws InterruptedException &#123;        Integer a = 1;        Integer b = 2;        Integer c = null;      	Integer e = a;        B...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/02/13</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2021/02/06/%E6%80%BB%E7%BB%93es%E7%9A%84%E4%B8%80%E4%BA%9B%E8%A7%84%E8%8C%83/" >
+            
+                <span>总结es的一些规范</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    在日常工作中总结了一些关于es的规范，特别写下来、记下来
 正文
-上文说的，RR使用gap锁和next-key锁能解决大部分幻读问题，还有某些特定场景还是会出现幻读，如下：
-
-
-
-
-步骤
-事务1
-
-
-事务2
-
-
-
-
-
-1
-select  * from lotest where type=’B20’;
-success
-1 row
-
-
-
-
-
-2
-
-
-
-select  * from lotest where type=’B20’;
-success
-1 row
-
-
-3
-
-
-
-insert into lotest (type) values(‘B20’);
-success...
+预估index的整体磁盘容量，一般大概为：源数据*3.4。1、主要包含：
+副本数量：至少1个副本
+索引开销：通常比源数据大10%（_all参数等未计算）。
+操作系统预留：默认操作系统会保留5%的文件系统供您处理关键流程、系统恢复以及磁盘碎片等
+Elasticsearch内部开销：段合并、日志等内部操作，预留20%。
+安全阈值：通常至少预留15%的安全阈值。
+换算下来：i. 磁盘总大小 = 源数据 （1 + 副本数量） 索引开销 /（1 - Linux预留空间）/（1 - Elasticsearch开销）/（...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/10/07</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/02/06</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "mysql">mysql</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "innodb事务">innodb事务</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
     
 </div>
             
@@ -483,21 +489,211 @@ success...
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2020/10/02/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%BA%8C/" >
+        <a class="abstract-title" href = "/2021/01/23/%E6%B7%B1%E5%85%A5%E6%8E%A2%E8%AE%A8innodb%E3%80%82%E4%B8%ADexists%E3%80%81in%E3%80%81join%E6%9F%A5%E8%AF%A2%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" >
             
-                <span>mysql诡异的死锁问题排查及分析全过程记录二之RR的锁</span>
+                <span>深入探讨innodb中exists、in、join查询之间的区别和使用场景</span>
         </a>
         <div class="abstract-content">
-            写在前面​    接上文，本文主要讲述RR锁的概念和场景
+            写在前面​    前几天生产上出现了一条慢sql，执行时长长达150多秒，经过一天多的分析，找出来sql写法的问题及解决方法，并且在深入研究下，延伸出来很多知识点，特意记录下。
+​    本文篇幅较长，需要耐心看下来~
+正文​    话不多说直接进入主题，慢sql如下：（做了部分脱敏处理）
+12345678910111213141516171819202122232425262728293031323334SELECT	st.state state, 	di.created_time creatTime FROM	d_table di,	iiap_device_state st WHER...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/01/23</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "innodb">innodb</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2021/01/09/%E6%80%BB%E7%BB%93%E6%8E%92%E6%9F%A5cpu%E9%A3%99%E5%8D%87%E7%9A%84%E6%AD%A5%E9%AA%A4/" >
+            
+                <span>快速在linux排查java中cpu飙升线程或代码位置的方法</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    上周linux生产上flink任务出现了cpu飙升的情况，找到了一套快速实时定位耗费cpu代码的方法，最终找到出现bug的代码位置，并紧急修复了bug。虽然比较简单，还是需要记录下，以防不时之需。
 正文
-innodb默认隔离级别为RR，本服务用的也是RR，所以我们重点来看下RR相关的东西
-假如有如下表：
-12345CREATE TABLE &#96;lotest&#96; (  &#96;type&#96; varchar(20) NOT NULL,  &#96;name&#96; varchar(255) NOT NULL DEFAULT &#39;1&#39;,  KEY &#96;idx_order_id&#96; (&#96;type&#96;)) ENGINE&#x3D;InnoDB DEFAULT CHARSET...
+示例代码如下：
+
+
+运行后，使用top命令看到cpu飙升，并得到pid
+
+
+拿着pid在使用top -h -p pid或者ps -mp pid -o THREAD,tid,time或者ps -Lfp pid
+
+将需要的线程ID转换为16进制格式
+
+printf “%x\n” tid
+
+
+打印线程的堆栈信息 到了这一步具体看堆栈的日志来定位问题了
+jstack pid |...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/10/02</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/01/09</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2021/01/02/clickHouse%E4%B8%AD%E7%9A%84%E9%87%87%E6%A0%B7%E6%B5%85%E8%B0%88/" >
+            
+                <span>clickHouse中的采样浅谈</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    最近在使用flink+clickhouse进行业务数据计算和报表统计，但是由于生产的计算结果数过于庞大，前端组件无法一次性接收和展示，而业务需要一次性查出三个月的统计结果的报表进行分析（曲线图），所以在综合考虑后，就引出了ck的采样查询即sample语法，也就是按照特定分组对组内数据进行抽采样后再进行统计，这样就减少了的统计结果，使得前端报表组件得以使用，虽然损失了一定区间内的数据，但是由于是曲线图，所以大体上展示符合真实线条。
+​    由于是第一次接触这种抽象的数据计算，网上又没多少资料，自己手工模拟了不少数据，找到了一定方法和规律，所以特意写出来记一下。
+正文​ ...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/01/02</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "clickHouse">clickHouse</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/12/26/%E5%9C%A8mac%E7%9A%84clion%E4%B8%AD%E5%BF%AB%E9%80%9F%E8%B0%83%E8%AF%95openjdk/" >
+            
+                <span>在mac的clion中快速调试openjdk</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    之前写过在mac中调试openjdk，使用的工具是xcode。
+​    但是这个xcode使用起来太过麻烦，有不少不人性化的设计，所以现在决定使用clion来编译和调试java，所以把过程中需要注意的实现记录下，以便后续参考
+正文
+下载并按照指引激活clion：https://sx.gxkjbg.com/201904/tools/JetBrains.CLion.2019.macOS_jb51.zip
+
+和idea类似，导入Hotspot：new make project from source，选择：OPENJDK_HOME/src/hotspot
+
+如果想要即时bu...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/12/26</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "openjdk">openjdk</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/12/12/flink%E4%B8%ADfunction%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" >
+            
+                <span>flink中function注意事项</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    最近在使用flink进行业务数据的实时计算以展示报表，在开发自测过程中遇到一个NPE，刚接触flink的我是一头雾水，硬啃了一早上源码，才找到问题，发现是flink序列，特此记录下
+正文
+问题如下:
+
+
+
+
+分析：
+
+通过debug分析，最初new的实例和最终sink的function不是一个实例。
+
+
+
+
+
+那么猜测是实例被替换或者拷贝，那么先查阅代码发现sinkMQ线程初始化如下：
+
+
+可以看到这里的实例已经是被”替换“过的了，那么我们继续跟踪源代码，发现org.apache.flink.streaming.runtime.tasks.StreamTask#oper...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/12/12</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "flink">flink</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/12/01/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%BA%8C/" >
+            
+                <span>mysql诡异死锁系列二之高并发删除下的死锁二</span>
+        </a>
+        <div class="abstract-content">
+            写在前面​    前面分析的明白了，那现在我们就来复现下上文中的错误
+正文
+废话不多说，直接上代码：
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869@Testpublic  void webPushTest() throws InterruptedException &#123;    AtomicBoolean atomicBoolean=new AtomicBoolean(t...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/12/01</span>
             </div>
             <!-- tags  -->
             
@@ -518,18 +714,23 @@ innodb默认隔离级别为RR，本服务用的也是RR，所以我们重点来�
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2020/09/27/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%B8%80/" >
+        <a class="abstract-title" href = "/2020/11/27/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%B8%80/" >
             
-                <span>mysql诡异的死锁问题排查及分析全过程记录一之概述</span>
+                <span>mysql诡异死锁系列二之高并发删除下的死锁一</span>
         </a>
         <div class="abstract-content">
-            写在前面​    在负责一功能优化改造后，测试运行过程中极少几率会出现如下错误，而其他环境却没出现过此错误：
-123456789101112131415161718org.springframework.dao.DeadlockLoserDataAccessException: ### Error updating database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLTransactionRollbackException: Deadlock found when trying to get lock; try restartin...
+            写在前面​    之前就用了四篇文章分析了特定场景下GAP锁导致的死锁问题，现生产运行环境的又出现了一次死锁，这次死锁更加诡异，日志如下：
+​        
+经过长时间排查和查阅资料，终于在本地复现了问题、找到根本原因
+正文
+第一次拿到这个日志，我是懵逼的额，这和之前遇到的死锁日志完全不同，
+
+123456789101112131415161718192021222324252627282930313233343536373839404142LATEST DETECTED DEADLOCK------------------------2020-11-18 09:34:42 0x7ff...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/09/27</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/11/27</span>
             </div>
             <!-- tags  -->
             
@@ -538,213 +739,6 @@ innodb默认隔离级别为RR，本服务用的也是RR，所以我们重点来�
         <a class="post-tag" href="javascript:void(0);" data-tags = "mysql">mysql</a>
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "innodb事务">innodb事务</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/09/05/openjdk%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90%E4%B9%8Bjni_registerNatives%E4%BA%8C/" >
-            
-                <span>openjdk源码浅析之jni_registerNatives二</span>
-        </a>
-        <div class="abstract-content">
-            写在前面​    接上文
-正文1234567891011121314151617181920212223242526272829303132//继续注册void Method::set_native_function(address function, bool post_event_flag) &#123;  assert(function != NULL, "use clear_native_function to unregister natives");  assert(!is_method_handle_intrinsic() || function == SharedRunt...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/09/05</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/08/30/openjdk%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90%E4%B9%8Bjni_registerNatives/" >
-            
-                <span>openjdk源码浅析之jni_registerNatives</span>
-        </a>
-        <div class="abstract-content">
-            写在前面​        既然成功编译和搭建了openjdk的源码及调试环境，则更要继续深入探究openjdk的内部。
-​        这篇文章是基于了解了c、c++的基础语法和概念。
-​        这篇主要浅析在平时jdk源码中比较显眼的一个东西：registerNatives
-正文registerNatives在有native方法的jdk基础类里，十分常见，比如：Object，System等等。​    常用的写法如下：
-1234private static native void registerNatives();static &#123;    registerNativ...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/08/30</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/08/29/habse%E4%B8%AD%E4%BD%BF%E7%94%A8shell%E6%A8%A1%E7%B3%8Ascan/" >
-            
-                <span>habse中使用shell模相关命令</span>
-        </a>
-        <div class="abstract-content">
-            写在前面​        最近使用hbase进行相关业务日志的存储和搜索，学到了不少新东西，所以记录下
-正文进入：hbase shell。
-
-建表语句
-
-如：
-create &#39;resource_data_gather:resource_complete_log&#39;,{NAME =&gt; &#39;t&#39;, VERSIONS =&gt; 1, COMPRESSION =&gt; &#39;SNAPPY&#39;, BLOOMFILTER =&gt; &#39;ROW&#39;, DATA_BLOCK_ENCODING =&gt; &#39;DIFF&#39;, TTL...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/08/29</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "hbase">hbase</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/08/23/hikari%E4%B8%AD%E7%94%A8%E5%88%B0%E7%9A%84SPI%E6%80%9D%E6%83%B3/" >
-            
-                <span>hikari中用到的SPI思想</span>
-        </a>
-        <div class="abstract-content">
-            写在前面​        之前文章也说到了SPI最常见的就是JDBC，刚好现在用的就是springboot中的hikari，来看看他是怎么运用SPI思想加载特定的数据库驱动的。
-正文 第一次看hikari源码，可以有这么个思路来跟踪源码：
-​    ①，找到我们最熟悉的配置中心里配置的DataSourceType，一步找到数据源，②然后找到数据源里的getConnection方法。③并且找到类里的driveClass属性，④找到它的set方法，打上断点，⑤启动项目，开始跟踪吧~,如下图
-
-
-继续：
-断点启动，跟踪调用栈可以看到springboot初始化配置hikari的地方
-
-12345...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/08/23</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SPI">SPI</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/08/15/mac%E4%B8%8Bxcode%E8%B0%83%E8%AF%95openJDK/" >
-            
-                <span>mac下xcode调试openJDK</span>
-        </a>
-        <div class="abstract-content">
-            写在前面​        编译完成自己的openJDK，肯定要放在实际应用中，这篇文章就记录如何用xcode进行自己openJDK的调试。
-示例过程 1、编写HelloWord.java
-2、编译成class文件
-3、为方便调试，将class文件拷贝到openJDK的jdk目录，如下
-/build/macosx-x86_64-server-slowdebug
-4、打开xcode创建一个项目，然后选择macOS，创建一个命令行项目，如图：
-
-
-创建完成后，删除自动生成的文件,并把openjdk的导入进来：
-
-5、编辑Scheme
-​    Product -&gt; Scheme -&gt...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/08/15</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/08/09/mac%E4%B8%8B%E7%BC%96%E8%AF%91openjdk/" >
-            
-                <span>mac下编译openjdk14u36</span>
-        </a>
-        <div class="abstract-content">
-            写在前面​        年初自己在windows上编译了openjdk8，花费了好几天才成功。前几个月换到mac上，所有的东西都不能用，感到很可惜，所以自己只能重新编译一次。
-​        幸好mac上编译openjdk相对于windows方便很多。不需要安装那么多插件，建议大家在Mac可以直接按照doc/build.md里的指引进行操作即可，唯一需要注意的就是各个工具版本就好。
-​        本机各项环境配置如下：
-​        ps：如果想编译旧版本的openjdk，前几天尝试了下，会报 找不到#include 头文件，查了很久，是因为链接时会找不到libstdc++，...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/08/09</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
     
 </div>
             
@@ -754,7 +748,7 @@ create &#39;resource_data_gather:resource_complete_log&#39;,{NAME =&gt; &#39;t&#
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/">NEXT &gt;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/">NEXT &gt;</a>
     </nav>
     
 </main>
@@ -1902,15 +1896,212 @@ create &#39;resource_data_gather:resource_complete_log&#39;,{NAME =&gt; &#39;t&#
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 71
+        Total : 84
         </div>
         <!-- search  -->
-        
-            <div class="site-search popup-trigger">
-                <span class="iconfont-archer search-icon">&#xe627;</span>
-            </div>
         
     </div>
     
@@ -1919,8 +2110,82 @@ create &#39;resource_data_gather:resource_complete_log&#39;,{NAME =&gt; &#39;t&#
     
     
     
+    <div class="archive-year"> 2021 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/28</span><a class="archive-post-title" href= "/2021/02/28/%E5%BF%AB%E9%80%9F%E5%88%87%E6%8D%A2%E6%9C%8D%E5%8A%A1bean%E9%85%8D%E7%BD%AE%E6%88%96%E4%BE%9D%E8%B5%96%E7%9A%84%E7%AE%80%E5%8D%95%E6%A1%86%E6%9E%B6%E5%AE%9E%E7%8E%B0%E6%A0%B7%E4%BE%8B/" >快速切换服务bean配置或依赖的简单框架实现样例</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/13</span><a class="archive-post-title" href= "/2021/02/13/%E5%9F%BA%E7%A1%80%E5%90%91-%E4%BB%8E%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E5%92%8C%E5%AD%97%E8%8A%82%E7%A0%81%E7%9C%8Bjava%E5%8C%85%E8%A3%85%E7%B1%BB%E7%9A%84%E5%9D%91/" >基础向-从三元运算符和字节码看java包装类的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/06</span><a class="archive-post-title" href= "/2021/02/06/%E6%80%BB%E7%BB%93es%E7%9A%84%E4%B8%80%E4%BA%9B%E8%A7%84%E8%8C%83/" >总结es的一些规范</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/23</span><a class="archive-post-title" href= "/2021/01/23/%E6%B7%B1%E5%85%A5%E6%8E%A2%E8%AE%A8innodb%E3%80%82%E4%B8%ADexists%E3%80%81in%E3%80%81join%E6%9F%A5%E8%AF%A2%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" >深入探讨innodb中exists、in、join查询之间的区别和使用场景</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/09</span><a class="archive-post-title" href= "/2021/01/09/%E6%80%BB%E7%BB%93%E6%8E%92%E6%9F%A5cpu%E9%A3%99%E5%8D%87%E7%9A%84%E6%AD%A5%E9%AA%A4/" >快速在linux排查java中cpu飙升线程或代码位置的方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/02</span><a class="archive-post-title" href= "/2021/01/02/clickHouse%E4%B8%AD%E7%9A%84%E9%87%87%E6%A0%B7%E6%B5%85%E8%B0%88/" >clickHouse中的采样浅谈</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/26</span><a class="archive-post-title" href= "/2020/12/26/%E5%9C%A8mac%E7%9A%84clion%E4%B8%AD%E5%BF%AB%E9%80%9F%E8%B0%83%E8%AF%95openjdk/" >在mac的clion中快速调试openjdk</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/12</span><a class="archive-post-title" href= "/2020/12/12/flink%E4%B8%ADfunction%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" >flink中function注意事项</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/01</span><a class="archive-post-title" href= "/2020/12/01/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%BA%8C/" >mysql诡异死锁系列二之高并发删除下的死锁二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/27</span><a class="archive-post-title" href= "/2020/11/27/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%B8%80/" >mysql诡异死锁系列二之高并发删除下的死锁一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/22</span><a class="archive-post-title" href= "/2020/11/22/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%9A%84%E6%B3%A8%E6%84%8F%E7%82%B9/" >es模糊搜索的注意点</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2020/11/08/hbase%E5%80%92%E5%8F%99scan%E5%8F%AF%E8%83%BD%E4%BC%9A%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" >hbase倒叙scan可能会遇到的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/24</span><a class="archive-post-title" href= "/2020/10/24/es%E5%B5%8C%E5%A5%97%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%B0%8F%E8%AF%AF%E5%8C%BA/" >es嵌套查询的小误区</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -2431,6 +2696,14 @@ create &#39;resource_data_gather:resource_complete_log&#39;,{NAME =&gt; &#39;t&#
     
         <span class="sidebar-tag-name" data-tags="innodb事务"><span class="iconfont-archer">&#xe606;</span>innodb事务</span>
     
+        <span class="sidebar-tag-name" data-tags="flink"><span class="iconfont-archer">&#xe606;</span>flink</span>
+    
+        <span class="sidebar-tag-name" data-tags="openjdk"><span class="iconfont-archer">&#xe606;</span>openjdk</span>
+    
+        <span class="sidebar-tag-name" data-tags="clickHouse"><span class="iconfont-archer">&#xe606;</span>clickHouse</span>
+    
+        <span class="sidebar-tag-name" data-tags="innodb"><span class="iconfont-archer">&#xe606;</span>innodb</span>
+    
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -2536,6 +2809,14 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="SPI"><span class="iconfont-archer">&#xe60a;</span>SPI</span>
     
+        <span class="sidebar-category-name" data-categories="flink"><span class="iconfont-archer">&#xe60a;</span>flink</span>
+    
+        <span class="sidebar-category-name" data-categories="openjdk"><span class="iconfont-archer">&#xe60a;</span>openjdk</span>
+    
+        <span class="sidebar-category-name" data-categories="clickHouse"><span class="iconfont-archer">&#xe60a;</span>clickHouse</span>
+    
+        <span class="sidebar-category-name" data-categories="innodb"><span class="iconfont-archer">&#xe60a;</span>innodb</span>
+    
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
     <div class="sidebar-categories-list"></div>
@@ -2559,29 +2840,6 @@ jsonContent:
     </script>
     <script src="/scripts/main.js"></script>
     <!-- algolia -->
-    
-        <div class="site-search">
-  <div class="algolia-popup popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="iconfont-archer">&#xe609;</i>
-    </span>
-  </div>
-</div>
-        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.8.0/dist/instantsearch.min.js" defer></script>
-        <script src="/scripts/search.js" defer></script>
     
     <!-- busuanzi  -->
     

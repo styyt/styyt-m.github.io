@@ -353,19 +353,296 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2020/02/16/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9/" >
+        <a class="abstract-title" href = "/2020/06/07/%E8%A7%A3%E6%9E%90springBean%E7%B1%BB%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E5%A6%82AOP%7Ccglib%E4%BB%A3%E7%90%86%E7%AD%89%E9%97%AE%E9%A2%98%E4%B8%89/" >
             
-                <span>spring-data-es抽象service集成简单增删查改之一</span>
+                <span>解析springBean类的注解引发的一系列如AOP|cglib代理等问题三</span>
         </a>
         <div class="abstract-content">
-            写在前面最近项目中用到了大量而是es进行数据的整合和查询，在项目完成后将自己花点时间整理了下组件，然后放上来，后面也可以继续用到~
-代码直接上代码，太忙了，先整理了base类，以下为代码，都有注释，就不在此赘述了
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798991...
+            写在前面接上一篇，这篇继续梳理一下自己在查找问题中遇到的疑惑点和解决过程，这篇主要是cglib
+疑惑&amp;解答
+spring cglib是如何自定义classname的呢？
+之前我们在debug的时候发现spring生产的cglib代理的className都有自己独特的标示，比如：class com.iiap.controller.DeviceController$$EnhancerBySpringCGLIB$$6cf59d5d，这个问题就需要去研究cglib的源码了。
+123456789101112131415161718192021222324252627282930313233...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/16</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/06/07</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "动态代理">动态代理</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/05/25/%E8%A7%A3%E6%9E%90springBean%E7%B1%BB%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E5%A6%82AOP%7Ccglib%E4%BB%A3%E7%90%86%E7%AD%89%E9%97%AE%E9%A2%98%E4%BA%8C/" >
+            
+                <span>解析springBean类的注解引发的一系列如AOP|cglib代理等问题二</span>
+        </a>
+        <div class="abstract-content">
+            写在前面接上一篇，这篇主要是梳理一下自己在查找问题中遇到的疑惑点和解决过程
+疑惑&amp;解答
+Springboot动态代理全是cglib吗？还是根据是否接口来判断是使用jdk代理还是cglib呢？
+跟踪代码和查阅资料发现，springboot默认全部是cglib代理，我们可以从生成代理类的BeanPostProcessor看到，具体如下
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/05/25</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "动态代理">动态代理</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/05/24/%E8%A7%A3%E6%9E%90springBean%E7%B1%BB%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E5%A6%82AOP%7Ccglib%E4%BB%A3%E7%90%86%E7%AD%89%E9%97%AE%E9%A2%98%E4%B8%80/" >
+            
+                <span>解析springBean类的注解引发的一系列如AOP|cglib代理等问题一</span>
+        </a>
+        <div class="abstract-content">
+            写在前面接上一篇，同样的需求：需要写一个针对controller内参数的数据权限校验组件，所以需要想办法获取都某个对象的某个变量（可能跨层级）的值，所以研究和封装了一套可以使用的工具。这个工具类需要开发时定义好取值的路径，最终决定使用对参数注解，这样就可以针对单独参数的某个值进行权限校验。
+开发思路：
+​    1、在controller层的方法的参数上进行注解
+​    2、为了提高拦截时的程序运行效率，项目启动时扫描所有注解的参数的方法放入缓存
+​    3、aop拦截时进行判断是否需要存在于缓存，如有则进行权限校验
+问题写完了注解代码，然后决定使用BeanPostProcessor...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/05/24</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "动态代理">动态代理</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/05/15/%E8%87%AA%E5%B7%B1%E5%86%99%E7%9A%84%E6%A0%B9%E6%8D%AE%E5%85%A8%E8%B7%AF%E5%BE%84%E8%8E%B7%E5%8F%96%E5%8F%98%E9%87%8F%E5%80%BC/" >
+            
+                <span>自己封装模拟json全路径获取某个对象下某个变量的工具类</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近需要写一个针对controller内参数的数据权限校验组件，所以需要想办法获取都某个对象的某个变量（可能跨层级）的值，所以研究和封装了一套可以使用的工具类
+代码废话不多说，直接上代码，注释也写得比较明白了，就不赘述了
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/05/15</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/05/01/macOS%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/" >
+            
+                <span>macOS常用命令记录</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近开始切换到mac上办公，所以记录了一下重要且实用的命令，以便后面再用。
+会持续更新
+命令
+Iterm2
+
+iterm2自动登录远程服务器
+
+设置登录脚本
+123cd ~/.sshtouch testvi test
+
+然后复制以下bash,保存退出
+1234567891011#!/usr/bin/expect -fset host 10.10.120.312set user rootset password root#set timeout -1spawn ssh $user@$hostexpect "*assword:*"send "$password\r"interacte...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/05/01</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "macOS">macOS</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/04/19/spring-data-elasticsearch-%E7%BB%84%E4%BB%B6%E6%9F%A5%E8%AF%A2%E7%9A%84bug%E8%A7%A3%E6%9E%90/" >
+            
+                <span>spring-data-elasticsearch-组件查询的bug跟踪</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近在排查生产问题的时候发现，基于spring-data-es（版本：spring-data-elasticsearch-3.0.8.RELEASE.jar）的ElasticsearchRepository的查询有bug，如下方法：
+1234public interface IiapImplTemplateDeviceRepository extends ElasticsearchRepository&lt;IiapTemplateDeviceDoc, String&gt; &#123;    List&lt;IiapTemplateDeviceDoc&gt; findByXXI...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/19</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "spring-data-elasticsearch">spring-data-elasticsearch</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/04/05/canal%E4%BD%BF%E7%94%A8%E4%B8%AD%E7%9A%84%E9%99%B7%E9%98%B1%E7%94%A8%E6%B3%95/" >
+            
+                <span>canal使用中的陷阱用法</span>
+        </a>
+        <div class="abstract-content">
+            写在前面项目中因为涉及到其他系统的数据状态同步，但是部署在不同机房和区域，所以使用了阿里开源的canal进行数据状态的同步
+问题分析在维护这个项目的时候发现，系统在测试环境启动canal监听服务后，停止使用stop或kill命令都无法使服务停止，最后只能使用kill -9来强制杀掉进程
+排查步骤
+排查前是不知道是因为canal无法停止引起的。所以使用如下步骤来排查
+1、jps -l确定进程确实一直存在，并获取到进程id
+2、使用 jstack 查看当前进程id下有哪些异常的线程
+​    拉到当前进程的线程信息首先看有没有系统内自写的代码所造成的的异常，这种可能性是最大的
+结果真的发现有...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/05</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "canal">canal</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/03/29/%E5%85%B3%E4%BA%8Elocale%E5%92%8CResourceBundle%E8%B8%A9%E7%9A%84%E5%9D%91/" >
+            
+                <span>关于Locale和ResourceBundle踩的坑</span>
+        </a>
+        <div class="abstract-content">
+            问题为新项目写了一个错误码支持国际化的缓存，但是在测试的时候遇到了一个难解的问题，测试环境不管header里传zh还是en都是英文提示，但是在本地调试却都是中文提示
+解析先缓存处理的代码
+1234567891011121314151617181920212223242526272829303132333435363738394041public class ErrorCodeMessageResource &#123;    /** 将国际化信息存放在一个map中 */    private static final Map&lt;String, ResourceBundle&gt; M...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/03/29</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Locale">Locale</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "ResourceBundle">ResourceBundle</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/03/21/%E9%AB%98%E5%B9%B6%E5%8F%91%E4%B8%8B%E4%BD%BF%E7%94%A8java%E6%9B%B4%E6%96%B0es%E5%90%8C%E4%B8%80%E6%9D%A1%E8%AE%B0%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%8E%A2%E7%B4%A2%E4%BA%8C/" >
+            
+                <span>高并发下使用java更新es同一条记录的问题及解决方案探索二</span>
+        </a>
+        <div class="abstract-content">
+            写在前面接上文
+分析为了防止出现上文的这种情况，自己抽空写了一个简单的线程池，用来处理这些更新失败的request，因为之前已经在updateRequest内做了自定义的版本控制，所以放弃了es内部的乐观锁的版本控制，
+具体实现代码如下，注释已经很清楚了，不在此赘述：
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/03/21</span>
             </div>
             <!-- tags  -->
             
@@ -384,312 +661,26 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2020/02/08/FeignRequestInterceptor%E7%A4%BA%E4%BE%8B/" >
+        <a class="abstract-title" href = "/2020/03/14/%E9%AB%98%E5%B9%B6%E5%8F%91%E4%B8%8B%E4%BD%BF%E7%94%A8java%E6%9B%B4%E6%96%B0es%E5%90%8C%E4%B8%80%E6%9D%A1%E8%AE%B0%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%8E%A2%E7%B4%A2/" >
             
-                <span>FeignRequestInterceptor示例</span>
+                <span>高并发下使用java更新es同一条记录的问题及解决方案探索一</span>
         </a>
         <div class="abstract-content">
-            背景
-项目中A服务需要频繁调用B服务，且参数内有许多共同属性，所以考虑利用feign的拦截器来进行统一参数的获取和封装，减少调用B服务前重复代码的编写
-示例
-直接上代码，后续遇到相同场景可以参考参考
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110...
+            写在前面生产上在高并发使用java的UpdateByQueryRequest对es进行update的时候（与java线程无关，UpdateByQueryRequest内部本身就是异步请求）会出现一个情况：第一次更新成功，后续短时间内的更新条数都是0
+分析后来根据查阅资料发现因为如下原因：
+​    es内部为了防止出现并发操作的脏写情况出现，使用了_version的乐观锁控制。
+​    _version元数据​    第一次创建一个document的时候，它的_version内部版本号就是1；以后，每次对这个document执行修改或者删除操作，都会对​    这个_version版本...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/08</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/03/14</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "feign">feign</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/02/02/es%E4%BF%AE%E6%94%B9%E7%B4%A2%E5%BC%95%E4%B8%ADmapping%E7%9A%84%E7%B1%BB%E5%9E%8B/" >
-            
-                <span>es修改索引中mapping的类型</span>
-        </a>
-        <div class="abstract-content">
-            问题es不允许对索引的type进行字段的删除和修改，只允许新增。
-新增字段12345678PUT my_index/_mapping/my_type&#123;  "properties": &#123;    "new_column": &#123;       "type":     "integer"    &#125;  &#125;&#125;
-
-删除和修改的步骤比较麻烦，具体步骤如下：
-新增索引t2为想要的数据类型
-
-将t1 reindex到t2
-1234567891011121314POST _reindex&#123;  &quot;source&quot;: &#123...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/02</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/01/25/idea%D6%AECommandLineIsTooLong/" >
-            
-                <span>idea之CommandLineIsTooLong问题解决</span>
-        </a>
-        <div class="abstract-content">
-            问题在某一次新增springboot项目部署启动时报了如下错误：
-1Error running &#39;XXXApplication&#39;: Command line is too long. Shorten command line for XXXApplication or also for Spring Boot default configuration.
-
-解决方法​    经过排查发现是因为项目启动的命令行太长引起的。最终通过idea的配置来解决
-
-shorten command line 选项提供三种选项缩短类路径，这里我们需要选JAR manifest。
-　　non...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/25</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "idea">idea</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/01/18/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A52/" >
-            
-                <span>通过一次cannal监听问题浅读spring-data源码及其在es中的应用二</span>
-        </a>
-        <div class="abstract-content">
-            接上文​    可以看到queries在new的时候初始化，将repository中需要代理的方法和具体实现类也就是RepositoryQuery实现类放入其中，然后再拦截器中判断并执行实现的方法即：
-
-123456789101112131415161718192021222324252627282930313233343536//org.springframework.data.elasticsearch.repository.query.ElasticsearchPartQuery#executepublic Object execute(Object[] parameters) &...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/18</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/01/12/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" >
-            
-                <span>通过一次cannal监听问题浅读spring-data源码及其在es中的应用一</span>
-        </a>
-        <div class="abstract-content">
-            写在前面​    系统需要与其他系统对接，并用到其他系统数据，但是其他系统又很难改造，所以使用canal来对其他系统数据库进行监控，并将变更的信息写入es，项目中使用spring-data-es的组件与es进行交互
-问题​    在测试环境突然报了一个很奇怪的错误
-​    
-解决​    经过分析异常堆栈，发现是因为用了spring-data的ElasticsearchRepository查询组件引起的，我们一步步来看，先看调用的地方
-
-​    神奇的地方就在这里，我们不需要写任何逻辑代码，spring就帮我们实现了es的查询，这就归功于spring-data组件的功能了，缺点就是排...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/12</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/01/05/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2/" >
-            
-                <span>es的模糊搜索</span>
-        </a>
-        <div class="abstract-content">
-            写在前面最近新的项目中用到了大量的es，作为es方面的新手，逐渐熟悉es的DSL、analyzer、search等等，所以记录一下，加深自己的理解
-理解es的模糊搜索首先理解搜索分词和存储分词
-
-搜索分词指的是match类查询，比如match、match_phrase，同时我们可以指定分词器，term类查询是不分词查询,比如term、terms
-
-存储分词es的text（2.x的string）类型字段存储，同搜索分词我们也可以利用不同的分词器来优化我们的搜索逻辑，比如默认的standard、ik等等
-
-存储不分词，在es2.x和5.x有不同的做法
-
-2.x
-由于2.x中没有text和ke...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/05</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/12/28/%E7%BC%96%E8%AF%91openJDK%E4%B9%8Bc%E7%BC%96%E8%AF%91%E5%99%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E8%A7%A3%E5%86%B3/" >
-            
-                <span>windows编译openJDK之c编译器找不到解决</span>
-        </a>
-        <div class="abstract-content">
-            写在前面为什么单独列出来这个问题呢？是因为其他问题网上都有很多类似的示例和解决方法，比如Cygwin 版本不对，包不对等等，这些我就不再写了。
-c编译器找不到的问题花了我很多时间去找资料，功夫不负有心人，让我找到了结局方法，所以写下来记录。
-问题按照之前的流程安装好所必需的环境：cygwin 、VS2010、freeType 2.7后，开始对openJDK进行编译。
-12cd /cygdrive/c/openJDK8/jdk8ubash ./configure --with-freetype=/cygdrive/c/openJDK8/freetype-2.10.1 --with-boot...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/28</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/12/21/%E7%BC%96%E8%AF%91openJdk%E4%B9%8B%E4%BA%8C/" >
-            
-                <span>windows编译openJdk之二-freeType+VS+jdk</span>
-        </a>
-        <div class="abstract-content">
-            安装openJDK下载官方下载地址：http://jdk.java.net/java-se-ri/8
-
-freeType
-freeType最好下载已经编译好的，下载后解压至和openJDK同一目录下
-下载地址：https://codeload.github.com/ubawurinna/freetype-windows-binaries/zip/master
-
-
-
-Visual Studio 2010 Compliers安装
-根据指导手册，OpenJDK Windows构建需要VS2010专业版编译器。编译器以及其它工具的安装位置希望由变量VS100COMNTOOLS定义，这个会由Mic...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/21</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/12/13/%E7%BC%96%E8%AF%91openJdk%E4%B9%8BCygWin%E7%9A%84%E5%AE%89%E8%A3%85/" >
-            
-                <span>windows编译openJdk之一-CYGWIN</span>
-        </a>
-        <div class="abstract-content">
-            写在前面最近在学习JVM，就接触到JDK的源码，传统的ORACLEJDK也就是JDK没有被开源，而OpenJDK是JDK的开放源码版本，以GPL协议的形式发布，适用于商业和个人。
-准备openJDK编译环境，第一步就是要去安装个CYGWIN，用来在windows下模拟linux运行环境。
-JDK和OpenJDK的区别，可以归纳为以下几点：
-授权协议的不同： 
-OpenJDK采用GPL V2协议发布，而JDK则采用JRL协议发布。两个协议虽然都是开放源代码的，但是在使用上的不同在于GPL V2允许在商业上使用，而JRL只允许个人研究使用。 
-
-OpenJDK只包含最精简的JDK： 
-Ope...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/13</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "elasticsearch">elasticsearch</a>
     
 </div>
             
@@ -699,7 +690,7 @@ Ope...
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/page/3/">&lt; PREV</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/archives/page/5/">5</a><a class="page-number" href="/archives/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/8/">8</a><a class="extend next" rel="next" href="/archives/page/5/">NEXT &gt;</a>
+        <a class="extend prev" rel="prev" href="/archives/page/3/">&lt; PREV</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/archives/page/5/">5</a><a class="page-number" href="/archives/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/9/">9</a><a class="extend next" rel="next" href="/archives/page/5/">NEXT &gt;</a>
     </nav>
     
 </main>
@@ -1790,15 +1781,212 @@ Ope...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 71
+        Total : 84
         </div>
         <!-- search  -->
-        
-            <div class="site-search popup-trigger">
-                <span class="iconfont-archer search-icon">&#xe627;</span>
-            </div>
         
     </div>
     
@@ -1807,8 +1995,82 @@ Ope...
     
     
     
+    <div class="archive-year"> 2021 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/28</span><a class="archive-post-title" href= "/2021/02/28/%E5%BF%AB%E9%80%9F%E5%88%87%E6%8D%A2%E6%9C%8D%E5%8A%A1bean%E9%85%8D%E7%BD%AE%E6%88%96%E4%BE%9D%E8%B5%96%E7%9A%84%E7%AE%80%E5%8D%95%E6%A1%86%E6%9E%B6%E5%AE%9E%E7%8E%B0%E6%A0%B7%E4%BE%8B/" >快速切换服务bean配置或依赖的简单框架实现样例</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/13</span><a class="archive-post-title" href= "/2021/02/13/%E5%9F%BA%E7%A1%80%E5%90%91-%E4%BB%8E%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E5%92%8C%E5%AD%97%E8%8A%82%E7%A0%81%E7%9C%8Bjava%E5%8C%85%E8%A3%85%E7%B1%BB%E7%9A%84%E5%9D%91/" >基础向-从三元运算符和字节码看java包装类的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/06</span><a class="archive-post-title" href= "/2021/02/06/%E6%80%BB%E7%BB%93es%E7%9A%84%E4%B8%80%E4%BA%9B%E8%A7%84%E8%8C%83/" >总结es的一些规范</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/23</span><a class="archive-post-title" href= "/2021/01/23/%E6%B7%B1%E5%85%A5%E6%8E%A2%E8%AE%A8innodb%E3%80%82%E4%B8%ADexists%E3%80%81in%E3%80%81join%E6%9F%A5%E8%AF%A2%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" >深入探讨innodb中exists、in、join查询之间的区别和使用场景</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/09</span><a class="archive-post-title" href= "/2021/01/09/%E6%80%BB%E7%BB%93%E6%8E%92%E6%9F%A5cpu%E9%A3%99%E5%8D%87%E7%9A%84%E6%AD%A5%E9%AA%A4/" >快速在linux排查java中cpu飙升线程或代码位置的方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/02</span><a class="archive-post-title" href= "/2021/01/02/clickHouse%E4%B8%AD%E7%9A%84%E9%87%87%E6%A0%B7%E6%B5%85%E8%B0%88/" >clickHouse中的采样浅谈</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/26</span><a class="archive-post-title" href= "/2020/12/26/%E5%9C%A8mac%E7%9A%84clion%E4%B8%AD%E5%BF%AB%E9%80%9F%E8%B0%83%E8%AF%95openjdk/" >在mac的clion中快速调试openjdk</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/12</span><a class="archive-post-title" href= "/2020/12/12/flink%E4%B8%ADfunction%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" >flink中function注意事项</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/01</span><a class="archive-post-title" href= "/2020/12/01/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%BA%8C/" >mysql诡异死锁系列二之高并发删除下的死锁二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/27</span><a class="archive-post-title" href= "/2020/11/27/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%B8%80/" >mysql诡异死锁系列二之高并发删除下的死锁一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/22</span><a class="archive-post-title" href= "/2020/11/22/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%9A%84%E6%B3%A8%E6%84%8F%E7%82%B9/" >es模糊搜索的注意点</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2020/11/08/hbase%E5%80%92%E5%8F%99scan%E5%8F%AF%E8%83%BD%E4%BC%9A%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" >hbase倒叙scan可能会遇到的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/24</span><a class="archive-post-title" href= "/2020/10/24/es%E5%B5%8C%E5%A5%97%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%B0%8F%E8%AF%AF%E5%8C%BA/" >es嵌套查询的小误区</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -2319,6 +2581,14 @@ Ope...
     
         <span class="sidebar-tag-name" data-tags="innodb事务"><span class="iconfont-archer">&#xe606;</span>innodb事务</span>
     
+        <span class="sidebar-tag-name" data-tags="flink"><span class="iconfont-archer">&#xe606;</span>flink</span>
+    
+        <span class="sidebar-tag-name" data-tags="openjdk"><span class="iconfont-archer">&#xe606;</span>openjdk</span>
+    
+        <span class="sidebar-tag-name" data-tags="clickHouse"><span class="iconfont-archer">&#xe606;</span>clickHouse</span>
+    
+        <span class="sidebar-tag-name" data-tags="innodb"><span class="iconfont-archer">&#xe606;</span>innodb</span>
+    
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -2424,6 +2694,14 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="SPI"><span class="iconfont-archer">&#xe60a;</span>SPI</span>
     
+        <span class="sidebar-category-name" data-categories="flink"><span class="iconfont-archer">&#xe60a;</span>flink</span>
+    
+        <span class="sidebar-category-name" data-categories="openjdk"><span class="iconfont-archer">&#xe60a;</span>openjdk</span>
+    
+        <span class="sidebar-category-name" data-categories="clickHouse"><span class="iconfont-archer">&#xe60a;</span>clickHouse</span>
+    
+        <span class="sidebar-category-name" data-categories="innodb"><span class="iconfont-archer">&#xe60a;</span>innodb</span>
+    
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
     <div class="sidebar-categories-list"></div>
@@ -2447,29 +2725,6 @@ jsonContent:
     </script>
     <script src="/scripts/main.js"></script>
     <!-- algolia -->
-    
-        <div class="site-search">
-  <div class="algolia-popup popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="iconfont-archer">&#xe609;</i>
-    </span>
-  </div>
-</div>
-        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.8.0/dist/instantsearch.min.js" defer></script>
-        <script src="/scripts/search.js" defer></script>
     
     <!-- busuanzi  -->
     

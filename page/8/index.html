@@ -366,40 +366,376 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2016/09/09/%E8%87%AA%E5%B7%B1%E5%86%99%E4%B8%80%E4%B8%AAmysql%E5%8A%A8%E6%80%81%E6%9F%A5%E8%AF%A2%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84%E7%9A%84%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/" >
+        <a class="abstract-title" href = "/2019/08/23/ThreadLocal%E5%86%85%E7%9A%84%E5%B0%8F%E7%A7%98%E5%AF%86-%E5%B7%A7%E5%A6%99%E9%99%8D%E4%BD%8E%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E9%A3%8E%E9%99%A9/" >
             
-                <span>自己写一个mysql动态查询树形结构的存储过程</span>
+                <span>ThreadLocal内的小秘密-巧妙降低内存泄露风险</span>
         </a>
         <div class="abstract-content">
-            写在前面  这是我三年前记录在自己csdn博客上的，觉得很有用，搬过来~
-正文mysql不像oracle有start with … connect by …这种递归查询树形结构的语句，但是日常开发中会经常查询树形数据，所以自己就摸索了一套可以动态传参来递归查询树形结构的数据
-调用示例：
-
-参数
-
-schema_name 库名
-table_name 表名
-type ：1、父级2、子级
-self_value： 节点值
-id_name：节点主键id，用于查找子节点
-self_name：本节点的字段名称，用于找父级
-parent_name：父节点名称，用于找子级和父级
-rt_value：返回值，...
+            ThreadLocal是我们最熟悉的一个多线程工具类，它是用来实现多线程场景中每个线程可以拥有自己的变量对象，而且不受其他线程的影响，做到数据隔离。
+如果按照我们平时开发的习惯和思路，想要实现上述功能，大概会写出下面的代码，写一个工具类
+1234567891011121314151617181920212223242526272829public class MyThreadLocal &#123;	private MyThreadLocal()&#123;			&#125;	//存放每个thread的私有变量，key为thread自己	private  static final Map...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2016/09/09</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/23</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "mysql">mysql</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "threadLocal">threadLocal</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "tree">tree</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "内存泄露">内存泄露</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "history">history</a>
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/15/hive%E4%BB%8Ecsv%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE/" >
+            
+                <span>hive从csv导入数据</span>
+        </a>
+        <div class="abstract-content">
+            今天开发hive数据迁移遇到个问题，从旧库导出来的csv文件死活导入不进新表中，导入语句如下：
+1LOAD DATA INPATH '/user/upload/xiaomifengceshi.csv' OVERWRITE INTO TABLE default.dm_fity PARTITION (inc_day=20190814);
+
+后来研究发现：原来是导出的时候所选择的csv分隔符为’,‘（如下图:）
+
+
+，但是新建的hive表的默认分割符，hive使用不可见的字符作为分割符，如下表
+
+
+
+分隔符
+描述
+
+
+
+\n
+行分隔符
+
+
+^A
+字段分隔符,八进制表示为\001,
+
+
+^B
+a...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/15</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "hive">hive</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/08/hibernate4%E7%9B%91%E5%90%AC%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90/" >
+            
+                <span>hibernate4监听器的实现简单解析</span>
+        </a>
+        <div class="abstract-content">
+            这几天旧项目运维时发现曾经写的hibernate监听器很有意思，混合利用了工厂模式和观察者模式。所以特意记录一下
+hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册的方式，而是新增了一个监听器注册类：org.hibernate.event.service.spi.EventListenerRegistry，注册方式为：
+1234567891011121314151617@Componentpublic class HandleEnvetListener &#123;	//注册监听器		@Autowired      private SessionFa...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/08</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码解读">源码解读</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "hibernate4">hibernate4</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "设计模式">设计模式</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/06/hive%E5%AD%98%E5%82%A8%E6%8D%A2%E8%A1%8C%E7%AC%A6%E7%AD%89%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6/" >
+            
+                <span>hive存储换行符等特殊字符</span>
+        </a>
+        <div class="abstract-content">
+            etl抽取oracle数据到hive库中的时候，oracle表中如果有换行符如:‘\n\r’，会造成当前行的数据错位。
+原来是因为hive默认的存储方式是textfile，这种方式不支持存储换行符。
+方案一、替换这些特殊字符：
+1regexp_replace(t.test, '\n|\t|\r', '')
+
+方案二、修改表的存储格式为:parquet
+12345678910drop table if exists test_table;create table test_table(	create_by string comment '',	create_time date commen...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/06</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "hive">hive</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/02/tomcat-jetty-jboss%E8%B7%A8%E5%9F%9F%E9%85%8D%E7%BD%AE/" >
+            
+                <span>tomcat,jetty,jboss跨域配置</span>
+        </a>
+        <div class="abstract-content">
+            目前前后端分离的开发方式都是需要前端应用跨域访问后端服务器。这里记录下平时开发中用到的三种服务器支持跨域的方式。浏览器支持跨域的方式后面再讲。
+先来了解下跨域的主流方式：
+CORS：全称”跨域资源共享”（Cross-origin resource sharing）。
+CORS需要浏览器和服务器同时支持，才可以实现跨域请求，目前几乎所有浏览器都支持CORS，IE则不能低于IE10。
+一：springMVC版本低于4.2的war包部署至jboss、jetty、tomcat在web.xml内加入处理跨域的过滤器（需要先引入jar包）：
+12345678910111213141516171819...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/02</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "jetty">jetty</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "jboss">jboss</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "tomcat">tomcat</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "CORS">CORS</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "sringboot">sringboot</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/07/25/content-type01/" >
+            
+                <span>springMVC获取content-type为form-data类型的参数和值解析</span>
+        </a>
+        <div class="abstract-content">
+            写在前面传统的servlet处理request请求是，会自动帮我们封装get请求、post且Content-Type为application/x-www-form-urlencoded请求参数至request parameter map。但是当Content-Type为其他类型时，需要基于servlet的框架比如struts、spring来帮我们封装，不按的话得我们自己获取请求流来处理。
+之所以会这样，是因为：Content-Type不是application/x-www-form-urlencoded时数据格式不固定，不一定是key=value对的方式，所以服务器无法知道具体的处理方式...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/25</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "springMVC">springMVC</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "form_data">form_data</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码解读">源码解读</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/07/14/ElasticSearch-001/" >
+            
+                <span>ElasticSearch笔记</span>
+        </a>
+        <div class="abstract-content">
+            最近开发的人员搜索功能使用到了ElasticSearch(ES)，所以把自己学到的东西记录下来
+介绍ES是一个分布式可扩展的实时搜索和分析引擎,一个建立在全文搜索引擎 Apache Lucene(TM) 基础上的搜索引擎.当然 ES并不仅仅是 Lucene 那么简单，它不仅包括了全文搜索功能，还可以进行以下工作:
+
+分布式实时文件存储，并将每一个字段都编入索引，使其可以被搜索。
+
+实时分析的分布式搜索引擎。
+
+可以扩展到上百台服务器，处理PB级别的结构化或非结构化数据。
+经过两三天时间的琢磨，大概明白了ES的表面运作流程，ES除了上述特征之外，他提供服务的方式是RESTful web接口...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/07/14</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "ElasticSearch">ElasticSearch</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Oracle">Oracle</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/06/24/mybatis%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83/" >
+            
+                <span>mybatis字符串比较</span>
+        </a>
+        <div class="abstract-content">
+            在mybatis的mapping内进行字符串比较应该使用以下方法:
+&lt;if test=&#39;type==&quot;y&quot;&#39;&gt;  
+    and status = 1   
+&lt;/if&gt;
+或者
+&lt;if test=&quot;type == &#39;y&#39;.toString()&quot;&gt;  
+    and status = 1   
+&lt;/if&gt;
+不能使用这种写法&lt;if test=&quot;type == &#39;y&#39;&quot;&gt;，因为tset内是ognl表达式，’Y’在java内被认...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/06/24</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis">mybatis</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "字符串比较">字符串比较</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/05/22/mybatis-placeholder/" >
+            
+                <span>mybatis占位符的区别</span>
+        </a>
+        <div class="abstract-content">
+            ​        mybatis占位符分为#{}和${}
+​        #{}是利用jdbc的预编译（PreparedStatement），一个#{}会被解析为一个占位符？。它可以指定变量的类型，比如：#{empCode,jdbcType=VARCHAR}或#{year,jdbcType=DECIMAL}，
+​        ${}是一个纯粹的String替换，把变量的值直接替换在当前位置
+​        比如：    select emp_id from user where code=#{code,jdbcType=VARCHAR}在log内打印出来为sql为：Preparin...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/05/22</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis">mybatis</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "sql注入">sql注入</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/05/13/ORA-01722%20invalid%20number/" >
+            
+                <span>ORA-01722 invalid number</span>
+        </a>
+        <div class="abstract-content">
+             ORA-01722: invalid number最常见的原因就是因为我们在条件筛选时写了文本格式的（varchar2）字段与数字进行对比，Oracle的字段类型隐式转换调用了to_number函数，当字段内有非数字的值时，就会报这个错误。比如下面两个sql:    
+1select * from TM_hrmis_USER U WHERE  U.EMP_CODE=592876
+
+1select * from TM_hrmis_USER U WHERE  U.EMP_CODE=592876 and u.emp_name='592876'
+
+​        首先emp_code这个字段...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/05/13</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "ORACLE">ORACLE</a>
     
 </div>
             
@@ -409,7 +745,7 @@ rt_value：返回值，...
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/page/7/">&lt; PREV</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span>
+        <a class="extend prev" rel="prev" href="/page/7/">&lt; PREV</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/9/">NEXT &gt;</a>
     </nav>
     
 </main>
@@ -1557,15 +1893,212 @@ rt_value：返回值，...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 71
+        Total : 84
         </div>
         <!-- search  -->
-        
-            <div class="site-search popup-trigger">
-                <span class="iconfont-archer search-icon">&#xe627;</span>
-            </div>
         
     </div>
     
@@ -1574,8 +2107,82 @@ rt_value：返回值，...
     
     
     
+    <div class="archive-year"> 2021 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/28</span><a class="archive-post-title" href= "/2021/02/28/%E5%BF%AB%E9%80%9F%E5%88%87%E6%8D%A2%E6%9C%8D%E5%8A%A1bean%E9%85%8D%E7%BD%AE%E6%88%96%E4%BE%9D%E8%B5%96%E7%9A%84%E7%AE%80%E5%8D%95%E6%A1%86%E6%9E%B6%E5%AE%9E%E7%8E%B0%E6%A0%B7%E4%BE%8B/" >快速切换服务bean配置或依赖的简单框架实现样例</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/13</span><a class="archive-post-title" href= "/2021/02/13/%E5%9F%BA%E7%A1%80%E5%90%91-%E4%BB%8E%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E5%92%8C%E5%AD%97%E8%8A%82%E7%A0%81%E7%9C%8Bjava%E5%8C%85%E8%A3%85%E7%B1%BB%E7%9A%84%E5%9D%91/" >基础向-从三元运算符和字节码看java包装类的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/06</span><a class="archive-post-title" href= "/2021/02/06/%E6%80%BB%E7%BB%93es%E7%9A%84%E4%B8%80%E4%BA%9B%E8%A7%84%E8%8C%83/" >总结es的一些规范</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/23</span><a class="archive-post-title" href= "/2021/01/23/%E6%B7%B1%E5%85%A5%E6%8E%A2%E8%AE%A8innodb%E3%80%82%E4%B8%ADexists%E3%80%81in%E3%80%81join%E6%9F%A5%E8%AF%A2%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" >深入探讨innodb中exists、in、join查询之间的区别和使用场景</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/09</span><a class="archive-post-title" href= "/2021/01/09/%E6%80%BB%E7%BB%93%E6%8E%92%E6%9F%A5cpu%E9%A3%99%E5%8D%87%E7%9A%84%E6%AD%A5%E9%AA%A4/" >快速在linux排查java中cpu飙升线程或代码位置的方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/02</span><a class="archive-post-title" href= "/2021/01/02/clickHouse%E4%B8%AD%E7%9A%84%E9%87%87%E6%A0%B7%E6%B5%85%E8%B0%88/" >clickHouse中的采样浅谈</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/26</span><a class="archive-post-title" href= "/2020/12/26/%E5%9C%A8mac%E7%9A%84clion%E4%B8%AD%E5%BF%AB%E9%80%9F%E8%B0%83%E8%AF%95openjdk/" >在mac的clion中快速调试openjdk</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/12</span><a class="archive-post-title" href= "/2020/12/12/flink%E4%B8%ADfunction%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" >flink中function注意事项</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/01</span><a class="archive-post-title" href= "/2020/12/01/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%BA%8C/" >mysql诡异死锁系列二之高并发删除下的死锁二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/27</span><a class="archive-post-title" href= "/2020/11/27/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%B8%80/" >mysql诡异死锁系列二之高并发删除下的死锁一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/22</span><a class="archive-post-title" href= "/2020/11/22/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%9A%84%E6%B3%A8%E6%84%8F%E7%82%B9/" >es模糊搜索的注意点</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2020/11/08/hbase%E5%80%92%E5%8F%99scan%E5%8F%AF%E8%83%BD%E4%BC%9A%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" >hbase倒叙scan可能会遇到的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/24</span><a class="archive-post-title" href= "/2020/10/24/es%E5%B5%8C%E5%A5%97%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%B0%8F%E8%AF%AF%E5%8C%BA/" >es嵌套查询的小误区</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -2086,6 +2693,14 @@ rt_value：返回值，...
     
         <span class="sidebar-tag-name" data-tags="innodb事务"><span class="iconfont-archer">&#xe606;</span>innodb事务</span>
     
+        <span class="sidebar-tag-name" data-tags="flink"><span class="iconfont-archer">&#xe606;</span>flink</span>
+    
+        <span class="sidebar-tag-name" data-tags="openjdk"><span class="iconfont-archer">&#xe606;</span>openjdk</span>
+    
+        <span class="sidebar-tag-name" data-tags="clickHouse"><span class="iconfont-archer">&#xe606;</span>clickHouse</span>
+    
+        <span class="sidebar-tag-name" data-tags="innodb"><span class="iconfont-archer">&#xe606;</span>innodb</span>
+    
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -2191,6 +2806,14 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="SPI"><span class="iconfont-archer">&#xe60a;</span>SPI</span>
     
+        <span class="sidebar-category-name" data-categories="flink"><span class="iconfont-archer">&#xe60a;</span>flink</span>
+    
+        <span class="sidebar-category-name" data-categories="openjdk"><span class="iconfont-archer">&#xe60a;</span>openjdk</span>
+    
+        <span class="sidebar-category-name" data-categories="clickHouse"><span class="iconfont-archer">&#xe60a;</span>clickHouse</span>
+    
+        <span class="sidebar-category-name" data-categories="innodb"><span class="iconfont-archer">&#xe60a;</span>innodb</span>
+    
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
     <div class="sidebar-categories-list"></div>
@@ -2214,29 +2837,6 @@ jsonContent:
     </script>
     <script src="/scripts/main.js"></script>
     <!-- algolia -->
-    
-        <div class="site-search">
-  <div class="algolia-popup popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="iconfont-archer">&#xe609;</i>
-    </span>
-  </div>
-</div>
-        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.8.0/dist/instantsearch.min.js" defer></script>
-        <script src="/scripts/search.js" defer></script>
     
     <!-- busuanzi  -->
     

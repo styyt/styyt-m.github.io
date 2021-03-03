@@ -1,0 +1,2546 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="styytNOTstop">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="styytNOTstop">
+    
+    <meta name="keywords" content="learn,grow up">
+    
+    <meta name="description" content="">
+    <meta name="description" content="写在前面​    测试环境测试新功能的时候发现一个问题，es搜索的模糊搜索使用部分字段搜索不到指定的记录，如使用条件”2_“搜索不出来”2_test“的记录出来 正文​    观察代码发现使用的是match_phrase，搜索语句如下： 12345678910111213141516171819202122232425262728&amp;#123;  &quot;query&quot;: &amp;#123;    &quot;bool&quot;:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="es模糊搜索的注意点">
+<meta property="og:url" content="https://styyt.github.io/2020/11/22/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%9A%84%E6%B3%A8%E6%84%8F%E7%82%B9/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="写在前面​    测试环境测试新功能的时候发现一个问题，es搜索的模糊搜索使用部分字段搜索不到指定的记录，如使用条件”2_“搜索不出来”2_test“的记录出来 正文​    观察代码发现使用的是match_phrase，搜索语句如下： 12345678910111213141516171819202122232425262728&amp;#123;  &quot;query&quot;: &amp;#123;    &quot;bool&quot;:">
+<meta property="og:image" content="https://styyt.github.io/intro/0132.jpg">
+<meta property="article:published_time" content="2020-11-22T06:14:59.000Z">
+<meta property="article:modified_time" content="2021-01-15T10:39:18.205Z">
+<meta property="article:author" content="styytNOTstop">
+<meta property="article:tag" content="es">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://styyt.github.io/intro/0132.jpg">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    
+    <title>es模糊搜索的注意点 · learn and grow up</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= "/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= "/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/assets/favicon.ico" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >learn and grow up</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">es模糊搜索的注意点</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>learn and grow up</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            es模糊搜索的注意点
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">449</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2020/11/22</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>​    测试环境测试新功能的时候发现一个问题，es搜索的模糊搜索使用部分字段搜索不到指定的记录，如使用条件”2_“搜索不出来”2_test“的记录出来</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>​    观察代码发现使用的是match_phrase，搜索语句如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"query"</span>: &#123;</span><br><span class="line">    <span class="attr">"bool"</span>: &#123;</span><br><span class="line">      <span class="attr">"must"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"term"</span>: &#123;</span><br><span class="line">            <span class="attr">"deleted"</span>: &#123;</span><br><span class="line">              <span class="attr">"value"</span>: <span class="number">0</span>,</span><br><span class="line">              <span class="attr">"boost"</span>: <span class="number">1</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"match_phrase"</span>: &#123;</span><br><span class="line">            <span class="attr">"templateName"</span>: &#123;</span><br><span class="line">              <span class="attr">"query"</span>: <span class="string">"2_"</span>,</span><br><span class="line">              <span class="attr">"slop"</span>: <span class="number">0</span>,</span><br><span class="line">              <span class="attr">"boost"</span>: <span class="number">1</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"disable_coord"</span>: <span class="literal">false</span>,</span><br><span class="line">      <span class="attr">"adjust_pure_negative"</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">"boost"</span>: <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    按照之前的经验，match_phrase是通过对字段分词后的结果进行搜索，所以怀疑是分词的问题，使用接口查询该字段的分词结果如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/iiap_impl_index_template_group/iiap_impl_type_template_group_info/p2pZBHYBLdzsWUkgneXl/_termvectors?fields=templateName</span><br></pre></td></tr></table></figure>
+
+<p><img src="/intro/0132.jpg" alt="分词结果"></p>
+<p>可以看到分词器将”2_test”列为一个完整的单词，所以无论使用什么方法不管是math还是match_phrase甚至wildcard都无法搜索出来，</p>
+<p>​    按照之前经验，为该字段在线添加一个keyword属性，让它不被分词，从而再使用wildcard的模糊匹配就可以搜索出来，脚本如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#添加keyword字段</span></span><br><span class="line">curl -X PUT <span class="string">"http://106.52.89.117:19200/iiap_impl_index_template_group/_mapping/iiap_impl_type_template_group_info?pretty"</span> -H <span class="string">"Content-Type:application/json"</span>  -d <span class="string">'&#123;"iiap_impl_type_template_group_info": &#123;"properties":&#123;"templateName":&#123;"type":"text","fields":&#123;"keyword":&#123;"type":"keyword","ignore_above":256&#125;&#125;&#125;&#125;&#125;&#125;'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">#刷新keyword</span></span><br><span class="line">curl -X POST <span class="string">"http://106.52.89.117:19200/iiap_impl_index_template_group/iiap_impl_type_template_group_info/_update_by_query?pretty"</span> -H <span class="string">"Content-Type:application/json"</span>  -d   <span class="string">'&#123;"query":&#123;"match_all":&#123;&#125;&#125;,"script":&#123;"inline":"ctx._source.templateName = ctx._source.templateName","params":&#123;"categoryName":"网关","categoryValues":",4,"&#125;&#125;&#125;'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>问题解决~</p>
+<p>所以以后在es索引时需要注意：半路需要这种全局模糊搜索的，不想大改的话，就可以设置一个keyword字段，然后用wildcard来匹配（当然可以设置一个单个分词器，这种需要再创建一开始就确定，没法中途修改）</p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://styyt.github.io">styytNOTstop</a>
+            <p>原文链接：<a href="https://styyt.github.io/2020/11/22/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%9A%84%E6%B3%A8%E6%84%8F%E7%82%B9/">https://styyt.github.io/2020/11/22/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%9A%84%E6%B3%A8%E6%84%8F%E7%82%B9/</a>
+            <p>发表日期：<a href="https://styyt.github.io/2020/11/22/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%9A%84%E6%B3%A8%E6%84%8F%E7%82%B9/">November 22nd 2020, 2:14:59 pm</a>
+            <p>更新日期：<a href="https://styyt.github.io/2020/11/22/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%9A%84%E6%B3%A8%E6%84%8F%E7%82%B9/">January 15th 2021, 6:39:18 pm</a>
+            <p>版权声明：本文采用<a rel="license noopener" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2020/11/27/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%B8%80/" title= "mysql诡异死锁系列二之高并发删除下的死锁一">
+                    <div class="nextTitle">mysql诡异死锁系列二之高并发删除下的死锁一</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2020/11/08/hbase%E5%80%92%E5%8F%99scan%E5%8F%AF%E8%83%BD%E4%BC%9A%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" title= "hbase倒叙scan可能会遇到的坑">
+                    <div class="prevTitle">hbase倒叙scan可能会遇到的坑</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- gitalk评论 -->
+
+    <!-- utteranc评论 -->
+
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:543441649@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/styyt" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/intro/wechat.jpg" />
+                </span>
+            
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#正文"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 84
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2021 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/28</span><a class="archive-post-title" href= "/2021/02/28/%E5%BF%AB%E9%80%9F%E5%88%87%E6%8D%A2%E6%9C%8D%E5%8A%A1bean%E9%85%8D%E7%BD%AE%E6%88%96%E4%BE%9D%E8%B5%96%E7%9A%84%E7%AE%80%E5%8D%95%E6%A1%86%E6%9E%B6%E5%AE%9E%E7%8E%B0%E6%A0%B7%E4%BE%8B/" >快速切换服务bean配置或依赖的简单框架实现样例</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/13</span><a class="archive-post-title" href= "/2021/02/13/%E5%9F%BA%E7%A1%80%E5%90%91-%E4%BB%8E%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E5%92%8C%E5%AD%97%E8%8A%82%E7%A0%81%E7%9C%8Bjava%E5%8C%85%E8%A3%85%E7%B1%BB%E7%9A%84%E5%9D%91/" >基础向-从三元运算符和字节码看java包装类的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/06</span><a class="archive-post-title" href= "/2021/02/06/%E6%80%BB%E7%BB%93es%E7%9A%84%E4%B8%80%E4%BA%9B%E8%A7%84%E8%8C%83/" >总结es的一些规范</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/23</span><a class="archive-post-title" href= "/2021/01/23/%E6%B7%B1%E5%85%A5%E6%8E%A2%E8%AE%A8innodb%E3%80%82%E4%B8%ADexists%E3%80%81in%E3%80%81join%E6%9F%A5%E8%AF%A2%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" >深入探讨innodb中exists、in、join查询之间的区别和使用场景</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/09</span><a class="archive-post-title" href= "/2021/01/09/%E6%80%BB%E7%BB%93%E6%8E%92%E6%9F%A5cpu%E9%A3%99%E5%8D%87%E7%9A%84%E6%AD%A5%E9%AA%A4/" >快速在linux排查java中cpu飙升线程或代码位置的方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/02</span><a class="archive-post-title" href= "/2021/01/02/clickHouse%E4%B8%AD%E7%9A%84%E9%87%87%E6%A0%B7%E6%B5%85%E8%B0%88/" >clickHouse中的采样浅谈</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/26</span><a class="archive-post-title" href= "/2020/12/26/%E5%9C%A8mac%E7%9A%84clion%E4%B8%AD%E5%BF%AB%E9%80%9F%E8%B0%83%E8%AF%95openjdk/" >在mac的clion中快速调试openjdk</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/12</span><a class="archive-post-title" href= "/2020/12/12/flink%E4%B8%ADfunction%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" >flink中function注意事项</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/01</span><a class="archive-post-title" href= "/2020/12/01/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%BA%8C/" >mysql诡异死锁系列二之高并发删除下的死锁二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/27</span><a class="archive-post-title" href= "/2020/11/27/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%B8%80/" >mysql诡异死锁系列二之高并发删除下的死锁一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/22</span><a class="archive-post-title" href= "/2020/11/22/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%9A%84%E6%B3%A8%E6%84%8F%E7%82%B9/" >es模糊搜索的注意点</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2020/11/08/hbase%E5%80%92%E5%8F%99scan%E5%8F%AF%E8%83%BD%E4%BC%9A%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" >hbase倒叙scan可能会遇到的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/24</span><a class="archive-post-title" href= "/2020/10/24/es%E5%B5%8C%E5%A5%97%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%B0%8F%E8%AF%AF%E5%8C%BA/" >es嵌套查询的小误区</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/17</span><a class="archive-post-title" href= "/2020/10/17/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E5%9B%9B%E4%B9%8B%E5%88%86%E6%9E%90/" >mysql诡异的死锁问题排查及分析全过程记录四之分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2020/10/07/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%B8%89%E4%B9%8B%E9%87%8D%E7%8E%B0/" >mysql诡异的死锁问题排查及分析全过程记录三之重现</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/02</span><a class="archive-post-title" href= "/2020/10/02/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%BA%8C/" >mysql诡异的死锁问题排查及分析全过程记录二之RR的锁</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/27</span><a class="archive-post-title" href= "/2020/09/27/mysql%E8%AF%A1%E5%BC%82%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%88%86%E6%9E%90%E5%85%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%B8%80/" >mysql诡异的死锁问题排查及分析全过程记录一之概述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/05</span><a class="archive-post-title" href= "/2020/09/05/openjdk%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90%E4%B9%8Bjni_registerNatives%E4%BA%8C/" >openjdk源码浅析之jni_registerNatives二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span><a class="archive-post-title" href= "/2020/08/30/openjdk%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90%E4%B9%8Bjni_registerNatives/" >openjdk源码浅析之jni_registerNatives</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2020/08/29/habse%E4%B8%AD%E4%BD%BF%E7%94%A8shell%E6%A8%A1%E7%B3%8Ascan/" >habse中使用shell模相关命令</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/23</span><a class="archive-post-title" href= "/2020/08/23/hikari%E4%B8%AD%E7%94%A8%E5%88%B0%E7%9A%84SPI%E6%80%9D%E6%83%B3/" >hikari中用到的SPI思想</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2020/08/15/mac%E4%B8%8Bxcode%E8%B0%83%E8%AF%95openJDK/" >mac下xcode调试openJDK</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/09</span><a class="archive-post-title" href= "/2020/08/09/mac%E4%B8%8B%E7%BC%96%E8%AF%91openjdk/" >mac下编译openjdk14u36</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/01</span><a class="archive-post-title" href= "/2020/08/01/SPI%E6%98%AF%E5%90%A6%E7%A0%B4%E5%9D%8F%E4%BA%86%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/" >SPI是否破坏了双亲委派？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/26</span><a class="archive-post-title" href= "/2020/07/26/%E9%80%9A%E8%BF%87%E5%AD%97%E8%8A%82%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90i++%E5%92%8C++i%E7%9A%84%E5%8C%BA%E5%88%AB/" >通过字节码简单解析i++和++i的区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/12</span><a class="archive-post-title" href= "/2020/07/12/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90%E4%BA%8C/" >class文件简单解析之二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/05</span><a class="archive-post-title" href= "/2020/07/05/class%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90/" >class文件简单解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/28</span><a class="archive-post-title" href= "/2020/06/28/%E8%87%AA%E5%B7%B1%E5%86%99%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%8F%82%E6%95%B0%E7%BA%A7%E7%BB%9F%E4%B8%80%E6%95%B0%E6%8D%AE%E6%9D%83%E9%99%90%E7%BB%84%E4%BB%B6%E4%BA%8C/" >自己写基于注解的参数级统一数据权限组件</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/20</span><a class="archive-post-title" href= "/2020/06/20/%E8%87%AA%E5%B7%B1%E5%86%99%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%8F%82%E6%95%B0%E7%BA%A7%E7%BB%9F%E4%B8%80%E6%95%B0%E6%8D%AE%E6%9D%83%E9%99%90%E7%BB%84%E4%BB%B6/" >自己写基于注解的参数级统一数据权限组件</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/14</span><a class="archive-post-title" href= "/2020/06/14/%E8%A7%A3%E6%9E%90springBean%E7%B1%BB%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E5%A6%82AOP%7Ccglib%E4%BB%A3%E7%90%86%E7%AD%89%E9%97%AE%E9%A2%98%E5%9B%9B/" >解析springBean类的注解引发的一系列如AOP|cglib代理等问题四</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/07</span><a class="archive-post-title" href= "/2020/06/07/%E8%A7%A3%E6%9E%90springBean%E7%B1%BB%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E5%A6%82AOP%7Ccglib%E4%BB%A3%E7%90%86%E7%AD%89%E9%97%AE%E9%A2%98%E4%B8%89/" >解析springBean类的注解引发的一系列如AOP|cglib代理等问题三</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/25</span><a class="archive-post-title" href= "/2020/05/25/%E8%A7%A3%E6%9E%90springBean%E7%B1%BB%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E5%A6%82AOP%7Ccglib%E4%BB%A3%E7%90%86%E7%AD%89%E9%97%AE%E9%A2%98%E4%BA%8C/" >解析springBean类的注解引发的一系列如AOP|cglib代理等问题二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/24</span><a class="archive-post-title" href= "/2020/05/24/%E8%A7%A3%E6%9E%90springBean%E7%B1%BB%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E5%A6%82AOP%7Ccglib%E4%BB%A3%E7%90%86%E7%AD%89%E9%97%AE%E9%A2%98%E4%B8%80/" >解析springBean类的注解引发的一系列如AOP|cglib代理等问题一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/15</span><a class="archive-post-title" href= "/2020/05/15/%E8%87%AA%E5%B7%B1%E5%86%99%E7%9A%84%E6%A0%B9%E6%8D%AE%E5%85%A8%E8%B7%AF%E5%BE%84%E8%8E%B7%E5%8F%96%E5%8F%98%E9%87%8F%E5%80%BC/" >自己封装模拟json全路径获取某个对象下某个变量的工具类</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/01</span><a class="archive-post-title" href= "/2020/05/01/macOS%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/" >macOS常用命令记录</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/19</span><a class="archive-post-title" href= "/2020/04/19/spring-data-elasticsearch-%E7%BB%84%E4%BB%B6%E6%9F%A5%E8%AF%A2%E7%9A%84bug%E8%A7%A3%E6%9E%90/" >spring-data-elasticsearch-组件查询的bug跟踪</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/05</span><a class="archive-post-title" href= "/2020/04/05/canal%E4%BD%BF%E7%94%A8%E4%B8%AD%E7%9A%84%E9%99%B7%E9%98%B1%E7%94%A8%E6%B3%95/" >canal使用中的陷阱用法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/29</span><a class="archive-post-title" href= "/2020/03/29/%E5%85%B3%E4%BA%8Elocale%E5%92%8CResourceBundle%E8%B8%A9%E7%9A%84%E5%9D%91/" >关于Locale和ResourceBundle踩的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/21</span><a class="archive-post-title" href= "/2020/03/21/%E9%AB%98%E5%B9%B6%E5%8F%91%E4%B8%8B%E4%BD%BF%E7%94%A8java%E6%9B%B4%E6%96%B0es%E5%90%8C%E4%B8%80%E6%9D%A1%E8%AE%B0%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%8E%A2%E7%B4%A2%E4%BA%8C/" >高并发下使用java更新es同一条记录的问题及解决方案探索二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/14</span><a class="archive-post-title" href= "/2020/03/14/%E9%AB%98%E5%B9%B6%E5%8F%91%E4%B8%8B%E4%BD%BF%E7%94%A8java%E6%9B%B4%E6%96%B0es%E5%90%8C%E4%B8%80%E6%9D%A1%E8%AE%B0%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%8E%A2%E7%B4%A2/" >高并发下使用java更新es同一条记录的问题及解决方案探索一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/07</span><a class="archive-post-title" href= "/2020/03/07/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E5%9B%9B/" >spring-data-es抽象service集成简单增删查改之四</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/29</span><a class="archive-post-title" href= "/2020/02/29/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E4%B8%89/" >spring-data-es抽象service集成简单增删查改之三</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/22</span><a class="archive-post-title" href= "/2020/02/22/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E4%BA%8C/" >spring-data-es抽象service集成简单增删查改之二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/16</span><a class="archive-post-title" href= "/2020/02/16/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9/" >spring-data-es抽象service集成简单增删查改之一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/08</span><a class="archive-post-title" href= "/2020/02/08/FeignRequestInterceptor%E7%A4%BA%E4%BE%8B/" >FeignRequestInterceptor示例</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/02</span><a class="archive-post-title" href= "/2020/02/02/es%E4%BF%AE%E6%94%B9%E7%B4%A2%E5%BC%95%E4%B8%ADmapping%E7%9A%84%E7%B1%BB%E5%9E%8B/" >es修改索引中mapping的类型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/25</span><a class="archive-post-title" href= "/2020/01/25/idea%D6%AECommandLineIsTooLong/" >idea之CommandLineIsTooLong问题解决</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/18</span><a class="archive-post-title" href= "/2020/01/18/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A52/" >通过一次cannal监听问题浅读spring-data源码及其在es中的应用二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/12</span><a class="archive-post-title" href= "/2020/01/12/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" >通过一次cannal监听问题浅读spring-data源码及其在es中的应用一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/05</span><a class="archive-post-title" href= "/2020/01/05/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2/" >es的模糊搜索</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/28</span><a class="archive-post-title" href= "/2019/12/28/%E7%BC%96%E8%AF%91openJDK%E4%B9%8Bc%E7%BC%96%E8%AF%91%E5%99%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E8%A7%A3%E5%86%B3/" >windows编译openJDK之c编译器找不到解决</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/21</span><a class="archive-post-title" href= "/2019/12/21/%E7%BC%96%E8%AF%91openJdk%E4%B9%8B%E4%BA%8C/" >windows编译openJdk之二-freeType+VS+jdk</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/13</span><a class="archive-post-title" href= "/2019/12/13/%E7%BC%96%E8%AF%91openJdk%E4%B9%8BCygWin%E7%9A%84%E5%AE%89%E8%A3%85/" >windows编译openJdk之一-CYGWIN</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/07</span><a class="archive-post-title" href= "/2019/12/07/java%E7%9A%84okhttp%E5%86%8D%E5%B0%81%E8%A3%85/" >java的okhttp再封装</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/30</span><a class="archive-post-title" href= "/2019/11/30/lambda%E4%B8%AD%E7%9A%84%E5%8F%97%E6%A3%80%E6%9F%A5%E5%BC%82%E5%B8%B8/" >lambda中的受检查异常</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/23</span><a class="archive-post-title" href= "/2019/11/23/springboot-test/" >Springboot test</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/16</span><a class="archive-post-title" href= "/2019/11/16/zuul%E8%BD%AC%E5%8F%91%E8%AF%B7%E6%B1%82%E5%90%8E%E5%89%8D%E7%BC%80%E9%97%AE%E9%A2%98/" >zuul转发请求后前缀问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/09</span><a class="archive-post-title" href= "/2019/11/09/DDD/" >mybatis_plus_generator with DDD</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/02</span><a class="archive-post-title" href= "/2019/11/02/URL/" >SpringBoot启动报Failed to retrieve application JMX service URL</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2019/10/26/volatile-item-2/" >再从volatile第二个特性看JVM内存模型(JMM)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/volidateandjvm1/" >从volatile第一个特性看JVM内存模型(JMM)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2019/10/07/jvmGcRecycler%E6%B5%85%E6%9E%90/" >再度浅析jvm的四种垃圾收集器</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/28</span><a class="archive-post-title" href= "/2019/09/28/programming/" >浅论战术编程tactical programming与战略编程strategic programming</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/20</span><a class="archive-post-title" href= "/2019/09/20/NIO%E4%B9%8BSocketChannel%E5%B0%8F%E5%AE%9E%E8%B7%B5-%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8Fmin%E7%89%88/" >NIO之SocketChannel小实践-聊天程序mini版</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/16</span><a class="archive-post-title" href= "/2019/09/16/Thread-join%E4%BC%9A%E9%87%8A%E6%94%BE%E9%94%81%E5%90%97/" >Thread.join会释放锁吗?释放的是什么锁?会死锁吗?</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/14</span><a class="archive-post-title" href= "/2019/09/14/%E5%8D%87%E7%BA%A71.8%E5%AF%B9gc%E7%9A%84%E5%BD%B1%E5%93%8D/" >浅析升级jdk8对jvm/GC（HotSpot）的影响</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span><a class="archive-post-title" href= "/2019/09/01/mybatis%E7%9A%84mapper%E6%B3%A8%E5%85%A5%E6%96%B9%E5%BC%8F%E7%A0%94%E7%A9%B6/" >mybatis-spring的mapper注入方式浅谈</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hibernate%E6%8C%81%E4%B9%85%E5%8C%96%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0%E7%9A%84%E5%9D%91/" >hibernate自动更新的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/28</span><a class="archive-post-title" href= "/2019/08/28/springBoot%E8%87%AA%E5%AE%9A%E4%B9%89Controller%E7%9A%84%E8%B7%AF%E5%BE%84/" >springBoot自定义Controller的路径</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/hive%E5%AF%B9%E8%A1%A8%E7%9A%84%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9/" >hive对表的增删改</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/23</span><a class="archive-post-title" href= "/2019/08/23/ThreadLocal%E5%86%85%E7%9A%84%E5%B0%8F%E7%A7%98%E5%AF%86-%E5%B7%A7%E5%A6%99%E9%99%8D%E4%BD%8E%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E9%A3%8E%E9%99%A9/" >ThreadLocal内的小秘密-巧妙降低内存泄露风险</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/hive%E4%BB%8Ecsv%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE/" >hive从csv导入数据</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/08</span><a class="archive-post-title" href= "/2019/08/08/hibernate4%E7%9B%91%E5%90%AC%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90/" >hibernate4监听器的实现简单解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/hive%E5%AD%98%E5%82%A8%E6%8D%A2%E8%A1%8C%E7%AC%A6%E7%AD%89%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6/" >hive存储换行符等特殊字符</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/02</span><a class="archive-post-title" href= "/2019/08/02/tomcat-jetty-jboss%E8%B7%A8%E5%9F%9F%E9%85%8D%E7%BD%AE/" >tomcat,jetty,jboss跨域配置</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/25</span><a class="archive-post-title" href= "/2019/07/25/content-type01/" >springMVC获取content-type为form-data类型的参数和值解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/14</span><a class="archive-post-title" href= "/2019/07/14/ElasticSearch-001/" >ElasticSearch笔记</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/24</span><a class="archive-post-title" href= "/2019/06/24/mybatis%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83/" >mybatis字符串比较</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/22</span><a class="archive-post-title" href= "/2019/05/22/mybatis-placeholder/" >mybatis占位符的区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/13</span><a class="archive-post-title" href= "/2019/05/13/ORA-01722%20invalid%20number/" >ORA-01722 invalid number</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/15</span><a class="archive-post-title" href= "/2017/06/15/ja%E3%80%81java%E3%80%81mysql%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%82%A3%E9%95%BF%E5%BA%A6%E5%88%A4%E6%96%AD%E7%9A%84%E4%B8%8D%E5%90%8C/" >js、java、mysql字符串那长度判断的不同</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/28</span><a class="archive-post-title" href= "/2017/01/28/sql%E6%8E%92%E5%BA%8F-%E5%88%86%E9%A1%B5%E7%9A%84%E5%B0%8F%E9%97%AE%E9%A2%98/" >sql排序+分页的小问题</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2016 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/26</span><a class="archive-post-title" href= "/2016/09/26/ajax%E7%9A%84traditional%E4%BD%9C%E7%94%A8/" >ajax的traditional作用</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/09</span><a class="archive-post-title" href= "/2016/09/09/%E8%87%AA%E5%B7%B1%E5%86%99%E4%B8%80%E4%B8%AAmysql%E5%8A%A8%E6%80%81%E6%9F%A5%E8%AF%A2%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84%E7%9A%84%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/" >自己写一个mysql动态查询树形结构的存储过程</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="ElasticSearch"><span class="iconfont-archer">&#xe606;</span>ElasticSearch</span>
+    
+        <span class="sidebar-tag-name" data-tags="Oracle"><span class="iconfont-archer">&#xe606;</span>Oracle</span>
+    
+        <span class="sidebar-tag-name" data-tags="feign"><span class="iconfont-archer">&#xe606;</span>feign</span>
+    
+        <span class="sidebar-tag-name" data-tags="mybatis_plus_generator"><span class="iconfont-archer">&#xe606;</span>mybatis_plus_generator</span>
+    
+        <span class="sidebar-tag-name" data-tags="nio"><span class="iconfont-archer">&#xe606;</span>nio</span>
+    
+        <span class="sidebar-tag-name" data-tags="socket"><span class="iconfont-archer">&#xe606;</span>socket</span>
+    
+        <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
+    
+        <span class="sidebar-tag-name" data-tags="SpringBoot"><span class="iconfont-archer">&#xe606;</span>SpringBoot</span>
+    
+        <span class="sidebar-tag-name" data-tags="threadLocal"><span class="iconfont-archer">&#xe606;</span>threadLocal</span>
+    
+        <span class="sidebar-tag-name" data-tags="内存泄露"><span class="iconfont-archer">&#xe606;</span>内存泄露</span>
+    
+        <span class="sidebar-tag-name" data-tags="ajax"><span class="iconfont-archer">&#xe606;</span>ajax</span>
+    
+        <span class="sidebar-tag-name" data-tags="es"><span class="iconfont-archer">&#xe606;</span>es</span>
+    
+        <span class="sidebar-tag-name" data-tags="spring"><span class="iconfont-archer">&#xe606;</span>spring</span>
+    
+        <span class="sidebar-tag-name" data-tags="canal"><span class="iconfont-archer">&#xe606;</span>canal</span>
+    
+        <span class="sidebar-tag-name" data-tags="springMVC"><span class="iconfont-archer">&#xe606;</span>springMVC</span>
+    
+        <span class="sidebar-tag-name" data-tags="form_data"><span class="iconfont-archer">&#xe606;</span>form_data</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码解读"><span class="iconfont-archer">&#xe606;</span>源码解读</span>
+    
+        <span class="sidebar-tag-name" data-tags="hive"><span class="iconfont-archer">&#xe606;</span>hive</span>
+    
+        <span class="sidebar-tag-name" data-tags="hibernate"><span class="iconfont-archer">&#xe606;</span>hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码解析"><span class="iconfont-archer">&#xe606;</span>源码解析</span>
+    
+        <span class="sidebar-tag-name" data-tags="hibernate4"><span class="iconfont-archer">&#xe606;</span>hibernate4</span>
+    
+        <span class="sidebar-tag-name" data-tags="设计模式"><span class="iconfont-archer">&#xe606;</span>设计模式</span>
+    
+        <span class="sidebar-tag-name" data-tags="idea"><span class="iconfont-archer">&#xe606;</span>idea</span>
+    
+        <span class="sidebar-tag-name" data-tags="js"><span class="iconfont-archer">&#xe606;</span>js</span>
+    
+        <span class="sidebar-tag-name" data-tags="java"><span class="iconfont-archer">&#xe606;</span>java</span>
+    
+        <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
+    
+        <span class="sidebar-tag-name" data-tags="ORACLE"><span class="iconfont-archer">&#xe606;</span>ORACLE</span>
+    
+        <span class="sidebar-tag-name" data-tags="http"><span class="iconfont-archer">&#xe606;</span>http</span>
+    
+        <span class="sidebar-tag-name" data-tags="lambda"><span class="iconfont-archer">&#xe606;</span>lambda</span>
+    
+        <span class="sidebar-tag-name" data-tags="mybatis"><span class="iconfont-archer">&#xe606;</span>mybatis</span>
+    
+        <span class="sidebar-tag-name" data-tags="sql注入"><span class="iconfont-archer">&#xe606;</span>sql注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="字符串比较"><span class="iconfont-archer">&#xe606;</span>字符串比较</span>
+    
+        <span class="sidebar-tag-name" data-tags="codeImpression"><span class="iconfont-archer">&#xe606;</span>codeImpression</span>
+    
+        <span class="sidebar-tag-name" data-tags="spring-data-elasticsearch"><span class="iconfont-archer">&#xe606;</span>spring-data-elasticsearch</span>
+    
+        <span class="sidebar-tag-name" data-tags="elasticsearch"><span class="iconfont-archer">&#xe606;</span>elasticsearch</span>
+    
+        <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
+    
+        <span class="sidebar-tag-name" data-tags="Springboot"><span class="iconfont-archer">&#xe606;</span>Springboot</span>
+    
+        <span class="sidebar-tag-name" data-tags="oracle"><span class="iconfont-archer">&#xe606;</span>oracle</span>
+    
+        <span class="sidebar-tag-name" data-tags="jetty"><span class="iconfont-archer">&#xe606;</span>jetty</span>
+    
+        <span class="sidebar-tag-name" data-tags="jboss"><span class="iconfont-archer">&#xe606;</span>jboss</span>
+    
+        <span class="sidebar-tag-name" data-tags="tomcat"><span class="iconfont-archer">&#xe606;</span>tomcat</span>
+    
+        <span class="sidebar-tag-name" data-tags="CORS"><span class="iconfont-archer">&#xe606;</span>CORS</span>
+    
+        <span class="sidebar-tag-name" data-tags="sringboot"><span class="iconfont-archer">&#xe606;</span>sringboot</span>
+    
+        <span class="sidebar-tag-name" data-tags="volatile"><span class="iconfont-archer">&#xe606;</span>volatile</span>
+    
+        <span class="sidebar-tag-name" data-tags="jvm"><span class="iconfont-archer">&#xe606;</span>jvm</span>
+    
+        <span class="sidebar-tag-name" data-tags="zuul"><span class="iconfont-archer">&#xe606;</span>zuul</span>
+    
+        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
+    
+        <span class="sidebar-tag-name" data-tags="JMM"><span class="iconfont-archer">&#xe606;</span>JMM</span>
+    
+        <span class="sidebar-tag-name" data-tags="gc"><span class="iconfont-archer">&#xe606;</span>gc</span>
+    
+        <span class="sidebar-tag-name" data-tags="Locale"><span class="iconfont-archer">&#xe606;</span>Locale</span>
+    
+        <span class="sidebar-tag-name" data-tags="ResourceBundle"><span class="iconfont-archer">&#xe606;</span>ResourceBundle</span>
+    
+        <span class="sidebar-tag-name" data-tags="openJDK"><span class="iconfont-archer">&#xe606;</span>openJDK</span>
+    
+        <span class="sidebar-tag-name" data-tags="tree"><span class="iconfont-archer">&#xe606;</span>tree</span>
+    
+        <span class="sidebar-tag-name" data-tags="history"><span class="iconfont-archer">&#xe606;</span>history</span>
+    
+        <span class="sidebar-tag-name" data-tags="macOS"><span class="iconfont-archer">&#xe606;</span>macOS</span>
+    
+        <span class="sidebar-tag-name" data-tags="Spring"><span class="iconfont-archer">&#xe606;</span>Spring</span>
+    
+        <span class="sidebar-tag-name" data-tags="数据权限"><span class="iconfont-archer">&#xe606;</span>数据权限</span>
+    
+        <span class="sidebar-tag-name" data-tags="动态代理"><span class="iconfont-archer">&#xe606;</span>动态代理</span>
+    
+        <span class="sidebar-tag-name" data-tags="hbase"><span class="iconfont-archer">&#xe606;</span>hbase</span>
+    
+        <span class="sidebar-tag-name" data-tags="SPI"><span class="iconfont-archer">&#xe606;</span>SPI</span>
+    
+        <span class="sidebar-tag-name" data-tags="innodb事务"><span class="iconfont-archer">&#xe606;</span>innodb事务</span>
+    
+        <span class="sidebar-tag-name" data-tags="flink"><span class="iconfont-archer">&#xe606;</span>flink</span>
+    
+        <span class="sidebar-tag-name" data-tags="openjdk"><span class="iconfont-archer">&#xe606;</span>openjdk</span>
+    
+        <span class="sidebar-tag-name" data-tags="clickHouse"><span class="iconfont-archer">&#xe606;</span>clickHouse</span>
+    
+        <span class="sidebar-tag-name" data-tags="innodb"><span class="iconfont-archer">&#xe606;</span>innodb</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="ElasticSearch"><span class="iconfont-archer">&#xe60a;</span>ElasticSearch</span>
+    
+        <span class="sidebar-category-name" data-categories="springboot"><span class="iconfont-archer">&#xe60a;</span>springboot</span>
+    
+        <span class="sidebar-category-name" data-categories="mybatis-plus-generator"><span class="iconfont-archer">&#xe60a;</span>mybatis-plus-generator</span>
+    
+        <span class="sidebar-category-name" data-categories="多线程"><span class="iconfont-archer">&#xe60a;</span>多线程</span>
+    
+        <span class="sidebar-category-name" data-categories="SpringBoot"><span class="iconfont-archer">&#xe60a;</span>SpringBoot</span>
+    
+        <span class="sidebar-category-name" data-categories="springboot/feign"><span class="iconfont-archer">&#xe60a;</span>springboot/feign</span>
+    
+        <span class="sidebar-category-name" data-categories="threadLocal"><span class="iconfont-archer">&#xe60a;</span>threadLocal</span>
+    
+        <span class="sidebar-category-name" data-categories="ajax"><span class="iconfont-archer">&#xe60a;</span>ajax</span>
+    
+        <span class="sidebar-category-name" data-categories="es"><span class="iconfont-archer">&#xe60a;</span>es</span>
+    
+        <span class="sidebar-category-name" data-categories="canal"><span class="iconfont-archer">&#xe60a;</span>canal</span>
+    
+        <span class="sidebar-category-name" data-categories="springMVC源码解读"><span class="iconfont-archer">&#xe60a;</span>springMVC源码解读</span>
+    
+        <span class="sidebar-category-name" data-categories="hive"><span class="iconfont-archer">&#xe60a;</span>hive</span>
+    
+        <span class="sidebar-category-name" data-categories="hibernate"><span class="iconfont-archer">&#xe60a;</span>hibernate</span>
+    
+        <span class="sidebar-category-name" data-categories="idea"><span class="iconfont-archer">&#xe60a;</span>idea</span>
+    
+        <span class="sidebar-category-name" data-categories="ORACLE"><span class="iconfont-archer">&#xe60a;</span>ORACLE</span>
+    
+        <span class="sidebar-category-name" data-categories="java"><span class="iconfont-archer">&#xe60a;</span>java</span>
+    
+        <span class="sidebar-category-name" data-categories="lambda"><span class="iconfont-archer">&#xe60a;</span>lambda</span>
+    
+        <span class="sidebar-category-name" data-categories="mybatis"><span class="iconfont-archer">&#xe60a;</span>mybatis</span>
+    
+        <span class="sidebar-category-name" data-categories="codeImpression"><span class="iconfont-archer">&#xe60a;</span>codeImpression</span>
+    
+        <span class="sidebar-category-name" data-categories="spring"><span class="iconfont-archer">&#xe60a;</span>spring</span>
+    
+        <span class="sidebar-category-name" data-categories="elasticsearch"><span class="iconfont-archer">&#xe60a;</span>elasticsearch</span>
+    
+        <span class="sidebar-category-name" data-categories="springBoot"><span class="iconfont-archer">&#xe60a;</span>springBoot</span>
+    
+        <span class="sidebar-category-name" data-categories="Springboot"><span class="iconfont-archer">&#xe60a;</span>Springboot</span>
+    
+        <span class="sidebar-category-name" data-categories="mysql"><span class="iconfont-archer">&#xe60a;</span>mysql</span>
+    
+        <span class="sidebar-category-name" data-categories="CORS跨域"><span class="iconfont-archer">&#xe60a;</span>CORS跨域</span>
+    
+        <span class="sidebar-category-name" data-categories="jvm"><span class="iconfont-archer">&#xe60a;</span>jvm</span>
+    
+        <span class="sidebar-category-name" data-categories="zuul"><span class="iconfont-archer">&#xe60a;</span>zuul</span>
+    
+        <span class="sidebar-category-name" data-categories="JMM"><span class="iconfont-archer">&#xe60a;</span>JMM</span>
+    
+        <span class="sidebar-category-name" data-categories="gc"><span class="iconfont-archer">&#xe60a;</span>gc</span>
+    
+        <span class="sidebar-category-name" data-categories="Locale"><span class="iconfont-archer">&#xe60a;</span>Locale</span>
+    
+        <span class="sidebar-category-name" data-categories="openJDK"><span class="iconfont-archer">&#xe60a;</span>openJDK</span>
+    
+        <span class="sidebar-category-name" data-categories="gc/jvm"><span class="iconfont-archer">&#xe60a;</span>gc/jvm</span>
+    
+        <span class="sidebar-category-name" data-categories="macOS"><span class="iconfont-archer">&#xe60a;</span>macOS</span>
+    
+        <span class="sidebar-category-name" data-categories="Spring"><span class="iconfont-archer">&#xe60a;</span>Spring</span>
+    
+        <span class="sidebar-category-name" data-categories="hbase"><span class="iconfont-archer">&#xe60a;</span>hbase</span>
+    
+        <span class="sidebar-category-name" data-categories="SPI"><span class="iconfont-archer">&#xe60a;</span>SPI</span>
+    
+        <span class="sidebar-category-name" data-categories="flink"><span class="iconfont-archer">&#xe60a;</span>flink</span>
+    
+        <span class="sidebar-category-name" data-categories="openjdk"><span class="iconfont-archer">&#xe60a;</span>openjdk</span>
+    
+        <span class="sidebar-category-name" data-categories="clickHouse"><span class="iconfont-archer">&#xe60a;</span>clickHouse</span>
+    
+        <span class="sidebar-category-name" data-categories="innodb"><span class="iconfont-archer">&#xe60a;</span>innodb</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "styytNOTstop"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

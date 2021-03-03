@@ -366,128 +366,64 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/20/NIO%E4%B9%8BSocketChannel%E5%B0%8F%E5%AE%9E%E8%B7%B5-%E8%81%8A%E5%A4%A9%E7%A8%8B%E5%BA%8Fmin%E7%89%88/" >
+        <a class="abstract-title" href = "/2019/12/28/%E7%BC%96%E8%AF%91openJDK%E4%B9%8Bc%E7%BC%96%E8%AF%91%E5%99%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E8%A7%A3%E5%86%B3/" >
             
-                <span>NIO之SocketChannel小实践-聊天程序mini版</span>
+                <span>windows编译openJDK之c编译器找不到解决</span>
         </a>
         <div class="abstract-content">
-            想起之前研究java的nio时候，发现自己大学时用的socket在nio上有一个实现：SocketChannel，所以很感兴趣的一边学一边尝试，写了个很简单的几百行小程序，模仿现实中的（一server对多client）聊天，话不多说直接上代码和实现效果,可以看到，得力于nio，server程序一个线程就可以同时处理多个client的socket连接
+            写在前面为什么单独列出来这个问题呢？是因为其他问题网上都有很多类似的示例和解决方法，比如Cygwin 版本不对，包不对等等，这些我就不再写了。
+c编译器找不到的问题花了我很多时间去找资料，功夫不负有心人，让我找到了结局方法，所以写下来记录。
+问题按照之前的流程安装好所必需的环境：cygwin 、VS2010、freeType 2.7后，开始对openJDK进行编译。
+12cd /cygdrive/c/openJDK8/jdk8ubash ./configure --with-freetype=/cygdrive/c/openJDK8/freetype-2.10.1 --with-boot...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/28</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/21/%E7%BC%96%E8%AF%91openJdk%E4%B9%8B%E4%BA%8C/" >
+            
+                <span>windows编译openJdk之二-freeType+VS+jdk</span>
+        </a>
+        <div class="abstract-content">
+            安装openJDK下载官方下载地址：http://jdk.java.net/java-se-ri/8
 
-Server.java
-123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/20</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "nio">nio</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "socket">socket</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/16/Thread-join%E4%BC%9A%E9%87%8A%E6%94%BE%E9%94%81%E5%90%97/" >
-            
-                <span>Thread.join会释放锁吗?释放的是什么锁?会死锁吗?</span>
-        </a>
-        <div class="abstract-content">
-            答案当然是会，问题的关键是释放的什么锁呢？，我们先来看看join方法的源码
-1234567891011121314151617181920212223242526272829303132//比如我们在thread1（下面简称t1）中调用了thread2（下面简称t2）.join()方法，t2.join(0)方法//注意方法被synchronized修饰，所以t1中获取了t2的对象锁public final synchronized void join(long millis)    //默认0，不超时    throws InterruptedException &#123;      ...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/16</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "多线程">多线程</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/14/%E5%8D%87%E7%BA%A71.8%E5%AF%B9gc%E7%9A%84%E5%BD%B1%E5%93%8D/" >
-            
-                <span>浅析升级jdk8对jvm/GC（HotSpot）的影响</span>
-        </a>
-        <div class="abstract-content">
-            jvm内存结构变化
-不变点
-1、堆—–堆是所有线程共享的，主要用来存储对象。其中，堆可分为：年轻代和老年代两块区域，
-​        老年代与年轻代比例使用NewRatio参数来设定比例。比如： –XX:NewRatio=2表示新生代 ( Young ) 与老年代 ( Old ) 的比例的值为 1:2 ，这也是jdk8的默认比例，也就是老年代 ( Old ) = 2/3 的堆空间大小。
-​        对于年轻代，一个Eden区和两个Suvivor区（from，to），使用参数SuvivorRatio来设定大小，比如：
-–XX:SurvivorRatio=8表示Edem : from...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/14</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "jvm">jvm</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "gc">gc</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/01/mybatis%E7%9A%84mapper%E6%B3%A8%E5%85%A5%E6%96%B9%E5%BC%8F%E7%A0%94%E7%A9%B6/" >
-            
-                <span>mybatis-spring的mapper注入方式浅谈</span>
-        </a>
-        <div class="abstract-content">
-            众所周知，Spring注入bean时都是将可实例化对象注入。但是我们在写myabtis时却从来没有写过它的mapper实现类，仅仅是写了一个接口就可以在service层使用这个bean，这是为什么呢？我们可以先看下spring最终给我们注入到mapperBean的是什么类呢？
+freeType
+freeType最好下载已经编译好的，下载后解压至和openJDK同一目录下
+下载地址：https://codeload.github.com/ubawurinna/freetype-windows-binaries/zip/master
 
 
-果然，它注入的是mybatis代理类：MapperProxy，那么这个实例是什么时候注入进入bean工厂的呢？我们继续往下看：
-找问题从源头找，首先mybatis是怎么知道哪些mapper并且知道去哪里扫描呢？没错就是通过以下三种方式：
-12345678//第一种注解方式，如@MapperScan("com.d...
+
+Visual Studio 2010 Compliers安装
+根据指导手册，OpenJDK Windows构建需要VS2010专业版编译器。编译器以及其它工具的安装位置希望由变量VS100COMNTOOLS定义，这个会由Mic...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/01</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/21</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis">mybatis</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
     
 </div>
             
@@ -500,60 +436,180 @@ Server.java
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/29/hibernate%E6%8C%81%E4%B9%85%E5%8C%96%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0%E7%9A%84%E5%9D%91/" >
+        <a class="abstract-title" href = "/2019/12/13/%E7%BC%96%E8%AF%91openJdk%E4%B9%8BCygWin%E7%9A%84%E5%AE%89%E8%A3%85/" >
             
-                <span>hibernate自动更新的坑</span>
+                <span>windows编译openJdk之一-CYGWIN</span>
         </a>
         <div class="abstract-content">
-            昨天自己负责的一个系统的生产环境出现了一个神奇的BUG：
-123456789101112131415161718192021[2019-08-29 19:54:27.819] [ERROR] [org.hibernate.engine.jdbc.batch.internal.BatchingBatch.performExecution(BatchingBatch.java:137)] [qtp1165897474-48619] : HHH000315: Exception executing batch [Batch update returned unexpected row coun...
+            写在前面最近在学习JVM，就接触到JDK的源码，传统的ORACLEJDK也就是JDK没有被开源，而OpenJDK是JDK的开放源码版本，以GPL协议的形式发布，适用于商业和个人。
+准备openJDK编译环境，第一步就是要去安装个CYGWIN，用来在windows下模拟linux运行环境。
+JDK和OpenJDK的区别，可以归纳为以下几点：
+授权协议的不同： 
+OpenJDK采用GPL V2协议发布，而JDK则采用JRL协议发布。两个协议虽然都是开放源代码的，但是在使用上的不同在于GPL V2允许在商业上使用，而JRL只允许个人研究使用。 
+
+OpenJDK只包含最精简的JDK： 
+Ope...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/29</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/13</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "hibernate">hibernate</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "openJDK">openJDK</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/07/java%E7%9A%84okhttp%E5%86%8D%E5%B0%81%E8%A3%85/" >
+            
+                <span>java的okhttp再封装</span>
+        </a>
+        <div class="abstract-content">
+            写在前面java生态中有很多对http封装的组件，比如原生的 HttpURLConnection 或者apache的 HTTPClient、spring cloud中的RestTemplate和Feign等。
+其中： 
+
+HttpURLConnection 和HttpClient：代码复杂，还得操心资源回收等。代码很复杂，冗余代码多，不建议直接使用。 
+RestTemplate和Feign主要是访问restful服务，其他非restful会很复杂。
+
+所以项目中对于非restful服务，使用了okhttp，OkHttp是一款优秀的HTTP框架，它支持get请求和post请求，支持基于Ht...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/07</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "http">http</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/30/lambda%E4%B8%AD%E7%9A%84%E5%8F%97%E6%A3%80%E6%9F%A5%E5%BC%82%E5%B8%B8/" >
+            
+                <span>lambda中的受检查异常</span>
+        </a>
+        <div class="abstract-content">
+            写在前面最近开始尝试使用lambda表达式，使用起来感觉代码写起来速度快了很多，也整洁了不少。但是lambda表达式也有多坑，比如隐晦难懂，debug困难等等。今天就遇到了一个问题：lambda无法抛出受检查异常。
+正文
+场景
+我们都知道java异常分为：受检查异常（Checked Exception）跟非受检异常（UnChecked Exception）
+受检异常表示代码中必须显示的处理该异常，比如try-catch或者在方法声明上加入throws关键字把异常向上抛出。
+非受检异常也被称作运行时异常，就像我们常用的RuntimeException，表示代码中可以不进行处理，直白点说就是...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/30</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "lambda">lambda</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/23/springboot-test/" >
+            
+                <span>Springboot test</span>
+        </a>
+        <div class="abstract-content">
+            写在前面之为什么要写测试用例
+可以避免测试点的遗漏，为了更好的进行测试，可以提高测试效率 
+可以自动测试，可以在项目打包前进行测试校验 
+可以及时发现因为修改代码导致新的问题的出现，并及时解决 
+
+这是TDD中最重要的一环。
+正文在springboot中引入springboot-test需要以下几个步骤：
+
+pom中引入 spring-boot-starter-test
+
+如果需要打包是不运行test，则可以再pom中加入如下配置
+12345678&lt;!--打包跳过测试--&gt;&lt;plugin&gt;    &lt;groupId&gt;org.apache.maven.pl...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/23</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Springboot">Springboot</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/16/zuul%E8%BD%AC%E5%8F%91%E8%AF%B7%E6%B1%82%E5%90%8E%E5%89%8D%E7%BC%80%E9%97%AE%E9%A2%98/" >
+            
+                <span>zuul转发请求后前缀问题</span>
+        </a>
+        <div class="abstract-content">
+            示例zuul作为springcloud的网关使用路由功能是，会默认把路由的前缀去掉
+比如路由前：http://127.0.0.1:8181/api/demo/list 
+路由后为： http://192.168.1.100:8080/demo/list
+如果我们需要让他不去掉api这个前缀,那么需要在对应路由上加上该属性： strip-prefix: false 
+源码解析首先我们从最开始加载zuul说起
+
+@EnableZuulProxy
+最开始的配置日入口是这里
+123456EnableCircuitBreaker@Target(&#123;ElementType.TYPE&#125...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/16</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "源码解析">源码解析</a>
     
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/28/springBoot%E8%87%AA%E5%AE%9A%E4%B9%89Controller%E7%9A%84%E8%B7%AF%E5%BE%84/" >
-            
-                <span>springBoot自定义Controller的路径</span>
-        </a>
-        <div class="abstract-content">
-            今天手工重新搭建springboot的时候发现一个以前遗漏的知识点：
-Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接体现了springboot约定大于配置的做法，如果我们需要自定义springboot的扫描路径，需要在启动类上加入如下注解：
-1@ComponentScan(basePackages = &#123;"项目路径"&#125;)
-
-和spring很像哦~
-
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/28</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "springBoot">springBoot</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "zuul">zuul</a>
     
 </div>
             
@@ -566,31 +622,28 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/27/hive%E5%AF%B9%E8%A1%A8%E7%9A%84%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9/" >
+        <a class="abstract-title" href = "/2019/11/09/DDD/" >
             
-                <span>hive对表的增删改</span>
+                <span>mybatis_plus_generator with DDD</span>
         </a>
         <div class="abstract-content">
-            Hive 是针对数据仓库应用设计的，而数据仓库的内容是读多写少的。因此，Hive大部分情况下是不支持对数据的改写和添加，日常开发中如果需要真的对数据进行增删改，都可以通过模仿以下方式简单实现
-
-增
-
-1、文件方式增加：
-12#OVERWRITE 表示覆盖，不写则是appendLOAD DATA INPATH '/user/upload/3.csv' [OVERWRITE] INTO TABLE ods_sap_hr.bic_a100 PARTITION (inc_month=201907);
-
-2、insert into 方式
-12#OVERWRITE 表示覆盖，不写则是appendin...
+            写在前面​    随着项目越来越庞大，MVC的传统web架构已经出现了弊端，就算是分了微服务，项目中的各个模块间也不可避免的出现了各种复杂的关系与调用，可能改动一个小地方，将会牵一发而动全身。
+​    所以公司开始大力推广DDD领域模型设计，经过几天的学习和上手，自己简单的根据mybatis-generator写了个可以生成关于javaWeb的DDD模型的工具类（并且可以轻松切换生成代码的type，MVC或者DDD）
+正文代码地址为： https://github.com/styyt/mybatis-generator-plus-ddd 
+生成的结构大致为：
+模型服务内调用过程为：
+​...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/27</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/09</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "hive">hive</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis_plus_generator">mybatis_plus_generator</a>
     
 </div>
             
@@ -603,27 +656,44 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/23/ThreadLocal%E5%86%85%E7%9A%84%E5%B0%8F%E7%A7%98%E5%AF%86-%E5%B7%A7%E5%A6%99%E9%99%8D%E4%BD%8E%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E9%A3%8E%E9%99%A9/" >
+        <a class="abstract-title" href = "/2019/11/02/URL/" >
             
-                <span>ThreadLocal内的小秘密-巧妙降低内存泄露风险</span>
+                <span>SpringBoot启动报Failed to retrieve application JMX service URL</span>
         </a>
         <div class="abstract-content">
-            ThreadLocal是我们最熟悉的一个多线程工具类，它是用来实现多线程场景中每个线程可以拥有自己的变量对象，而且不受其他线程的影响，做到数据隔离。
-如果按照我们平时开发的习惯和思路，想要实现上述功能，大概会写出下面的代码，写一个工具类
-1234567891011121314151617181920212223242526272829public class MyThreadLocal &#123;	private MyThreadLocal()&#123;			&#125;	//存放每个thread的私有变量，key为thread自己	private  static final Map...
+            背景最近将项目切换到IDEA上，SpringBoot启动报如下错误：
+
+经过长时间分析和排查，终于解决了此问题。
+解决思路和过程首先看到报错信息指的是jmx连接失败，自己猜测可能有以下几种可能
+
+jmx服务没有启动
+IDEA配置有问题
+IDEA用java发送的请求被防火墙或者其他安全设备阻拦
+
+那么依次进行问题排查
+
+把程序搬到eclipse，启动本应用，发现可以正常启动，so排除了第一种可能
+
+在IDEA上用mvn package打包成jar包，然后再手动启动该jar包
+
+发现可以正常启动，so排除第二种可能
+
+使用管理员身份运行IDEA
+
+再重新启动
+
+成功了！果然是因为权限的问题！...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/23</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/02</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "threadLocal">threadLocal</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "内存泄露">内存泄露</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot">SpringBoot</a>
     
 </div>
             
@@ -636,84 +706,29 @@ Spring Boot 官方默认扫描的包需要和启动类同级，这里就间接�
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/15/hive%E4%BB%8Ecsv%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE/" >
+        <a class="abstract-title" href = "/2019/10/26/volatile-item-2/" >
             
-                <span>hive从csv导入数据</span>
+                <span>再从volatile第二个特性看JVM内存模型(JMM)</span>
         </a>
         <div class="abstract-content">
-            今天开发hive数据迁移遇到个问题，从旧库导出来的csv文件死活导入不进新表中，导入语句如下：
-1LOAD DATA INPATH '/user/upload/xiaomifengceshi.csv' OVERWRITE INTO TABLE default.dm_fity PARTITION (inc_day=20190814);
+            上一篇文章我们从volatile第一个特性浅析了JMM（JVM内存模型）及其在JVM中的实现，这篇文章我们从其第二个特性继续深入分析JVM的内存模型，当然本文依然假设大家已经了解了java基础知识和JVM的内存结构。
+先来回忆下的volatile的第二个特性
+1屏蔽指令重排序：指令重排序是编译器和处理器为了高效对程序进行优化的手段，它只能保证程序执行的结果时正确的，但是无法保证程序的操作顺序与代码顺序一致。这在单线程中不会构成问题，但是在多线程中就会出现问题。非常经典的例子是在单例方法中同时对字段加入volatile，就是为了防止指令重排序。
 
-后来研究发现：原来是导出的时候所选择的csv分隔符为’,‘（如下图:）
-
-
-，但是新建的hive表的默认分割符，hive使用不可见的字符作为分割符，如下表
-
-
-
-分隔符
-描述
-
-
-
-\n
-行分隔符
-
-
-^A
-字段分隔符,八进制表示为\001,
-
-
-^B
-a...
+示例代码老规矩，先上代码，这次还是拿单例模...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/15</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/26</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "hive">hive</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "volatile">volatile</a>
     
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/08/hibernate4%E7%9B%91%E5%90%AC%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%90/" >
-            
-                <span>hibernate4监听器的实现简单解析</span>
-        </a>
-        <div class="abstract-content">
-            这几天旧项目运维时发现曾经写的hibernate监听器很有意思，混合利用了工厂模式和观察者模式。所以特意记录一下
-hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册的方式，而是新增了一个监听器注册类：org.hibernate.event.service.spi.EventListenerRegistry，注册方式为：
-1234567891011121314151617@Componentpublic class HandleEnvetListener &#123;	//注册监听器		@Autowired      private SessionFa...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/08</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码解读">源码解读</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "hibernate4">hibernate4</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "设计模式">设计模式</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "jvm">jvm</a>
     
 </div>
             
@@ -723,7 +738,7 @@ hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册�
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/page/5/">&lt; PREV</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/">NEXT &gt;</a>
+        <a class="extend prev" rel="prev" href="/page/5/">&lt; PREV</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/">NEXT &gt;</a>
     </nav>
     
 </main>
@@ -1871,15 +1886,212 @@ hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册�
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 71
+        Total : 84
         </div>
         <!-- search  -->
-        
-            <div class="site-search popup-trigger">
-                <span class="iconfont-archer search-icon">&#xe627;</span>
-            </div>
         
     </div>
     
@@ -1888,8 +2100,82 @@ hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册�
     
     
     
+    <div class="archive-year"> 2021 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/28</span><a class="archive-post-title" href= "/2021/02/28/%E5%BF%AB%E9%80%9F%E5%88%87%E6%8D%A2%E6%9C%8D%E5%8A%A1bean%E9%85%8D%E7%BD%AE%E6%88%96%E4%BE%9D%E8%B5%96%E7%9A%84%E7%AE%80%E5%8D%95%E6%A1%86%E6%9E%B6%E5%AE%9E%E7%8E%B0%E6%A0%B7%E4%BE%8B/" >快速切换服务bean配置或依赖的简单框架实现样例</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/13</span><a class="archive-post-title" href= "/2021/02/13/%E5%9F%BA%E7%A1%80%E5%90%91-%E4%BB%8E%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E5%92%8C%E5%AD%97%E8%8A%82%E7%A0%81%E7%9C%8Bjava%E5%8C%85%E8%A3%85%E7%B1%BB%E7%9A%84%E5%9D%91/" >基础向-从三元运算符和字节码看java包装类的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/06</span><a class="archive-post-title" href= "/2021/02/06/%E6%80%BB%E7%BB%93es%E7%9A%84%E4%B8%80%E4%BA%9B%E8%A7%84%E8%8C%83/" >总结es的一些规范</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/23</span><a class="archive-post-title" href= "/2021/01/23/%E6%B7%B1%E5%85%A5%E6%8E%A2%E8%AE%A8innodb%E3%80%82%E4%B8%ADexists%E3%80%81in%E3%80%81join%E6%9F%A5%E8%AF%A2%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" >深入探讨innodb中exists、in、join查询之间的区别和使用场景</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/09</span><a class="archive-post-title" href= "/2021/01/09/%E6%80%BB%E7%BB%93%E6%8E%92%E6%9F%A5cpu%E9%A3%99%E5%8D%87%E7%9A%84%E6%AD%A5%E9%AA%A4/" >快速在linux排查java中cpu飙升线程或代码位置的方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/02</span><a class="archive-post-title" href= "/2021/01/02/clickHouse%E4%B8%AD%E7%9A%84%E9%87%87%E6%A0%B7%E6%B5%85%E8%B0%88/" >clickHouse中的采样浅谈</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/26</span><a class="archive-post-title" href= "/2020/12/26/%E5%9C%A8mac%E7%9A%84clion%E4%B8%AD%E5%BF%AB%E9%80%9F%E8%B0%83%E8%AF%95openjdk/" >在mac的clion中快速调试openjdk</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/12</span><a class="archive-post-title" href= "/2020/12/12/flink%E4%B8%ADfunction%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" >flink中function注意事项</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/01</span><a class="archive-post-title" href= "/2020/12/01/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%BA%8C/" >mysql诡异死锁系列二之高并发删除下的死锁二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/27</span><a class="archive-post-title" href= "/2020/11/27/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%B8%80/" >mysql诡异死锁系列二之高并发删除下的死锁一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/22</span><a class="archive-post-title" href= "/2020/11/22/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%9A%84%E6%B3%A8%E6%84%8F%E7%82%B9/" >es模糊搜索的注意点</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2020/11/08/hbase%E5%80%92%E5%8F%99scan%E5%8F%AF%E8%83%BD%E4%BC%9A%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" >hbase倒叙scan可能会遇到的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/24</span><a class="archive-post-title" href= "/2020/10/24/es%E5%B5%8C%E5%A5%97%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%B0%8F%E8%AF%AF%E5%8C%BA/" >es嵌套查询的小误区</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -2400,6 +2686,14 @@ hibernate4的监听器注册方式不同于hibernate3在cfg.xml内进行注册�
     
         <span class="sidebar-tag-name" data-tags="innodb事务"><span class="iconfont-archer">&#xe606;</span>innodb事务</span>
     
+        <span class="sidebar-tag-name" data-tags="flink"><span class="iconfont-archer">&#xe606;</span>flink</span>
+    
+        <span class="sidebar-tag-name" data-tags="openjdk"><span class="iconfont-archer">&#xe606;</span>openjdk</span>
+    
+        <span class="sidebar-tag-name" data-tags="clickHouse"><span class="iconfont-archer">&#xe606;</span>clickHouse</span>
+    
+        <span class="sidebar-tag-name" data-tags="innodb"><span class="iconfont-archer">&#xe606;</span>innodb</span>
+    
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -2505,6 +2799,14 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="SPI"><span class="iconfont-archer">&#xe60a;</span>SPI</span>
     
+        <span class="sidebar-category-name" data-categories="flink"><span class="iconfont-archer">&#xe60a;</span>flink</span>
+    
+        <span class="sidebar-category-name" data-categories="openjdk"><span class="iconfont-archer">&#xe60a;</span>openjdk</span>
+    
+        <span class="sidebar-category-name" data-categories="clickHouse"><span class="iconfont-archer">&#xe60a;</span>clickHouse</span>
+    
+        <span class="sidebar-category-name" data-categories="innodb"><span class="iconfont-archer">&#xe60a;</span>innodb</span>
+    
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
     <div class="sidebar-categories-list"></div>
@@ -2528,29 +2830,6 @@ jsonContent:
     </script>
     <script src="/scripts/main.js"></script>
     <!-- algolia -->
-    
-        <div class="site-search">
-  <div class="algolia-popup popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="iconfont-archer">&#xe609;</i>
-    </span>
-  </div>
-</div>
-        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.8.0/dist/instantsearch.min.js" defer></script>
-        <script src="/scripts/search.js" defer></script>
     
     <!-- busuanzi  -->
     

@@ -353,31 +353,25 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/12/07/java%E7%9A%84okhttp%E5%86%8D%E5%B0%81%E8%A3%85/" >
+        <a class="abstract-title" href = "/2020/03/07/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E5%9B%9B/" >
             
-                <span>java的okhttp再封装</span>
+                <span>spring-data-es抽象service集成简单增删查改之四</span>
         </a>
         <div class="abstract-content">
-            写在前面java生态中有很多对http封装的组件，比如原生的 HttpURLConnection 或者apache的 HTTPClient、spring cloud中的RestTemplate和Feign等。
-其中： 
-
-HttpURLConnection 和HttpClient：代码复杂，还得操心资源回收等。代码很复杂，冗余代码多，不建议直接使用。 
-RestTemplate和Feign主要是访问restful服务，其他非restful会很复杂。
-
-所以项目中对于非restful服务，使用了okhttp，OkHttp是一款优秀的HTTP框架，它支持get请求和post请求，支持基于Ht...
+            写在前面本次主要是补充了上面两次的单元测试代码，以保障组件功能的正常运行
+代码注释已经比较清楚了，不在此赘述
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210310410510610710810911011111211311411511611...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/07</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/03/07</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "java">java</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "http">http</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "elasticsearch">elasticsearch</a>
     
 </div>
             
@@ -390,28 +384,26 @@ RestTemplate和Feign主要是访问restful服务，其他非restful会很复杂�
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/30/lambda%E4%B8%AD%E7%9A%84%E5%8F%97%E6%A3%80%E6%9F%A5%E5%BC%82%E5%B8%B8/" >
+        <a class="abstract-title" href = "/2020/02/29/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E4%B8%89/" >
             
-                <span>lambda中的受检查异常</span>
+                <span>spring-data-es抽象service集成简单增删查改之三</span>
         </a>
         <div class="abstract-content">
-            写在前面最近开始尝试使用lambda表达式，使用起来感觉代码写起来速度快了很多，也整洁了不少。但是lambda表达式也有多坑，比如隐晦难懂，debug困难等等。今天就遇到了一个问题：lambda无法抛出受检查异常。
-正文
-场景
-我们都知道java异常分为：受检查异常（Checked Exception）跟非受检异常（UnChecked Exception）
-受检异常表示代码中必须显示的处理该异常，比如try-catch或者在方法声明上加入throws关键字把异常向上抛出。
-非受检异常也被称作运行时异常，就像我们常用的RuntimeException，表示代码中可以不进行处理，直白点说就是...
+            写在前面接二
+代码继续整理了后续的实现类，注释已经比较清楚了，不在此赘述
+本次主要更新了基于ElasticsearchTemplate来进行操作，主要是实现了批量的操作
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210310410510610...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/30</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/29</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "lambda">lambda</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "elasticsearch">elasticsearch</a>
     
 </div>
             
@@ -424,34 +416,26 @@ RestTemplate和Feign主要是访问restful服务，其他非restful会很复杂�
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/23/springboot-test/" >
+        <a class="abstract-title" href = "/2020/02/22/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E4%BA%8C/" >
             
-                <span>Springboot test</span>
+                <span>spring-data-es抽象service集成简单增删查改之二</span>
         </a>
         <div class="abstract-content">
-            写在前面之为什么要写测试用例
-可以避免测试点的遗漏，为了更好的进行测试，可以提高测试效率 
-可以自动测试，可以在项目打包前进行测试校验 
-可以及时发现因为修改代码导致新的问题的出现，并及时解决 
-
-这是TDD中最重要的一环。
-正文在springboot中引入springboot-test需要以下几个步骤：
-
-pom中引入 spring-boot-starter-test
-
-如果需要打包是不运行test，则可以再pom中加入如下配置
-12345678&lt;!--打包跳过测试--&gt;&lt;plugin&gt;    &lt;groupId&gt;org.apache.maven.pl...
+            写在前面接一
+代码继续整理了后续的实现类，注释已经比较清楚了，不在此赘述
+主要是基于ElasticsearchRepository来实现简单的增删改查的
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273import java.util.HashMap;import java.util.Map;import java.util.Optional;/** * 公共查询的...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/23</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/22</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Springboot">Springboot</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "elasticsearch">elasticsearch</a>
     
 </div>
             
@@ -464,33 +448,25 @@ pom中引入 spring-boot-starter-test
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/16/zuul%E8%BD%AC%E5%8F%91%E8%AF%B7%E6%B1%82%E5%90%8E%E5%89%8D%E7%BC%80%E9%97%AE%E9%A2%98/" >
+        <a class="abstract-title" href = "/2020/02/16/spring-data-es%E6%8A%BD%E8%B1%A1service%E9%9B%86%E6%88%90%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9/" >
             
-                <span>zuul转发请求后前缀问题</span>
+                <span>spring-data-es抽象service集成简单增删查改之一</span>
         </a>
         <div class="abstract-content">
-            示例zuul作为springcloud的网关使用路由功能是，会默认把路由的前缀去掉
-比如路由前：http://127.0.0.1:8181/api/demo/list 
-路由后为： http://192.168.1.100:8080/demo/list
-如果我们需要让他不去掉api这个前缀,那么需要在对应路由上加上该属性： strip-prefix: false 
-源码解析首先我们从最开始加载zuul说起
-
-@EnableZuulProxy
-最开始的配置日入口是这里
-123456EnableCircuitBreaker@Target(&#123;ElementType.TYPE&#125...
+            写在前面最近项目中用到了大量而是es进行数据的整合和查询，在项目完成后将自己花点时间整理了下组件，然后放上来，后面也可以继续用到~
+代码直接上代码，太忙了，先整理了base类，以下为代码，都有注释，就不在此赘述了
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798991...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/16</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/16</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码解析">源码解析</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "zuul">zuul</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "elasticsearch">elasticsearch</a>
     
 </div>
             
@@ -503,28 +479,27 @@ pom中引入 spring-boot-starter-test
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/09/DDD/" >
+        <a class="abstract-title" href = "/2020/02/08/FeignRequestInterceptor%E7%A4%BA%E4%BE%8B/" >
             
-                <span>mybatis_plus_generator with DDD</span>
+                <span>FeignRequestInterceptor示例</span>
         </a>
         <div class="abstract-content">
-            写在前面​    随着项目越来越庞大，MVC的传统web架构已经出现了弊端，就算是分了微服务，项目中的各个模块间也不可避免的出现了各种复杂的关系与调用，可能改动一个小地方，将会牵一发而动全身。
-​    所以公司开始大力推广DDD领域模型设计，经过几天的学习和上手，自己简单的根据mybatis-generator写了个可以生成关于javaWeb的DDD模型的工具类（并且可以轻松切换生成代码的type，MVC或者DDD）
-正文代码地址为： https://github.com/styyt/mybatis-generator-plus-ddd 
-生成的结构大致为：
-模型服务内调用过程为：
-​...
+            背景
+项目中A服务需要频繁调用B服务，且参数内有许多共同属性，所以考虑利用feign的拦截器来进行统一参数的获取和封装，减少调用B服务前重复代码的编写
+示例
+直接上代码，后续遇到相同场景可以参考参考
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/09</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/08</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "mybatis_plus_generator">mybatis_plus_generator</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "feign">feign</a>
     
 </div>
             
@@ -537,44 +512,30 @@ pom中引入 spring-boot-starter-test
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/02/URL/" >
+        <a class="abstract-title" href = "/2020/02/02/es%E4%BF%AE%E6%94%B9%E7%B4%A2%E5%BC%95%E4%B8%ADmapping%E7%9A%84%E7%B1%BB%E5%9E%8B/" >
             
-                <span>SpringBoot启动报Failed to retrieve application JMX service URL</span>
+                <span>es修改索引中mapping的类型</span>
         </a>
         <div class="abstract-content">
-            背景最近将项目切换到IDEA上，SpringBoot启动报如下错误：
+            问题es不允许对索引的type进行字段的删除和修改，只允许新增。
+新增字段12345678PUT my_index/_mapping/my_type&#123;  "properties": &#123;    "new_column": &#123;       "type":     "integer"    &#125;  &#125;&#125;
 
-经过长时间分析和排查，终于解决了此问题。
-解决思路和过程首先看到报错信息指的是jmx连接失败，自己猜测可能有以下几种可能
+删除和修改的步骤比较麻烦，具体步骤如下：
+新增索引t2为想要的数据类型
 
-jmx服务没有启动
-IDEA配置有问题
-IDEA用java发送的请求被防火墙或者其他安全设备阻拦
-
-那么依次进行问题排查
-
-把程序搬到eclipse，启动本应用，发现可以正常启动，so排除了第一种可能
-
-在IDEA上用mvn package打包成jar包，然后再手动启动该jar包
-
-发现可以正常启动，so排除第二种可能
-
-使用管理员身份运行IDEA
-
-再重新启动
-
-成功了！果然是因为权限的问题！...
+将t1 reindex到t2
+1234567891011121314POST _reindex&#123;  &quot;source&quot;: &#123...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/02</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/02</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot">SpringBoot</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
     
 </div>
             
@@ -587,29 +548,29 @@ IDEA用java发送的请求被防火墙或者其他安全设备阻拦
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/26/volatile-item-2/" >
+        <a class="abstract-title" href = "/2020/01/25/idea%D6%AECommandLineIsTooLong/" >
             
-                <span>再从volatile第二个特性看JVM内存模型(JMM)</span>
+                <span>idea之CommandLineIsTooLong问题解决</span>
         </a>
         <div class="abstract-content">
-            上一篇文章我们从volatile第一个特性浅析了JMM（JVM内存模型）及其在JVM中的实现，这篇文章我们从其第二个特性继续深入分析JVM的内存模型，当然本文依然假设大家已经了解了java基础知识和JVM的内存结构。
-先来回忆下的volatile的第二个特性
-1屏蔽指令重排序：指令重排序是编译器和处理器为了高效对程序进行优化的手段，它只能保证程序执行的结果时正确的，但是无法保证程序的操作顺序与代码顺序一致。这在单线程中不会构成问题，但是在多线程中就会出现问题。非常经典的例子是在单例方法中同时对字段加入volatile，就是为了防止指令重排序。
+            问题在某一次新增springboot项目部署启动时报了如下错误：
+1Error running &#39;XXXApplication&#39;: Command line is too long. Shorten command line for XXXApplication or also for Spring Boot default configuration.
 
-示例代码老规矩，先上代码，这次还是拿单例模...
+解决方法​    经过排查发现是因为项目启动的命令行太长引起的。最终通过idea的配置来解决
+
+shorten command line 选项提供三种选项缩短类路径，这里我们需要选JAR manifest。
+　　non...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/26</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/25</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "volatile">volatile</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "jvm">jvm</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "idea">idea</a>
     
 </div>
             
@@ -622,27 +583,27 @@ IDEA用java发送的请求被防火墙或者其他安全设备阻拦
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/16/volidateandjvm1/" >
+        <a class="abstract-title" href = "/2020/01/18/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A52/" >
             
-                <span>从volatile第一个特性看JVM内存模型(JMM)</span>
+                <span>通过一次cannal监听问题浅读spring-data源码及其在es中的应用二</span>
         </a>
         <div class="abstract-content">
-            写在前面volatile两大特性
-保证变量的可见性：当一个被volatile关键字修饰的变量被一个线程修改的时候，其他线程可以立刻得到修改之后的结果。当一个线程向被volatile关键字修饰的变量写入数据的时候，虚拟机会强制它被值刷新到主内存中。当一个线程用到被volatile关键字修饰的值的时候，虚拟机会强制要求它从主内存中读取。
-屏蔽指令重排序：指令重排序是编译器和处理器为了高效对程序进行优化的手段，它只能保证程序执行的结果时正确的，但是无法保证程序的操作顺序与代码顺序一致。这在单线程中不会构成问题，但是在多线程中就会出现问题。非常经典的例子是在单例方法中同时对字段加入volatil...
+            接上文​    可以看到queries在new的时候初始化，将repository中需要代理的方法和具体实现类也就是RepositoryQuery实现类放入其中，然后再拦截器中判断并执行实现的方法即：
+
+123456789101112131415161718192021222324252627282930313233343536//org.springframework.data.elasticsearch.repository.query.ElasticsearchPartQuery#executepublic Object execute(Object[] parameters) &...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/16</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/18</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "JVM">JVM</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "JMM">JMM</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
     
 </div>
             
@@ -655,27 +616,30 @@ IDEA用java发送的请求被防火墙或者其他安全设备阻拦
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/07/jvmGcRecycler%E6%B5%85%E6%9E%90/" >
+        <a class="abstract-title" href = "/2020/01/12/canal-es%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" >
             
-                <span>再度浅析jvm的四种垃圾收集器</span>
+                <span>通过一次cannal监听问题浅读spring-data源码及其在es中的应用一</span>
         </a>
         <div class="abstract-content">
-            写在前面在之前的文章中写到了jvm的垃圾回收器（收集器），所以这里主要是根据实际的小例子来浅析各个垃圾回收器的特点
-先贴出本次测试的测试代码
-12345678910111213141516171819202122232425262728293031323334package gc;import java.util.ArrayList;import java.util.HashMap;import java.util.List;import java.util.Map;import java.util.Random;public class SimpleTest &#123;	public...
+            写在前面​    系统需要与其他系统对接，并用到其他系统数据，但是其他系统又很难改造，所以使用canal来对其他系统数据库进行监控，并将变更的信息写入es，项目中使用spring-data-es的组件与es进行交互
+问题​    在测试环境突然报了一个很奇怪的错误
+​    
+解决​    经过分析异常堆栈，发现是因为用了spring-data的ElasticsearchRepository查询组件引起的，我们一步步来看，先看调用的地方
+
+​    神奇的地方就在这里，我们不需要写任何逻辑代码，spring就帮我们实现了es的查询，这就归功于spring-data组件的功能了，缺点就是排...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/07</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/12</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "jvm">jvm</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "gc">gc</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "spring">spring</a>
     
 </div>
             
@@ -688,25 +652,33 @@ IDEA用java发送的请求被防火墙或者其他安全设备阻拦
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/28/programming/" >
+        <a class="abstract-title" href = "/2020/01/05/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2/" >
             
-                <span>浅论战术编程tactical programming与战略编程strategic programming</span>
+                <span>es的模糊搜索</span>
         </a>
         <div class="abstract-content">
-            一个栗子自己前几天接收到一个需求，需求想要实现的功能十分简单：就是在某个表单内增加一个必填的下拉框，以提醒用户不要忘记做某一个动作（也许这就是表单设计太过简易的缺点吧@_@）。然后我就简单写了个功能设计文档，遂安排一名同学去完成这个工作。
-第二天我去查看完成效果，这位同学笑嘻嘻的说这么简单的功能我已经开发、自测完毕了，准备测试和上线了。我很满意，让他给我演示了下。嗯。不错。
-准备部署测试环境，突然发现他在confluence上传了份DB，我惊了，打开一看，DDL脚本在业务数据表内也新增了一个字段用来保存新增的下拉框用户所选的值。这个DDL完全是画蛇添足，造成的影响就是：原来仅仅只是修改前...
+            写在前面最近新的项目中用到了大量的es，作为es方面的新手，逐渐熟悉es的DSL、analyzer、search等等，所以记录一下，加深自己的理解
+理解es的模糊搜索首先理解搜索分词和存储分词
+
+搜索分词指的是match类查询，比如match、match_phrase，同时我们可以指定分词器，term类查询是不分词查询,比如term、terms
+
+存储分词es的text（2.x的string）类型字段存储，同搜索分词我们也可以利用不同的分词器来优化我们的搜索逻辑，比如默认的standard、ik等等
+
+存储不分词，在es2.x和5.x有不同的做法
+
+2.x
+由于2.x中没有text和ke...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/28</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/05</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "codeImpression">codeImpression</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "es">es</a>
     
 </div>
             
@@ -716,7 +688,7 @@ IDEA用java发送的请求被防火墙或者其他安全设备阻拦
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/page/4/">&lt; PREV</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/3/">3</a><a class="page-number" href="/archives/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/archives/page/6/">6</a><a class="page-number" href="/archives/page/7/">7</a><a class="page-number" href="/archives/page/8/">8</a><a class="extend next" rel="next" href="/archives/page/6/">NEXT &gt;</a>
+        <a class="extend prev" rel="prev" href="/archives/page/4/">&lt; PREV</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/3/">3</a><a class="page-number" href="/archives/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/archives/page/6/">6</a><a class="page-number" href="/archives/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/9/">9</a><a class="extend next" rel="next" href="/archives/page/6/">NEXT &gt;</a>
     </nav>
     
 </main>
@@ -1807,15 +1779,212 @@ IDEA用java发送的请求被防火墙或者其他安全设备阻拦
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 71
+        Total : 84
         </div>
         <!-- search  -->
-        
-            <div class="site-search popup-trigger">
-                <span class="iconfont-archer search-icon">&#xe627;</span>
-            </div>
         
     </div>
     
@@ -1824,8 +1993,82 @@ IDEA用java发送的请求被防火墙或者其他安全设备阻拦
     
     
     
+    <div class="archive-year"> 2021 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/28</span><a class="archive-post-title" href= "/2021/02/28/%E5%BF%AB%E9%80%9F%E5%88%87%E6%8D%A2%E6%9C%8D%E5%8A%A1bean%E9%85%8D%E7%BD%AE%E6%88%96%E4%BE%9D%E8%B5%96%E7%9A%84%E7%AE%80%E5%8D%95%E6%A1%86%E6%9E%B6%E5%AE%9E%E7%8E%B0%E6%A0%B7%E4%BE%8B/" >快速切换服务bean配置或依赖的简单框架实现样例</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/13</span><a class="archive-post-title" href= "/2021/02/13/%E5%9F%BA%E7%A1%80%E5%90%91-%E4%BB%8E%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E5%92%8C%E5%AD%97%E8%8A%82%E7%A0%81%E7%9C%8Bjava%E5%8C%85%E8%A3%85%E7%B1%BB%E7%9A%84%E5%9D%91/" >基础向-从三元运算符和字节码看java包装类的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/06</span><a class="archive-post-title" href= "/2021/02/06/%E6%80%BB%E7%BB%93es%E7%9A%84%E4%B8%80%E4%BA%9B%E8%A7%84%E8%8C%83/" >总结es的一些规范</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/23</span><a class="archive-post-title" href= "/2021/01/23/%E6%B7%B1%E5%85%A5%E6%8E%A2%E8%AE%A8innodb%E3%80%82%E4%B8%ADexists%E3%80%81in%E3%80%81join%E6%9F%A5%E8%AF%A2%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" >深入探讨innodb中exists、in、join查询之间的区别和使用场景</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/09</span><a class="archive-post-title" href= "/2021/01/09/%E6%80%BB%E7%BB%93%E6%8E%92%E6%9F%A5cpu%E9%A3%99%E5%8D%87%E7%9A%84%E6%AD%A5%E9%AA%A4/" >快速在linux排查java中cpu飙升线程或代码位置的方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/02</span><a class="archive-post-title" href= "/2021/01/02/clickHouse%E4%B8%AD%E7%9A%84%E9%87%87%E6%A0%B7%E6%B5%85%E8%B0%88/" >clickHouse中的采样浅谈</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/26</span><a class="archive-post-title" href= "/2020/12/26/%E5%9C%A8mac%E7%9A%84clion%E4%B8%AD%E5%BF%AB%E9%80%9F%E8%B0%83%E8%AF%95openjdk/" >在mac的clion中快速调试openjdk</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/12</span><a class="archive-post-title" href= "/2020/12/12/flink%E4%B8%ADfunction%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" >flink中function注意事项</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/01</span><a class="archive-post-title" href= "/2020/12/01/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%BA%8C/" >mysql诡异死锁系列二之高并发删除下的死锁二</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/27</span><a class="archive-post-title" href= "/2020/11/27/mysql%E8%AF%A1%E5%BC%82%E6%AD%BB%E9%94%81%E7%B3%BB%E5%88%97%E4%BA%8C%E4%B9%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E5%88%A0%E9%99%A4%E4%B8%8B%E7%9A%84%E6%AD%BB%E9%94%81%E4%B8%80/" >mysql诡异死锁系列二之高并发删除下的死锁一</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/22</span><a class="archive-post-title" href= "/2020/11/22/es%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E7%9A%84%E6%B3%A8%E6%84%8F%E7%82%B9/" >es模糊搜索的注意点</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2020/11/08/hbase%E5%80%92%E5%8F%99scan%E5%8F%AF%E8%83%BD%E4%BC%9A%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" >hbase倒叙scan可能会遇到的坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/24</span><a class="archive-post-title" href= "/2020/10/24/es%E5%B5%8C%E5%A5%97%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%B0%8F%E8%AF%AF%E5%8C%BA/" >es嵌套查询的小误区</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -2336,6 +2579,14 @@ IDEA用java发送的请求被防火墙或者其他安全设备阻拦
     
         <span class="sidebar-tag-name" data-tags="innodb事务"><span class="iconfont-archer">&#xe606;</span>innodb事务</span>
     
+        <span class="sidebar-tag-name" data-tags="flink"><span class="iconfont-archer">&#xe606;</span>flink</span>
+    
+        <span class="sidebar-tag-name" data-tags="openjdk"><span class="iconfont-archer">&#xe606;</span>openjdk</span>
+    
+        <span class="sidebar-tag-name" data-tags="clickHouse"><span class="iconfont-archer">&#xe606;</span>clickHouse</span>
+    
+        <span class="sidebar-tag-name" data-tags="innodb"><span class="iconfont-archer">&#xe606;</span>innodb</span>
+    
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -2441,6 +2692,14 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="SPI"><span class="iconfont-archer">&#xe60a;</span>SPI</span>
     
+        <span class="sidebar-category-name" data-categories="flink"><span class="iconfont-archer">&#xe60a;</span>flink</span>
+    
+        <span class="sidebar-category-name" data-categories="openjdk"><span class="iconfont-archer">&#xe60a;</span>openjdk</span>
+    
+        <span class="sidebar-category-name" data-categories="clickHouse"><span class="iconfont-archer">&#xe60a;</span>clickHouse</span>
+    
+        <span class="sidebar-category-name" data-categories="innodb"><span class="iconfont-archer">&#xe60a;</span>innodb</span>
+    
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
     <div class="sidebar-categories-list"></div>
@@ -2464,29 +2723,6 @@ jsonContent:
     </script>
     <script src="/scripts/main.js"></script>
     <!-- algolia -->
-    
-        <div class="site-search">
-  <div class="algolia-popup popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="iconfont-archer">&#xe609;</i>
-    </span>
-  </div>
-</div>
-        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.8.0/dist/instantsearch.min.js" defer></script>
-        <script src="/scripts/search.js" defer></script>
     
     <!-- busuanzi  -->
     
